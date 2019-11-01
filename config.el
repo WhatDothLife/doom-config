@@ -14,6 +14,7 @@
 (load "+mu4e")
 (load "+popup")
 
+(setq doom-font (font-spec :family "Source Code Pro" :size 14))
 
 ;; Apply theme to treemacs
 ;; (doom-themes-treemacs-config)
