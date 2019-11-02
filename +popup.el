@@ -2,7 +2,7 @@
 
 (set-popup-rule! "^\\*Customize.*" :slot 2 :side 'right :modeline nil :select t :quit t)
 (set-popup-rule! " \\*undo-tree\\*" :slot 2 :side 'left :size 20 :modeline nil :select t :quit t)
-(set-popup-rule! "^\\*Password-Store\\*" :side 'left :size 120 :select t :quit t)
+(set-popup-rule! "\\*Password-Store\\*" :side 'left :size 82 :select t :quit t)
 
 
 ;; * help

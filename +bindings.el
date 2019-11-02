@@ -64,7 +64,7 @@
       (:map evil-emacs-state-map
         "SPC" doom-leader-map)
       (:map evil-treemacs-state-map
-        "<left>"  'treemacs-collapse-parent-node
+        "<left>"  'treemacs-left-action
         "<right>" 'treemacs-RET-action))
 
 (defun split-switch-right ()
@@ -76,3 +76,23 @@
   (interactive)
   (split-window-below)
   (windmove-down))
+
+(defun treemacs-left-action (&optional arg)
+  (interactive "P")
+  (-when-let (state (treemacs--prop-at-point :state))
+    (--if-let (cdr (assq state treemacs-left-actions-config))
+        (progn
+          (funcall it arg)
+          (treemacs--evade-image))
+      (treemacs-pulse-on-failure "No <left> action defined for node of type %s."
+        (propertize (format "%s" state) 'face 'font-lock-type-face)))))
+
+(defvar treemacs-left-actions-config
+  '((root-node-open   . treemacs-toggle-node)
+    (dir-node-open    . treemacs-toggle-node)
+    (dir-node-closed  . treemacs-collapse-parent-node)
+    (file-node-open   . treemacs-collapse-parent-node)
+    (file-node-closed . treemacs-collapse-parent-node)
+    (tag-node-open    . treemacs-collapse-parent-node)
+    (tag-node-closed  . treemacs-collapse-parent-node)
+    (tag-node         . treemacs-collapse-parent-node)))

@@ -2,23 +2,18 @@
 
 ;;; Code:
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e/")
-(add-to-list 'load-path "~/.doom.d/")
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
-
-(add-hook 'shell-mode-hook #'doom-mark-buffer-as-real-h)
 
 (evil-set-initial-state 'mu4e-main-mode 'emacs)
 (evil-set-initial-state 'pdf-view-mode 'emacs)
 
-(load "+bindings")
-(load "+mu4e")
-(load "+popup")
+(load! "+bindings")
+(load! "+mu4e")
+(load! "+popup")
 
-(setq doom-font (font-spec :family "Source Code Pro" :size 14))
+(doom-themes-treemacs-config)
 
-;; Apply theme to treemacs
-;; (doom-themes-treemacs-config)
-
+;; (setq doom-font (font-spec :family "Source Code Pro" :size 14))
 
 ;; (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
 ;; (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++17")))
@@ -30,11 +25,8 @@
 
 ;; Org
 (setq org-agenda-include-diary t)
-
 ;; Recording work time with org-mode
 (setq org-clock-persist 'history)
-(org-clock-persistence-insinuate)
-
 
 ;; (defun config-misc ()
 ;;   "Other configurations."
