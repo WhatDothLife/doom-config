@@ -3,8 +3,6 @@
 (require 'mu4e)
 
 (map! :leader
-      (:prefix-map ("t" . "toggle")
-        :desc "Treemacs"                    "t" #'+treemacs/toggle)
       (:prefix-map ("b" . "buffer")
         :desc "Bury buffer"                 "b" #'bury-buffer
         :desc "Unbury buffer"               "z" #'unbury-buffer
@@ -17,10 +15,11 @@
         :desc "Shell"    "s"   #'shell
         :desc "Pass"     "p"   #'pass)
 
-      :desc "Search for symbol in project" "?"       #'+default/search-project-for-symbol-at-point
+      ;; :desc "Search for symbol in project" "?"       #'+default/search-project-for-symbol-at-point
       :desc "Toggle last popup" "*"                  #'+popup/toggle
-      :desc "Raise popup" "+"                        #'+popup/raise
-      :desc "Open buffer in popup" "-"               #'+popup/buffer)
+      ;; :desc "Raise popup" "+"                        #'+popup/raise
+      ;; :desc "Open buffer in popup" "-"               #'+popup/buffer
+      "~" nil)
 
 (map! (:map override
         :i "C-p"    #'+default/newline
@@ -34,8 +33,13 @@
         "s-I" #'shrink-window-horizontally
         "s-E" #'enlarge-window-horizontally
 
-        "s-t" #'+workspace/switch-right
-        "s-r" #'+workspace/switch-left
+        "M-l" #'buf-move-up
+        "M-a" #'buf-move-down
+        "M-i" #'buf-move-left
+        "M-e" #'buf-move-right
+
+        ;; "s-t" #'+workspace/switch-right
+        ;; "s-r" #'+workspace/switch-left
 
         "M-t" #'split-switch-right
         "M-r" #'split-switch-below)
@@ -59,8 +63,8 @@
         :n "C-i" #'mu4e-headers-query-prev
         :n "C-e" #'mu4e-headers-query-next)
       (:map mu4e-main-mode-map
-        "p" (lambda () (mu4e-headers-search "maildir:/posteo/INBOX"))
-        "z" (lambda () (mu4e-headers-search "maildir:/zih/INBOX")))
+        "p" (λ! (mu4e-headers-search "maildir:/posteo/INBOX"))
+        "z" (λ! (mu4e-headers-search "maildir:/zih/INBOX")))
       (:map evil-emacs-state-map
         "SPC" doom-leader-map)
       (:map evil-treemacs-state-map

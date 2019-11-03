@@ -4,6 +4,8 @@
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e/")
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
+(add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
+
 (evil-set-initial-state 'mu4e-main-mode 'emacs)
 (evil-set-initial-state 'pdf-view-mode 'emacs)
 
