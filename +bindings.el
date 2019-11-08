@@ -2,21 +2,28 @@
 
 (require 'mu4e)
 
+(setq evil-org-movement-bindings
+      '((up . "l")
+        (down . "a")
+        (left . "i")
+        (right . "e")))
+
 (map! :leader
-      (:prefix-map ("b" . "buffer")
+      (:prefix "b"
         :desc "Bury buffer"                 "b" #'bury-buffer
         :desc "Unbury buffer"               "z" #'unbury-buffer
         :desc "Switch to buffer in window"  "o" #'+ivy/switch-workspace-buffer-other-window
+        :desc "Kill buffer and window"      "w" #'kill-buffer-and-window
         :desc "Kill some buffers"           "k" #'kill-some-buffers)
-      (:prefix-map ("a" . "application")
+      (:prefix "a"
         :desc "Mail"     "m"   #'=mu4e
         :desc "Eww"      "e"   #'eww
         :desc "Gdb"      "d"   #'gdb
-        :desc "Shell"    "s"   #'shell
         :desc "Pass"     "p"   #'pass)
 
       ;; :desc "Search for symbol in project" "?"       #'+default/search-project-for-symbol-at-point
       :desc "Toggle last popup" "*"                  #'+popup/toggle
+      :desc "Switch to buffer in other window" "*"   #'+ivy/switch-buffer-other-window
       ;; :desc "Raise popup" "+"                        #'+popup/raise
       ;; :desc "Open buffer in popup" "-"               #'+popup/buffer
       "~" nil)
@@ -33,16 +40,48 @@
         "s-I" #'shrink-window-horizontally
         "s-E" #'enlarge-window-horizontally
 
-        "M-l" #'buf-move-up
-        "M-a" #'buf-move-down
-        "M-i" #'buf-move-left
-        "M-e" #'buf-move-right
+        "s-/" #'buf-move-left
+        "s-{" #'buf-move-down
+        "s-}" #'buf-move-right
+        "s-[" #'buf-move-up
 
         ;; "s-t" #'+workspace/switch-right
         ;; "s-r" #'+workspace/switch-left
 
         "M-t" #'split-switch-right
         "M-r" #'split-switch-below)
+      ;; (:map global-map
+      ;;   "M-a" nil)
+      (:map dired-mode-map
+        :n "-"     (lambda () (interactive) (find-alternate-file "..")))
+      (:after evil-easymotion
+        (:map evilem-map
+          "c" #'evilem-motion-find-char
+          "f" #'evilem--motion-function-evil-forward-arg
+          "F" #'evilem--motion-function-evil-backward-arg
+          "a" #'evilem-motion-next-line
+          "l" #'evilem-motion-previous-line))
+      (:map Info-mode-map
+        "C-a"  #'Info-next-preorder
+        "C-l"  #'Info-last-preorder
+        :prefix "g"
+        :n "b" #'what-cursor-position
+        :n "a" #'Info-next
+        :n "l" #'Info-prev)
+      (:map evil-normal-state-map
+        "g a" nil
+        "g b" #'what-cursor-position)
+      (:map org-mode-map
+        ;; "M-i"        #'org-metaleft
+        ;; "M-a"        #'org-metadown
+        ;; "M-e"        #'org-metaright
+        ;; "M-l"        #'org-metaup
+        ;; "M-I"        #'org-shiftmetaleft
+        ;; "M-A"        #'org-shiftmetadown
+        ;; "M-E"        #'org-shiftmetaright
+        ;; "M-L"        #'org-shiftmetaup
+        "s-<return>"     #'org-insert-todo-heading
+        "S-s-<return>"   #'org-insert-todo-subheading)
       (:map pdf-view-mode-map
         :n "<left>"  #'image-backward-hscroll
         :n "<right>" #'image-forward-hscroll
@@ -66,10 +105,13 @@
         "p" (λ! (mu4e-headers-search "maildir:/posteo/INBOX"))
         "z" (λ! (mu4e-headers-search "maildir:/zih/INBOX")))
       (:map evil-emacs-state-map
-        "SPC" doom-leader-map)
+        "M-SPC" doom-leader-map)
       (:map evil-treemacs-state-map
         "<left>"  'treemacs-left-action
         "<right>" 'treemacs-RET-action))
+
+(global-set-key "•" 'repeat)
+
 
 (defun split-switch-right ()
   (interactive)
@@ -89,7 +131,7 @@
           (funcall it arg)
           (treemacs--evade-image))
       (treemacs-pulse-on-failure "No <left> action defined for node of type %s."
-        (propertize (format "%s" state) 'face 'font-lock-type-face)))))
+                                 (propertize (format "%s" state) 'face 'font-lock-type-face)))))
 
 (defvar treemacs-left-actions-config
   '((root-node-open   . treemacs-toggle-node)

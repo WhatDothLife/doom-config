@@ -6,6 +6,8 @@
 
 (add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
 
+(setq +doom-dashboard-banner-file (expand-file-name "logo.png" doom-private-dir))
+
 (evil-set-initial-state 'mu4e-main-mode 'emacs)
 (evil-set-initial-state 'pdf-view-mode 'emacs)
 
@@ -13,7 +15,7 @@
 (load! "+mu4e")
 (load! "+popup")
 
-(doom-themes-treemacs-config)
+;; (doom-themes-treemacs-config)
 
 ;; (setq doom-font (font-spec :family "Source Code Pro" :size 14))
 
