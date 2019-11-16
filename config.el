@@ -8,8 +8,10 @@
 
 (setq +doom-dashboard-banner-file (expand-file-name "logo.png" doom-private-dir))
 
-(evil-set-initial-state 'mu4e-main-mode 'emacs)
-(evil-set-initial-state 'pdf-view-mode 'emacs)
+(set-evil-initial-state! 'pdf-view-mode 'emacs)
+(set-evil-initial-state! 'rcirc-mode 'normal)
+;; (evil-set-initial-state 'mu4e-main-mode 'emacs)
+;; (evil-set-initial-state 'pdf-view-mode 'emacs)
 
 (load! "+bindings")
 (load! "+mu4e")
@@ -28,6 +30,7 @@
 ;;         rtags-rdm-binary-name (or rtags-rdm-binary-name "rdm")))
 
 ;; Org
+;; (setq org-startup-shrink-all-tables t)
 (setq org-agenda-include-diary t)
 ;; Recording work time with org-mode
 (setq org-clock-persist 'history)

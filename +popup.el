@@ -3,12 +3,12 @@
 (set-popup-rule! "^\\*Customize.*" :slot 2 :side 'right :modeline nil :select t :quit t)
 (set-popup-rule! " \\*undo-tree\\*" :slot 2 :side 'left :size 20 :modeline nil :select t :quit t)
 (set-popup-rule! "^\\*Password-Store" :side 'left :size 0.25 :quit nil)
-(set-popup-rule! "\\*doom:shell-popup.*" :vslot -5 :side 'bottom :size 0.10 :modeline t :select t)
+(set-popup-rule! "\\*doom:shell-popup.*" :vslot -5 :side 'bottom :size 0.15 :modeline t :select t)
 ;; (set-popup-rule! "^\\*Ibuffer\\*" :vslot -10 :side 'bottom :size 0.2 :modeline t :select t)
 
 
 ;; * help
-(set-popup-rule! "^\\*info.*" :size 82 :side 'right :ttl 60 :select t :quit t)
+(set-popup-rule! "^\\*info.*" :size 82 :side 'right :ttl nil :select t :quit t)
 (set-popup-rule! "^\\*Man.*" :size 82 :side 'right :ttl 60 :select t :quit t)
 (set-popup-rule! "^\\*tldr\\*" :size 82 :side 'right :ttl 60 :select t :quit t)
 (set-popup-rule! "^\\*helpful.*" :size 82 :side 'right :ttl 60 :select t :quit t)

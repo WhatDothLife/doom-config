@@ -110,7 +110,7 @@
 
 (setq mu4e-maildir-shortcuts
       '( ("/posteo/INBOX"     . ?p)
-         ("/zih/INBOX"   . ?i)
+         ("/zih/INBOX"   . ?z)
          ;;("/lists"     . ?l)
          ;;("/work"      . ?w)
          ;;("/sent"      . ?s)

@@ -68,7 +68,7 @@
        :term
        ;;eshell            ; a consistent, cross-platform shell (WIP)
        shell             ; a terminal REPL for Emacs
-       ;;term              ; terminals in Emacs
+       ;; term              ; terminals in Emacs
        ;;vterm             ; another terminals in Emacs
 
        :tools
@@ -141,7 +141,7 @@
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       ;;python            ; beautiful is better than ugly
+       python            ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;rest              ; Emacs as a REST client
@@ -166,7 +166,7 @@
        ;; toward a specific purpose. They may have additional dependencies and
        ;; should be loaded late.
        :app
-       ;;calendar
+       calendar
        ;;irc               ; how neckbeards socialize
        ;;(rss +org)        ; emacs as an RSS reader
        ;;twitter           ; twitter client https://twitter.com/vnought

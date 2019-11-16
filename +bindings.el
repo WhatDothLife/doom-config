@@ -22,12 +22,11 @@
         :desc "Pass"     "p"   #'pass)
 
       ;; :desc "Search for symbol in project" "?"       #'+default/search-project-for-symbol-at-point
-      :desc "Toggle last popup" "*"                  #'+popup/toggle
+      :desc "Toggle last popup" "~"                  #'+popup/toggle
       :desc "Switch to buffer in other window" "*"   #'+ivy/switch-buffer-other-window
       ;; :desc "Raise popup" "+"                        #'+popup/raise
-      ;; :desc "Open buffer in popup" "-"               #'+popup/buffer
-      "~" nil)
-
+      ;; :desc "Open buffer in popup" "-"               #'+popup/buffer)
+      )
 (map! (:map override
         :i "C-p"    #'+default/newline
         "s-l" #'windmove-up
@@ -72,16 +71,33 @@
         "g a" nil
         "g b" #'what-cursor-position)
       (:map org-mode-map
-        ;; "M-i"        #'org-metaleft
-        ;; "M-a"        #'org-metadown
-        ;; "M-e"        #'org-metaright
-        ;; "M-l"        #'org-metaup
+        "M-<up>"        #'org-previous-visible-heading
+        "M-<down>"      #'org-next-visible-heading
         ;; "M-I"        #'org-shiftmetaleft
         ;; "M-A"        #'org-shiftmetadown
         ;; "M-E"        #'org-shiftmetaright
         ;; "M-L"        #'org-shiftmetaup
-        "s-<return>"     #'org-insert-todo-heading
-        "S-s-<return>"   #'org-insert-todo-subheading)
+        "s-<return>"    #'org-insert-todo-heading
+        "S-s-<return>"  #'org-insert-todo-subheading
+        ;; :nvm :prefix "]"
+        ;; "i"             #'org-next-item
+        ;; :nvm :prefix "["
+        ;; "i"             #'org-previous-item
+        :localleader
+        "^"             #'org-sort
+        "x"             #'+org-toggle-checkbox
+        "v"             #'org-mark-element
+        "V"             #'org-mark-subtree
+        "Y"             #'org-paste-subtree
+        "y"             #'org-yank
+        "z"             #'org-insert-drawer
+        :prefix "b"
+        "d"             #'org-table-copy-region
+        "y"             #'org-table-cut-region
+        "p"             #'org-table-paste-rectangle
+        "+"             #'org-table-sum
+        "^"             #'org-table-sort-lines
+        "RET"           #'org-table-hline-and-move)
       (:map pdf-view-mode-map
         :n "<left>"  #'image-backward-hscroll
         :n "<right>" #'image-forward-hscroll
@@ -93,15 +109,22 @@
         :n "t"   #'mu4e-headers-mark-subthread
         :n "C-t" #'mu4e-headers-mark-thread
         :n "C-i" #'mu4e-headers-query-prev
-        :n "C-e" #'mu4e-headers-query-next)
+        :n "C-e" #'mu4e-headers-query-next
+        :localleader
+        "p" (λ! (mu4e-headers-search "maildir:/posteo/INBOX"))
+        "z" (λ! (mu4e-headers-search "maildir:/zih/INBOX")))
       (:map mu4e-headers-mode-map
         :n "C-a" #'mu4e-view-headers-next
         :n "C-l" #'mu4e-view-headers-prev
         :n "t"   #'mu4e-headers-mark-subthread
         :n "C-t" #'mu4e-headers-mark-thread
         :n "C-i" #'mu4e-headers-query-prev
-        :n "C-e" #'mu4e-headers-query-next)
+        :n "C-e" #'mu4e-headers-query-next
+        :localleader
+        "p" (λ! (mu4e-headers-search "maildir:/posteo/INBOX"))
+        "z" (λ! (mu4e-headers-search "maildir:/zih/INBOX")))
       (:map mu4e-main-mode-map
+        :localleader
         "p" (λ! (mu4e-headers-search "maildir:/posteo/INBOX"))
         "z" (λ! (mu4e-headers-search "maildir:/zih/INBOX")))
       (:map evil-emacs-state-map
@@ -122,6 +145,10 @@
   (interactive)
   (split-window-below)
   (windmove-down))
+
+(defun +org-toggle-checkbox ()
+  (interactive)
+  (org-toggle-checkbox '(4)))
 
 (defun treemacs-left-action (&optional arg)
   (interactive "P")

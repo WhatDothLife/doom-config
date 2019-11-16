@@ -3,5 +3,8 @@
 
 ;; * Writing
 (package! academic-phrases)
+;; * Snippets
+(package! yasnippet-snippets)
+(package! yasnippet-classic-snippets)
 ;; * UI
 (package! buffer-move)
