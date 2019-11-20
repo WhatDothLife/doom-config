@@ -2,11 +2,11 @@
 
 ;;; Code:
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e/")
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
+(add-to-list 'default-frame-alist '(fullscreen . fullboth))
 
 (add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
 
-(setq +doom-dashboard-banner-file (expand-file-name "logo.png" doom-private-dir))
+(setq +doom-dashboard-banner-file (concat doom-private-dir "logo.png"))
 
 (set-evil-initial-state! 'pdf-view-mode 'emacs)
 (set-evil-initial-state! 'rcirc-mode 'normal)
@@ -19,7 +19,7 @@
 
 ;; (doom-themes-treemacs-config)
 
-;; (setq doom-font (font-spec :family "Source Code Pro" :size 14))
+(setq doom-font (font-spec :family "Source Code Pro" :size 15))
 
 ;; (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
 ;; (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++17")))
@@ -42,16 +42,6 @@
 ;;   (tool-bar-mode -1)
 ;;   (scroll-bar-mode -1)
 ;;   (fringe-mode 1))
-
-;; pass
-(map!
- (:after pass :map pass-mode-map
-   "a" #'pass-next-entry
-   "l" #'pass-prev-entry
-   "d" #'pass-kill
-   "A" #'pass-next-directory
-   "L" #'pass-prev-directory
-   "j" #'pass-goto-entry))
 
 
 (provide 'config)
