@@ -1,0 +1,23 @@
+# -*- mode: snippet -*-
+# name: drill-vokabel
+# key: vok
+# uuid: 10000
+# --
+** Vokabel :drill:
+:PROPERTIES:
+:DRILL_CARD_TYPE: twosided
+:END:
+
+Was bedeutet...?/Wie sagt man zu...?
+
+*** Wort/Formulierung
+
+$2
+
+*** Erklärung
+
+$1
+
+*** Beispiel
+
+$0

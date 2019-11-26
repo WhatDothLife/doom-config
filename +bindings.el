@@ -23,124 +23,108 @@
           :desc "Increase font size" "="    #'doom/increase-font-size
           :desc "Decrease font size" "-"    #'doom/decrease-font-size
           :desc "Reset font size"    "r"    #'doom/reset-font-size))
-      (:prefix "a"
-        :desc "Mail"     "m"   #'=mu4e
-        :desc "Eww"      "e"   #'eww
-        :desc "Gdb"      "d"   #'gdb
-        :desc "Pass"     "p"   #'pass)
-
-      ;; :desc "Search for symbol in project" "?"       #'+default/search-project-for-symbol-at-point
+      (:prefix "o"
+        :desc "Toggle shell popup"    "s" #'+shell/toggle
+        :desc "Open shell here"       "S" #'+shell/here
+        :desc "Mail"                  "m" #'=mu4e
+        :desc "Eww"                   "e" #'eww
+        :desc "PassWord"              "w" #'pass)
       :desc "Toggle last popup" "~"                  #'+popup/toggle
-      :desc "Switch to buffer in other window" "*"   #'+ivy/switch-buffer-other-window
-      ;; :desc "Raise popup" "+"                        #'+popup/raise
-      ;; :desc "Open buffer in popup" "-"               #'+popup/buffer)
-      )
+      :desc "Switch to buffer in other window" "*"   #'+ivy/switch-buffer-other-window)
 
-(map! (:map override
-        :i "C-p"    #'+default/newline
-        "s-l" #'windmove-up
-        "s-a" #'windmove-down
-        "s-i" #'windmove-left
-        "s-e" #'windmove-right
+(map!
+ :i "C-p"    #'+default/newline
+ "s-l" #'windmove-up
+ "s-a" #'windmove-down
+ "s-i" #'windmove-left
+ "s-e" #'windmove-right
 
-        "s-L" #'enlarge-window
-        "s-A" #'shrink-window
-        "s-I" #'shrink-window-horizontally
-        "s-E" #'enlarge-window-horizontally
+ "s-L" #'enlarge-window
+ "s-A" #'shrink-window
+ "s-I" #'shrink-window-horizontally
+ "s-E" #'enlarge-window-horizontally
 
-        "s-/" #'buf-move-left
-        "s-{" #'buf-move-down
-        "s-}" #'buf-move-right
-        "s-[" #'buf-move-up
+ "s-/" #'buf-move-left
+ "s-{" #'buf-move-down
+ "s-}" #'buf-move-right
+ "s-[" #'buf-move-up
 
-        ;; "s-t" #'+workspace/switch-right
-        ;; "s-r" #'+workspace/switch-left
+ "M-t" #'split-switch-right
+ "M-r" #'split-switch-below
 
-        "M-t" #'split-switch-right
-        "M-r" #'split-switch-below)
-      ;; (:map global-map
-      ;;   "M-a" nil)
+ (:map dired-mode-map
+   :n "-"     (lambda () (interactive) (find-alternate-file "..")))
 
-      (:map dired-mode-map
-        :n "-"     (lambda () (interactive) (find-alternate-file "..")))
+ (:after evil-easymotion
+   (:map evilem-map
+     "c" #'evilem-motion-find-char
+     "f" #'evilem--motion-function-evil-forward-arg
+     "F" #'evilem--motion-function-evil-backward-arg
+     "a" #'evilem-motion-next-line
+     "l" #'evilem-motion-previous-line))
+ (:map evil-emacs-state-map
+   "SPC" doom-leader-map)
+ (:map evil-normal-state-map
+   "g a" nil
+   "g b" #'what-cursor-position)
+ (:map evil-treemacs-state-map
+   "<left>"  'treemacs-left-action
+   "<right>" 'treemacs-RET-action)
 
-      (:after evil-easymotion
-        (:map evilem-map
-          "c" #'evilem-motion-find-char
-          "f" #'evilem--motion-function-evil-forward-arg
-          "F" #'evilem--motion-function-evil-backward-arg
-          "a" #'evilem-motion-next-line
-          "l" #'evilem-motion-previous-line))
-      (:map evil-emacs-state-map
-        "M-SPC" doom-leader-map)
-      (:map evil-normal-state-map
-        "g a" nil
-        "g b" #'what-cursor-position)
-      (:map evil-treemacs-state-map
-        "<left>"  'treemacs-left-action
-        "<right>" 'treemacs-RET-action)
+ (:map Info-mode-map
+   "C-a"  #'Info-next-preorder
+   "C-l"  #'Info-last-preorder
+   :prefix "g"
+   :n "b" #'what-cursor-position
+   :n "a" #'Info-next
+   :n "l" #'Info-prev)
 
-      (:map Info-mode-map
-        "C-a"  #'Info-next-preorder
-        "C-l"  #'Info-last-preorder
-        :prefix "g"
-        :n "b" #'what-cursor-position
-        :n "a" #'Info-next
-        :n "l" #'Info-prev)
+ (:map (mu4e-headers-mode-map mu4e-main-mode-map mu4e-view-mode-map)
+   :localleader
+   "p" (λ! (mu4e-headers-search "maildir:/posteo/INBOX"))
+   "z" (λ! (mu4e-headers-search "maildir:/zih/INBOX")))
+ (:map (mu4e-headers-mode-map mu4e-view-mode-map)
+   :n "C-a" #'mu4e-view-headers-next
+   :n "C-l" #'mu4e-view-headers-prev
+   :n "t"   #'mu4e-headers-mark-subthread
+   :n "C-t" #'mu4e-headers-mark-thread
+   :n "C-i" #'mu4e-headers-query-prev
+   :n "C-e" #'mu4e-headers-query-next)
 
-      (:map (mu4e-headers-mode-map mu4e-main-mode-map mu4e-view-mode-map)
-        :localleader
-        "p" (λ! (mu4e-headers-search "maildir:/posteo/INBOX"))
-        "z" (λ! (mu4e-headers-search "maildir:/zih/INBOX")))
-      (:map (mu4e-headers-mode-map mu4e-view-mode-map)
-        :n "C-a" #'mu4e-view-headers-next
-        :n "C-l" #'mu4e-view-headers-prev
-        :n "t"   #'mu4e-headers-mark-subthread
-        :n "C-t" #'mu4e-headers-mark-thread
-        :n "C-i" #'mu4e-headers-query-prev
-        :n "C-e" #'mu4e-headers-query-next)
+ (:after org :map org-mode-map
+   "M-<up>"        #'org-previous-visible-heading
+   "M-<down>"      #'org-next-visible-heading
+   "s-<return>"    #'org-insert-todo-heading
+   "S-s-<return>"  #'org-insert-todo-subheading
+   :localleader
+   "^"             #'org-sort
+   "x"             #'+org-toggle-checkbox
+   "v"             #'org-mark-element
+   "V"             #'org-mark-subtree
+   "Y"             #'org-paste-subtree
+   "y"             #'org-yank
+   "z"             #'org-insert-drawer
+   :prefix "b"
+   "d"             #'org-table-copy-region
+   "y"             #'org-table-cut-region
+   "p"             #'org-table-paste-rectangle
+   "+"             #'org-table-sum
+   "^"             #'org-table-sort-lines
+   "RET"           #'org-table-hline-and-move)
 
-      (:map org-mode-map
-        "M-<up>"        #'org-previous-visible-heading
-        "M-<down>"      #'org-next-visible-heading
-        ;; "M-I"        #'org-shiftmetaleft
-        ;; "M-A"        #'org-shiftmetadown
-        ;; "M-E"        #'org-shiftmetaright
-        ;; "M-L"        #'org-shiftmetaup
-        "s-<return>"    #'org-insert-todo-heading
-        "S-s-<return>"  #'org-insert-todo-subheading
-        ;; :nvm :prefix "]"
-        ;; "i"             #'org-next-item
-        ;; :nvm :prefix "["
-        ;; "i"             #'org-previous-item
-        :localleader
-        "^"             #'org-sort
-        "x"             #'+org-toggle-checkbox
-        "v"             #'org-mark-element
-        "V"             #'org-mark-subtree
-        "Y"             #'org-paste-subtree
-        "y"             #'org-yank
-        "z"             #'org-insert-drawer
-        :prefix "b"
-        "d"             #'org-table-copy-region
-        "y"             #'org-table-cut-region
-        "p"             #'org-table-paste-rectangle
-        "+"             #'org-table-sum
-        "^"             #'org-table-sort-lines
-        "RET"           #'org-table-hline-and-move)
-      (:after pass :map pass-mode-map
-        "a" #'pass-next-entry
-        "l" #'pass-prev-entry
-        "d" #'pass-kill
-        "A" #'pass-next-directory
-        "L" #'pass-prev-directory
-        "j" #'pass-goto-entry)
+ (:after pass :map pass-mode-map
+   "a" #'pass-next-entry
+   "l" #'pass-prev-entry
+   "d" #'pass-kill
+   "A" #'pass-next-directory
+   "L" #'pass-prev-directory
+   "j" #'pass-goto-entry)
 
-      (:map pdf-view-mode-map
-        :n "<left>"  #'image-backward-hscroll
-        :n "<right>" #'image-forward-hscroll
-        :n "C-a"     #'pdf-view-next-page-command
-        :n "C-l"     #'pdf-view-previous-page-command))
+ (:map pdf-view-mode-map
+   :n "<left>"  #'image-backward-hscroll
+   :n "<right>" #'image-forward-hscroll
+   :n "C-a"     #'pdf-view-next-page-command
+   :n "C-l"     #'pdf-view-previous-page-command))
 
 (global-set-key "•" 'repeat)
 
@@ -148,13 +132,15 @@
 (defun split-switch-right ()
   (interactive)
   (split-window-right)
-  (windmove-right))
-
+  (windmove-right)
+  ;; (balance-windows))
+)
 (defun split-switch-below ()
   (interactive)
   (split-window-below)
-  (windmove-down))
-
+  (windmove-down)
+  ;; (balance-windows))
+)
 (defun +org-toggle-checkbox ()
   (interactive)
   (org-toggle-checkbox '(4)))
@@ -171,6 +157,7 @@
 
 (defvar treemacs-left-actions-config
   '((root-node-open   . treemacs-toggle-node)
+    (root-node-closed . treemacs-root-up)
     (dir-node-open    . treemacs-toggle-node)
     (dir-node-closed  . treemacs-collapse-parent-node)
     (file-node-open   . treemacs-collapse-parent-node)

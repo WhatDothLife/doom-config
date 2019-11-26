@@ -8,3 +8,4 @@
 (package! yasnippet-classic-snippets)
 ;; * UI
 (package! buffer-move)
+(package! org-drill)
