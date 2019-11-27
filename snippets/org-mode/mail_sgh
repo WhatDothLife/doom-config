@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: Sehr geehrte Herr
+# key: sgh
+# condition: t
+# --
+Sehr geehrter Herr $1,
+
+$0
+
+--
+Mit freundlichen Grüßen
+
+Michael Wernthaler

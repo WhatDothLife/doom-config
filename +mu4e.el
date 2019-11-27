@@ -73,7 +73,6 @@
            :name "Private"
            :enter-func (lambda () (mu4e-message "Entering Private context"))
            :leave-func (lambda () (mu4e-message "Leaving Private context"))
-           ;; we match based on the contact-fields of the message
            :match-func (lambda (msg)
                          (when msg
                            (mu4e-message-contact-field-matches msg
@@ -83,17 +82,10 @@
                     (mu4e-sent-folder . "/posteo/Sent")
                     (mu4e-drafts-folder . "/posteo/Drafts")
                     (mu4e-refile-folder . "/posteo/Archives")
-                    (mu4e-trash-folder . "/posteo/Trash")
-                    (mu4e-compose-signature .
-                                            (concat
-                                             "Mit freundlichen Grüßen\n\n"
-                                             "Michael Wernthaler\n"))))
+                    (mu4e-trash-folder . "/posteo/Trash")))
          ,(make-mu4e-context
            :name "Uni"
            :enter-func (lambda () (mu4e-message "Switch to the Uni context"))
-           ;; no leave-func
-           ;; we match based on the maildir of the message
-           ;; this matches maildir /Arkham and its sub-directories
            :match-func (lambda (msg)
                          (when msg
                            (string-match-p "^/zih" (mu4e-message-field msg :maildir))))
@@ -102,11 +94,7 @@
                     (mu4e-sent-folder . "/zih/Sent")
                     (mu4e-drafts-folder . "/zih/Drafts")
                     (mu4e-refile-folder . "/zih/Archives")
-                    (mu4e-trash-folder . "/zih/Trash")
-                    (mu4e-compose-signature .
-                                            (concat
-                                             "Mit freundlichen Grüßen\n\n"
-                                             "Michael Wernthaler\n"))))))
+                    (mu4e-trash-folder . "/zih/Trash")))))
 
 (setq mu4e-maildir-shortcuts
       '( ("/posteo/INBOX"     . ?p)

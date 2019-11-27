@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: liebe
+# key: le
+# condition: t
+# --
+Liebe $1,
+
+$0
+
+--
+Liebe Grüße
+
+Michael
+
+
+`(spook)`
