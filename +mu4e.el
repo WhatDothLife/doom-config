@@ -22,7 +22,7 @@
      (mu4e-drafts-folder "/zih/Drafts")
      (mu4e-refile-folder "/zih/Archives")
      (mu4e-trash-folder "/zih/Trash")
-     (user-mail-address "s8179597@mailbox.tu-dresden.de")
+     (user-mail-address "michael.wernthaler@mailbox.tu-dresden.de")
      (smtpmail-default-smtp-server "msx.tu-dresden.de")
      (smtpmail-local-domain "tu-dresden.de")
      (smtpmail-smtp-user "s8179597")

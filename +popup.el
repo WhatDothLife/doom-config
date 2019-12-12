@@ -8,7 +8,7 @@
 
 
 ;; * help
-(set-popup-rule! "^\\*info.*" :size 82 :side 'left :ttl nil :select t :quit t)
+(set-popup-rule! "^\\*info.*" :size 82 :side 'right :ttl nil :select t :quit nil)
 (set-popup-rule! "^\\*Man.*" :size 82 :side 'right :ttl 60 :select t :quit t)
 (set-popup-rule! "^\\*tldr\\*" :size 82 :side 'right :ttl 60 :select t :quit t)
 (set-popup-rule! "^\\*helpful.*" :size 82 :side 'right :ttl 60 :select t :quit t)
@@ -21,7 +21,7 @@
 (set-popup-rule! "\\*VC-history\\*" :slot 2 :side 'right :size 82 :modeline nil :select t :quit t)
 
 ;; * web
-(set-popup-rule! "^\\*eww.*" :size 82 :side 'right :select t :quit t)
+(set-popup-rule! "^\\*eww.*" :size 82 :side 'right :ttl nil :select t)
 (set-popup-rule! "\\*xwidget" :side 'right :size 100 :select t)
 
 

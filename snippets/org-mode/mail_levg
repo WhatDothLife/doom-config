@@ -1,14 +1,15 @@
 # -*- mode: snippet -*-
-# name: lieber
-# key: lr
+# name: Liebe Viele Grüße
+# key: levg
 # condition: t
 # --
-Lieber $1,
+
+Liebe $1,
 
 $0
 
 --
-Liebe Grüße
+Viele Grüße
 
 Michael
 

@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: Lieber mit freundlichen Grüßen
+# key: lrmfg
+# condition: t 
+# --
+
+Lieber $1,
+
+$0
+
+--
+Mit freundlichen Grüßen
+
+Michael
+
+
+`(spook)`

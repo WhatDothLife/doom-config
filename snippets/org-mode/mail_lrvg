@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: Lieber Viele Grüße
+# key: lrvg
+# condition: t
+# --
+
+Lieber $1,
+
+$0
+
+--
+Viele Grüße
+
+Michael
+
+
+`(spook)`

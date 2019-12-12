@@ -16,17 +16,15 @@
 (setq doom-font (font-spec :family "Source Code Pro" :size 15))
 (setq window-combination-resize t)
 
-;; Org
-(setq org-agenda-include-diary t)
-;; Recording work time with org-mode
-(setq org-clock-persist 'history)
 
 (after! pdf
   (set-evil-initial-state! 'pdf-view-mode 'emacs))
 (set-evil-initial-state! 'rcirc-mode 'normal)
 
 (load! "+bindings")
+(load! "+irc")
 (load! "+mu4e")
+(load! "+org")
 (load! "+popup")
 
 
