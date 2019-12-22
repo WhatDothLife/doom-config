@@ -51,22 +51,14 @@
 
 
 (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
+(add-hook 'mu4e-main-mode-hook (lambda () (setq flyspell-dash-local-dictionary "deutsch8")))
 
-(setq mu4e-attachment-dir ;;TODO
-      (lambda (fname mtype)
-        (cond
-         ;; docfiles go to ~/Desktop
-         ((and fname (string-match "\\.jpg$" fname))  "~/Bilder")
-         ;; ... other cases  ...
-         (t "~/Downloads")))) ;; everything else
+(setq mu4e-attachment-dir "~/tmp/Mail")
 
 ;; Setting directory for queued mails
 (setq smtpmail-queue-dir "~/.mail/queue/cur")
 
 (setq mu4e-headers-date-format "%d/%m/%y")
-
-;; (require 'mu4e)
-;; (require 'smtpmail)
 
 (setq mu4e-contexts
       `( ,(make-mu4e-context

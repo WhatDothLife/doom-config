@@ -1,9 +1,9 @@
 # -*- mode: snippet -*-
-# name: vocabulary german
-# key: vg
-# uuid: 100
+# name: vocabulary english
+# key: ve
+# uuid: 10000             
 # --
-Vocabulary :drill::german:
+Vocabulary :drill::english:
 :PROPERTIES:
 :DRILL_CARD_TYPE: twosided
 :END:

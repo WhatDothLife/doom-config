@@ -3,9 +3,16 @@
 
 ;; * Writing
 (package! academic-phrases)
+
+;; * Editor
+(package! vlf
+  :recipe (:host github
+           :repo "m00natic/vlfi"))
+
 ;; * Snippets
 (package! yasnippet-snippets)
 (package! yasnippet-classic-snippets)
+
 ;; * UI
 (package! buffer-move)
 (package! org-drill)
