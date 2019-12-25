@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: bind
+# key: bi
+# --
+
+\"$1\" #'$0

@@ -8,7 +8,7 @@
 (setq org-clock-persist 'history)
 (setq org-agenda-files '("~/org/agenda"))
 
-; The following code snippets were copied from "organize your life in plain text"
+                                        ; The following code snippets were copied from "organize your life in plain text"
 (setq org-todo-state-tags-triggers
       '(("KILL" ("KILL" . t))
         ("WAIT" ("WAIT" . t))
@@ -42,10 +42,14 @@
         ("h" "Habit" entry (file "~/org/agenda/refile.org")
          "* NEXT %?\n%U\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:REPEAT_TO_STATE: NEXT\n:END:\n")))
 
-;; (setq org-refile-targets
-;;       ((nil :maxlevel . 3)
-;;        (org-agenda-files :maxlevel . 3)
-;;        ((list "~/org/org-drill/german.org" "~/org/org-drill/english.org" "~/org/org-drill/spanisch.org") :maxlevel . 1)))
+(setq org-refile-targets
+      '((nil :maxlevel . 3)
+        (org-agenda-files :maxlevel . 3)
+        ;; (org-drill-directory :maxlevel . 1)
+        ("~/org/org-drill/german.org" :maxlevel . 1)
+        ("~/org/org-drill/english.org" :maxlevel . 1)
+        ("~/org/org-drill/spanisch.org" :maxlevel . 1)
+        ))
                                         ; Exclude DONE state tasks from refile targets
 (defun +org/verify-refile-target ()
   "Exclude todo keywords with a done state from refile targets"

@@ -22,19 +22,6 @@
 (setq window-combination-resize t)
 (setq doom-font-increment 1)
 
-(after! evil-org
-  (setq evil-org-movement-bindings
-        '((up . "l")
-          (down . "a")
-          (left . "i")
-          (right . "e"))))
-
-(after! avy
-  (setq avy-keys '(?u ?i ?a ?e ?n ?r ?t ?d)))
-
-(after! ace-window
-  (setq aw-keys '(?u ?i ?a ?e ?n ?r ?t ?d)))
-
 (after! pdf
   (set-evil-initial-state! 'pdf-view-mode 'emacs))
 (set-evil-initial-state! 'rcirc-mode 'normal)
@@ -47,7 +34,9 @@
 ;;   (setq rtags-rc-binary-name (or rtags-rc-binary-name "rc")
 ;;         rtags-rdm-binary-name (or rtags-rdm-binary-name "rdm")))
 
+(setq auto-save-interval 100)
+(auto-save-mode)
+
 (provide 'config)
 
-;;; Test
 ;;; config.el ends here

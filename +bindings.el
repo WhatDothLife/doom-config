@@ -2,6 +2,19 @@
 
 (require 'mu4e)
 
+(after! evil-org
+  (setq evil-org-movement-bindings
+        '((up .    "g")
+          (down .  "r")
+          (left .  "n")
+          (right . "t"))))
+
+(after! avy
+  (setq avy-keys '(?u ?i ?a ?e ?n ?r ?t ?d)))
+
+(after! ace-window
+  (setq aw-keys '(?n ?r ?t ?d)))
+
 (map! :leader
       (:prefix "b"
         :desc "Bury buffer"                 "b" #'bury-buffer
@@ -21,11 +34,17 @@
         :desc "Eww"                   "e" #'eww
         :desc "PassWord"              "w" #'pass)
       (:prefix "t"
-        :desc "Toggle maximization"   "m" #'toggle-frame-maximized)
+        :desc "Toggle maximization"   "m" #'toggle-frame-maximized
+        :desc "Toggle Treemacs"       "t" #'+treemacs/toggle)
 
       (:after evil
         :prefix "w"
+        "t"    #'treemacs-select-window
         "O"    #'delete-other-windows
+        "d"    #'ace-delete-window
+        "s"    #'split-switch-right
+        "v"    #'split-switch-below
+        "C-w"  #'ace-swap-window
         "w"    #'ace-window)
 
       :desc "Open agenda" "a"                        #'org-agenda
@@ -33,21 +52,24 @@
       :desc "Switch to buffer in other window" "*"   #'+ivy/switch-buffer-other-window)
 
 (map!
+ :m "C-u"  #'scroll-up-line
+ :m "C-ü"  #'scroll-down-line
  :i "C-p"    #'+default/newline
- "s-l" #'windmove-up
- "s-a" #'windmove-down
- "s-i" #'windmove-left
- "s-e" #'windmove-right
 
- ;; "s-L" #'enlarge-window
- ;; "s-A" #'shrink-window
- ;; "s-I" #'shrink-window-horizontally
- ;; "s-E" #'enlarge-window-horizontally
+ ;; "M-l" #'windmove-up
+ ;; "M-a" #'windmove-down
+ ;; "M-i" #'windmove-left
+ ;; "M-e" #'windmove-right
 
- ;; "s-/" #'buf-move-left
- ;; "s-{" #'buf-move-down
- ;; "s-}" #'buf-move-right
- ;; "s-[" #'buf-move-up
+ ;; "M-L" #'enlarge-window
+ ;; "M-A" #'shrink-window
+ ;; "M-I" #'shrink-window-horizontally
+ ;; "M-E" #'enlarge-window-horizontally
+
+ ;; "s-L" #'buf-move-left
+ ;; "s-A" #'buf-move-down
+ ;; "s-I" #'buf-move-right
+ ;; "s-E" #'buf-move-up
 
  "M-t" #'split-switch-right
  "M-r" #'split-switch-below
@@ -68,6 +90,10 @@
      :m "gs" nil
      "gx" #'what-cursor-position))
 
+ (:after evil-snipe
+   (:map evil-snipe-override-mode-map
+     "–" #'evil-snipe-repeat))
+
  (:map evil-emacs-state-map
    "SPC" doom-leader-map)
  (:map evil-normal-state-map
@@ -78,11 +104,11 @@
    "<right>" 'treemacs-RET-action)
 
  (:map Info-mode-map
-   "C-a"  #'Info-next-preorder
-   "C-l"  #'Info-last-preorder
-   :n "b" #'what-cursor-position
-   :n "a" #'Info-next
-   :n "l" #'Info-prev)
+   "C-a"  #'Info-next-preorder       ;TODO Rebind
+   "C-l"  #'Info-last-preorder       ;TODO Rebind
+
+   :n "gs" #'+evil/easymotion
+   :n "b" #'what-cursor-position)
 
  (:map (mu4e-headers-mode-map mu4e-main-mode-map mu4e-view-mode-map)
    :localleader
@@ -99,7 +125,6 @@
  (:after org :map org-mode-map
    "M-<up>"        #'org-previous-visible-heading
    "M-<down>"      #'org-next-visible-heading
-   "s-<return>"    #'org-insert-todo-heading
    "s-g"           #'org-priority-up    ;;Has to be rebound at some point
    "s-r"           #'org-priority-down  ;;Same here
    :localleader
@@ -136,6 +161,8 @@
    :n "C-l"     #'pdf-view-previous-page-command))
 
 (global-set-key "•" 'repeat)
+;; (global-set-key (kbd "C-x") nil)
+;; (global-set-key (kbd "C-x")  #'evil-scroll-line-up)
 
 (defun split-switch-right ()
   (interactive)
