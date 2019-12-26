@@ -24,24 +24,26 @@
         :desc "Kill some buffers"           "k" #'kill-some-buffers
         :desc "Open buffer as popup"        "*" #'+popup-buffer
         (:prefix "f"
-          :desc "Increase font size" "="    #'doom/increase-font-size
-          :desc "Decrease font size" "-"    #'doom/decrease-font-size
-          :desc "Reset font size"    "r"    #'doom/reset-font-size))
+          :desc "Increase font size"  "="   #'doom/increase-font-size
+          :desc "Decrease font size"  "-"   #'doom/decrease-font-size
+          :desc "Reset font size"     "r"   #'doom/reset-font-size))
       (:prefix "o"
-        :desc "Toggle shell popup"    "s" #'+shell/toggle
-        :desc "Open shell here"       "S" #'+shell/here
-        :desc "Mail"                  "m" #'=mu4e
-        :desc "Eww"                   "e" #'eww
-        :desc "PassWord"              "w" #'pass)
+        :desc "Toggle eshell popup"   "s"   #'+eshell/toggle
+        :desc "Open eshell here"      "S"   #'+eshell/here
+        :desc "Mail"                  "m"   #'=mu4e
+        :desc "Eww"                   "e"   #'eww
+        :desc "PassWord"              "w"   #'pass)
       (:prefix "t"
-        :desc "Toggle maximization"   "m" #'toggle-frame-maximized
-        :desc "Toggle Treemacs"       "t" #'+treemacs/toggle)
+        :desc "Toggle maximization"   "m"   #'toggle-frame-maximized
+        :desc "Toggle Treemacs"       "t"   #'+treemacs/toggle)
 
       (:after evil
         :prefix "w"
+        ;; "e"    #'eshell-select-window
         "t"    #'treemacs-select-window
         "O"    #'delete-other-windows
         "d"    #'ace-delete-window
+        "D"    #'ace-delete-other-windows
         "s"    #'split-switch-right
         "v"    #'split-switch-below
         "C-w"  #'ace-swap-window
@@ -54,7 +56,10 @@
 (map!
  :m "C-u"  #'scroll-up-line
  :m "C-ü"  #'scroll-down-line
- :i "C-p"    #'+default/newline
+ :i "C-p"  #'+default/newline
+
+ :n "."    #'repeat
+ :n "•"    #'evil-repeat
 
  ;; "M-l" #'windmove-up
  ;; "M-a" #'windmove-down
@@ -160,7 +165,6 @@
    :n "C-a"     #'pdf-view-next-page-command
    :n "C-l"     #'pdf-view-previous-page-command))
 
-(global-set-key "•" 'repeat)
 ;; (global-set-key (kbd "C-x") nil)
 ;; (global-set-key (kbd "C-x")  #'evil-scroll-line-up)
 
@@ -186,7 +190,7 @@
           (funcall it arg)
           (treemacs--evade-image))
       (treemacs-pulse-on-failure "No <left> action defined for node of type %s."
-                                 (propertize (format "%s" state) 'face 'font-lock-type-face)))))
+        (propertize (format "%s" state) 'face 'font-lock-type-face)))))
 
 (defvar treemacs-left-actions-config
   '((root-node-open   . treemacs-toggle-node)

@@ -34,7 +34,7 @@
        ;;neotree           ; a project drawer, like NERDTree for vim
        ophints           ; highlight the region an operation acts on
        (popup            ; tame sudden yet inevitable temporary windows
-        +all             ; catch all popups that start with an asterix
+        ;; +all             ; catch all popups that start with an asterix
         +defaults)       ; default popup rules
        ;;pretty-code       ; replace bits of code with pretty symbols
        ;;tabs              ; an tab bar for Emacs
@@ -69,8 +69,8 @@
        vc                ; version-control and Emacs, sitting in a tree
 
        :term
-       ;;eshell            ; a consistent, cross-platform shell (WIP)
-       shell             ; a terminal REPL for Emacs
+       eshell            ; a consistent, cross-platform shell (WIP)
+       ;; shell             ; a terminal REPL for Emacs
        ;; term              ; terminals in Emacs
        ;;vterm             ; another terminals in Emacs
 

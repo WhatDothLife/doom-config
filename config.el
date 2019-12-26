@@ -26,6 +26,11 @@
   (set-evil-initial-state! 'pdf-view-mode 'emacs))
 (set-evil-initial-state! 'rcirc-mode 'normal)
 
+;; Allow ace-window to target treemacs windows
+(after! treemacs
+  (after! ace-window
+    (add-to-list 'aw-ignored-buffers 'eshell-mode)
+    (add-to-list 'aw-ignored-buffers 'treemacs-mode)))
 
 ;; (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
 ;; (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++17")))
