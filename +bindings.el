@@ -209,3 +209,5 @@
     (tag-node-open    . treemacs-collapse-parent-node)
     (tag-node-closed  . treemacs-collapse-parent-node)
     (tag-node         . treemacs-collapse-parent-node)))
+
+;;Test
