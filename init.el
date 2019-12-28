@@ -36,7 +36,7 @@
        (popup            ; tame sudden yet inevitable temporary windows
         ;; +all             ; catch all popups that start with an asterix
         +defaults)       ; default popup rules
-       ;;pretty-code       ; replace bits of code with pretty symbols
+       pretty-code       ; replace bits of code with pretty symbols
        ;;tabs              ; an tab bar for Emacs
        treemacs          ; a project drawer, like neotree but cooler
        ;;unicode           ; extended unicode support for various languages
@@ -70,7 +70,7 @@
 
        :term
        eshell            ; a consistent, cross-platform shell (WIP)
-       ;; shell             ; a terminal REPL for Emacs
+       shell             ; a terminal REPL for Emacs
        ;; term              ; terminals in Emacs
        ;;vterm             ; another terminals in Emacs
 
@@ -170,7 +170,7 @@
        ;; should be loaded late.
        :app
        ;; calendar
-       ;;irc               ; how neckbeards socialize
+       irc               ; how neckbeards socialize
        ;;(rss +org)        ; emacs as an RSS reader
        ;;twitter           ; twitter client https://twitter.com/vnought
        ;;(write            ; emacs for writers (fiction, notes, papers, etc.)

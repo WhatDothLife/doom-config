@@ -22,44 +22,47 @@
         :desc "Switch to buffer in window"  "o" #'+ivy/switch-workspace-buffer-other-window
         :desc "Kill buffer and window"      "w" #'kill-buffer-and-window
         :desc "Kill some buffers"           "k" #'kill-some-buffers
+        :desc "Select Treemacs buffer"      "t" #'treemacs-select-window
         :desc "Open buffer as popup"        "*" #'+popup-buffer
         (:prefix "f"
           :desc "Increase font size"  "="   #'doom/increase-font-size
           :desc "Decrease font size"  "-"   #'doom/decrease-font-size
           :desc "Reset font size"     "r"   #'doom/reset-font-size))
       (:prefix "o"
-        :desc "Toggle eshell popup"   "s"   #'+eshell/toggle
-        :desc "Open eshell here"      "S"   #'+eshell/here
         :desc "Mail"                  "m"   #'=mu4e
-        :desc "Eww"                   "e"   #'eww
+        :desc "Eww"                   "b"   #'eww
         :desc "PassWord"              "w"   #'pass)
       (:prefix "t"
         :desc "Toggle maximization"   "m"   #'toggle-frame-maximized
         :desc "Toggle Treemacs"       "t"   #'+treemacs/toggle)
-
-      (:after evil
-        :prefix "w"
-        ;; "e"    #'eshell-select-window
-        "t"    #'treemacs-select-window
-        "O"    #'delete-other-windows
+      (:prefix "w"
         "d"    #'ace-delete-window
         "D"    #'ace-delete-other-windows
+        "O"    #'delete-other-windows
         "s"    #'split-switch-right
         "v"    #'split-switch-below
         "C-w"  #'ace-swap-window
-        "w"    #'ace-window)
+        "w"    #'ace-window
+
+        "n"    #'windmove-left
+        "g"    #'windmove-up
+        "r"    #'windmove-down
+        "t"    #'windmove-right)
 
       :desc "Open agenda" "a"                        #'org-agenda
       :desc "Toggle last popup" "~"                  #'+popup/toggle
       :desc "Switch to buffer in other window" "*"   #'+ivy/switch-buffer-other-window)
 
 (map!
- :m "C-u"  #'scroll-up-line
- :m "C-ü"  #'scroll-down-line
- :i "C-p"  #'+default/newline
+ :nimv "C-u"  #'evil-scroll-line-up
+ :nimv "C-ü"  #'evil-scroll-line-down
+ :i    "C-p"  #'+default/newline
 
  :n "."    #'repeat
  :n "•"    #'evil-repeat
+
+ "M-]"     #'sp-unwrap-sexp
+ "M-["     #'sp-backward-unwrap-sexp
 
  ;; "M-l" #'windmove-up
  ;; "M-a" #'windmove-down
@@ -96,8 +99,9 @@
      "gx" #'what-cursor-position))
 
  (:after evil-snipe
-   (:map evil-snipe-override-mode-map
-     "–" #'evil-snipe-repeat))
+   (:map evil-snipe-parent-transient-map
+     "," #'evil-snipe-repeat            ;I never understood why this is bound to ';'
+     "–" #'evil-snipe-repeat-reverse))
 
  (:map evil-emacs-state-map
    "SPC" doom-leader-map)
@@ -127,6 +131,9 @@
    :n "C-i" #'mu4e-headers-query-prev
    :n "C-e" #'mu4e-headers-query-next)
 
+ (:after org-drill :map org-drill-response-mode-map
+   "SPC" #'doom-leader-map)
+
  (:after org :map org-mode-map
    "M-<up>"        #'org-previous-visible-heading
    "M-<down>"      #'org-next-visible-heading
@@ -143,8 +150,8 @@
    ;; "y"             #'org-yank
    "z"             #'org-insert-drawer
    :prefix "b"
-   "d"             #'org-table-copy-region
-   "y"             #'org-table-cut-region
+   "y"             #'org-table-copy-region
+   "d"             #'org-table-cut-region
    "p"             #'org-table-paste-rectangle
    "+"             #'org-table-sum
    "^"             #'org-table-sort-lines
@@ -190,7 +197,7 @@
           (funcall it arg)
           (treemacs--evade-image))
       (treemacs-pulse-on-failure "No <left> action defined for node of type %s."
-        (propertize (format "%s" state) 'face 'font-lock-type-face)))))
+                                 (propertize (format "%s" state) 'face 'font-lock-type-face)))))
 
 (defvar treemacs-left-actions-config
   '((root-node-open   . treemacs-toggle-node)

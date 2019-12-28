@@ -5,9 +5,9 @@
 (package! academic-phrases)
 
 ;; * Editor
-(package! vlf
-  :recipe (:host github
-           :repo "m00natic/vlfi"))
+;; (package! vlf
+;;   :recipe (:host github
+;;            :repo "m00natic/vlfi"))
 
 ;; * Snippets
 (package! yasnippet-snippets)
@@ -15,4 +15,6 @@
 
 ;; * UI
 (package! buffer-move)
+;; (package! golden-ratio) ;;Nice idea but needs some work
+
 (package! org-drill)
