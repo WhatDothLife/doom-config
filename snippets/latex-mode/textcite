@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: textcite
+# key: tc
+# uuid: tc
+# --
+\textcite{$1} $0

@@ -12,6 +12,7 @@
 (set-popup-rule! "^\\*Man.*" :size 82 :side 'right :ttl 60 :select t :quit t)
 (set-popup-rule! "^\\*tldr\\*" :size 82 :side 'right :ttl 60 :select t :quit t)
 (set-popup-rule! "^\\*helpful.*" :size 82 :side 'right :ttl 60 :select t :quit t)
+(set-popup-rule! "^\\*YASnippet Tables.*" :size 82 :side 'right :ttl 60 :select t :quit t)
 (set-popup-rule! "^\\*Help.*" :size 82 :height 0.6 :side 'right :ttl 60 :select t :quit t)
 (set-popup-rule! "^ \\*Metahelp.*" :size 82 :side 'right :ttl 60 :select t :quit t)
 (set-popup-rule! "^\\*Apropos.*" :size 82 :height 0.6 :side 'right :ttl 60 :select t :quit t)

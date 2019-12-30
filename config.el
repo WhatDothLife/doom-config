@@ -22,10 +22,19 @@
 (setq window-combination-resize t)
 (setq doom-font-increment 1)
 
+;; Latex
+(setq +latex-viewers '(pdf-tools))
+(setq reftex-default-bibliography "~/code/Latex/bib.bib")
+(setq bibtex-completion-bibliography
+      '("~/code/Latex/bib.bib"
+        ;; "/path/to/bibtex-file-2.bib"))
+        ))
+
 (after! pdf
   (set-evil-initial-state! 'pdf-view-mode 'emacs))
 (set-evil-initial-state! 'rcirc-mode 'normal)
 
+;; treemacs-select-window handles this
 (after! treemacs
   (after! ace-window
     (add-to-list 'aw-ignored-buffers 'treemacs-mode)))

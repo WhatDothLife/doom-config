@@ -29,6 +29,8 @@
           :desc "Decrease font size"  "-"   #'doom/decrease-font-size
           :desc "Reset font size"     "r"   #'doom/reset-font-size))
       (:prefix "o"
+        :desc "Snippet Table"         "t"   #'yas-describe-tables
+        :desc "Toggle Shell Popup"    "s"   #'+shell/toggle
         :desc "Mail"                  "m"   #'=mu4e
         :desc "Eww"                   "b"   #'eww
         :desc "PassWord"              "w"   #'pass)
@@ -44,6 +46,10 @@
         "C-w"  #'ace-swap-window
         "w"    #'ace-window
 
+        "f"    #'doom/window-maximize-buffer
+        "h"    #'doom/window-maximize-horizontally
+        "m"    #'doom/window-maximize-vertically
+
         "n"    #'windmove-left
         "g"    #'windmove-up
         "r"    #'windmove-down
@@ -56,28 +62,13 @@
 (map!
  :nimv "C-u"  #'evil-scroll-line-up
  :nimv "C-ü"  #'evil-scroll-line-down
- :i    "C-p"  #'+default/newline
+ ;; :i    "C-p"  #'+default/newline  ;;Apparently M-RET handles this
 
  :n "."    #'repeat
  :n "•"    #'evil-repeat
 
  "M-]"     #'sp-unwrap-sexp
  "M-["     #'sp-backward-unwrap-sexp
-
- ;; "M-l" #'windmove-up
- ;; "M-a" #'windmove-down
- ;; "M-i" #'windmove-left
- ;; "M-e" #'windmove-right
-
- ;; "M-L" #'enlarge-window
- ;; "M-A" #'shrink-window
- ;; "M-I" #'shrink-window-horizontally
- ;; "M-E" #'enlarge-window-horizontally
-
- ;; "s-L" #'buf-move-left
- ;; "s-A" #'buf-move-down
- ;; "s-I" #'buf-move-right
- ;; "s-E" #'buf-move-up
 
  "M-t" #'split-switch-right
  "M-r" #'split-switch-below
@@ -106,6 +97,9 @@
  (:map evil-emacs-state-map
    "SPC" doom-leader-map)
  (:map evil-normal-state-map
+   (:prefix "g"
+     "<" #'evil-numbers/dec-at-pt-incremental
+     ">" #'evil-numbers/inc-at-pt-incremental)
    "g a" nil
    "g b" #'what-cursor-position)
  (:map evil-treemacs-state-map
@@ -119,6 +113,10 @@
    :n "gs" #'+evil/easymotion
    :n "b" #'what-cursor-position)
 
+ (:map LaTeX-mode-map
+   :localleader
+   "c" #'TeX-command-run-all)
+
  (:map (mu4e-headers-mode-map mu4e-main-mode-map mu4e-view-mode-map)
    :localleader
    "p" (λ! (mu4e-headers-search "maildir:/posteo/INBOX"))
@@ -130,9 +128,6 @@
    :n "C-t" #'mu4e-headers-mark-thread
    :n "C-i" #'mu4e-headers-query-prev
    :n "C-e" #'mu4e-headers-query-next)
-
- (:after org-drill :map org-drill-response-mode-map
-   "SPC" #'doom-leader-map)
 
  (:after org :map org-mode-map
    "M-<up>"        #'org-previous-visible-heading
