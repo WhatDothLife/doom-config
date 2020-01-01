@@ -4,10 +4,10 @@
 
 (after! evil-org
   (setq evil-org-movement-bindings
-        '((up .    "g")
-          (down .  "r")
-          (left .  "n")
-          (right . "t"))))
+        '((up .    "l")
+          (down .  "a")
+          (left .  "i")
+          (right . "e"))))
 
 (after! avy
   (setq avy-keys '(?u ?i ?a ?e ?n ?r ?t ?d)))
@@ -22,7 +22,6 @@
         :desc "Switch to buffer in window"  "o" #'+ivy/switch-workspace-buffer-other-window
         :desc "Kill buffer and window"      "w" #'kill-buffer-and-window
         :desc "Kill some buffers"           "k" #'kill-some-buffers
-        :desc "Select Treemacs buffer"      "t" #'treemacs-select-window
         :desc "Open buffer as popup"        "*" #'+popup-buffer
         (:prefix "f"
           :desc "Increase font size"  "="   #'doom/increase-font-size
@@ -35,8 +34,9 @@
         :desc "Eww"                   "b"   #'eww
         :desc "PassWord"              "w"   #'pass)
       (:prefix "t"
-        :desc "Toggle maximization"   "m"   #'toggle-frame-maximized
-        :desc "Toggle Treemacs"       "t"   #'+treemacs/toggle)
+        :desc "Frame maximized"       "M"   #'toggle-frame-maximized
+        :desc "Modeline"              "m"   #'hide-mode-line-mode
+        :desc "Treemacs"              "t"   #'+treemacs/toggle)
       (:prefix "w"
         "d"    #'ace-delete-window
         "D"    #'ace-delete-other-windows
@@ -55,9 +55,13 @@
         "r"    #'windmove-down
         "t"    #'windmove-right)
 
-      :desc "Open agenda" "a"                        #'org-agenda
-      :desc "Toggle last popup" "~"                  #'+popup/toggle
-      :desc "Switch to buffer in other window" "*"   #'+ivy/switch-buffer-other-window)
+      "`" nil
+
+      :desc "Select Treemacs Window"             "-"    #'treemacs-select-window
+      :desc "Switch to last buffer"              "+"    #'evil-switch-to-windows-last-buffer
+      :desc "Open agenda"                        "a"    #'org-agenda
+      :desc "Toggle last popup"                  "~"    #'+popup/toggle)
+
 
 (map!
  :nimv "C-u"  #'evil-scroll-line-up
@@ -70,8 +74,10 @@
  "M-]"     #'sp-unwrap-sexp
  "M-["     #'sp-backward-unwrap-sexp
 
- "M-t" #'split-switch-right
- "M-r" #'split-switch-below
+ "M-t"     #'split-switch-right
+ "M-r"     #'split-switch-below
+
+ "M-w"     #'fixup-whitespace
 
  (:map dired-mode-map
    :n "-"     (lambda () (interactive) (find-alternate-file "..")))
@@ -102,13 +108,21 @@
      ">" #'evil-numbers/inc-at-pt-incremental)
    "g a" nil
    "g b" #'what-cursor-position)
- (:map evil-treemacs-state-map
-   "<left>"  'treemacs-left-action
-   "<right>" 'treemacs-RET-action)
+ (:after treemacs-evil
+   (:map evil-treemacs-state-map
+     "j" nil
+     "l"       nil
+     "p"       #'treemacs-peek
+     "l"       #'treemacs-root-up
+     "a"       #'treemacs-root-down
+     "<left>"  #'treemacs-left-action
+     "<right>" #'treemacs-RET-action)
+   (:map treemacs-mode-map
+     "l" nil))
 
  (:map Info-mode-map
-   "C-a"  #'Info-next-preorder       ;TODO Rebind
-   "C-l"  #'Info-last-preorder       ;TODO Rebind
+   "C-a"  #'Info-next-preorder
+   "C-l"  #'Info-last-preorder
 
    :n "gs" #'+evil/easymotion
    :n "b" #'what-cursor-position)
@@ -167,6 +181,8 @@
    :n "C-a"     #'pdf-view-next-page-command
    :n "C-l"     #'pdf-view-previous-page-command))
 
+(evil-define-key 'treemacs treemacs-mode-map "l" nil)
+
 ;; (global-set-key (kbd "C-x") nil)
 ;; (global-set-key (kbd "C-x")  #'evil-scroll-line-up)
 
@@ -192,7 +208,7 @@
           (funcall it arg)
           (treemacs--evade-image))
       (treemacs-pulse-on-failure "No <left> action defined for node of type %s."
-                                 (propertize (format "%s" state) 'face 'font-lock-type-face)))))
+        (propertize (format "%s" state) 'face 'font-lock-type-face)))))
 
 (defvar treemacs-left-actions-config
   '((root-node-open   . treemacs-toggle-node)
@@ -205,4 +221,4 @@
     (tag-node-closed  . treemacs-collapse-parent-node)
     (tag-node         . treemacs-collapse-parent-node)))
 
-;;Test
+(provide '+bindings)
