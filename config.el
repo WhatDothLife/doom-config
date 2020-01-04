@@ -2,11 +2,11 @@
 
 (require 'org-drill)
 
-(load! "+bindings")
 (load! "+irc")
 (load! "+mu4e")
 (load! "+org")
 (load! "+popup")
+(load! "+bindings")
 
 (load-theme 'doom-one)
 
@@ -34,17 +34,13 @@
   (set-evil-initial-state! 'pdf-view-mode 'emacs))
 (set-evil-initial-state! 'rcirc-mode 'normal)
 
-;; treemacs-select-window handles this
+;; I use treemacs-select-window for this
 (after! treemacs
   (after! ace-window
     (add-to-list 'aw-ignored-buffers 'treemacs-mode)))
 
 ;; (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
 ;; (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++17")))
-
-;; (after! rtags
-;;   (setq rtags-rc-binary-name (or rtags-rc-binary-name "rc")
-;;         rtags-rdm-binary-name (or rtags-rdm-binary-name "rdm")))
 
 (setq auto-save-interval 100)
 (auto-save-mode)

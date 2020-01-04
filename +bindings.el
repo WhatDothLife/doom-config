@@ -15,6 +15,21 @@
 (after! ace-window
   (setq aw-keys '(?n ?r ?t ?d)))
 
+(map!
+ :nimv "C-u"  #'evil-scroll-line-up
+ :nimv "C-ü"  #'evil-scroll-line-down
+
+ :n "."    #'repeat
+ :n "•"    #'evil-repeat
+
+ "M-]"     #'sp-unwrap-sexp
+ "M-["     #'sp-backward-unwrap-sexp
+
+ "M-t"     #'split-switch-right
+ "M-r"     #'split-switch-below
+
+ "M-w"     #'fixup-whitespace)
+
 (map! :leader
       (:prefix "b"
         :desc "Bury buffer"                 "b" #'bury-buffer
@@ -58,27 +73,16 @@
       "`" nil
 
       :desc "Select Treemacs Window"             "-"    #'treemacs-select-window
-      :desc "Switch to last buffer"              "+"    #'evil-switch-to-windows-last-buffer
+      :desc "Switch to last buffer"              "("    #'evil-switch-to-windows-last-buffer
       :desc "Open agenda"                        "a"    #'org-agenda
       :desc "Toggle last popup"                  "~"    #'+popup/toggle)
 
 
+;;
+;;; Module keybinds
+
+
 (map!
- :nimv "C-u"  #'evil-scroll-line-up
- :nimv "C-ü"  #'evil-scroll-line-down
- ;; :i    "C-p"  #'+default/newline  ;;Apparently M-RET handles this
-
- :n "."    #'repeat
- :n "•"    #'evil-repeat
-
- "M-]"     #'sp-unwrap-sexp
- "M-["     #'sp-backward-unwrap-sexp
-
- "M-t"     #'split-switch-right
- "M-r"     #'split-switch-below
-
- "M-w"     #'fixup-whitespace
-
  (:map dired-mode-map
    :n "-"     (lambda () (interactive) (find-alternate-file "..")))
 
@@ -97,7 +101,8 @@
 
  (:after evil-snipe
    (:map evil-snipe-parent-transient-map
-     "," #'evil-snipe-repeat            ;I never understood why this is bound to ';'
+     "," nil
+     "," #'evil-snipe-repeat
      "–" #'evil-snipe-repeat-reverse))
 
  (:map evil-emacs-state-map
@@ -110,11 +115,13 @@
    "g b" #'what-cursor-position)
  (:after treemacs-evil
    (:map evil-treemacs-state-map
-     "j" nil
+     "j"       nil
      "l"       nil
      "p"       #'treemacs-peek
      "l"       #'treemacs-root-up
      "a"       #'treemacs-root-down
+     "M-l"     #'treemacs-previous-neighbour
+     "M-a"     #'treemacs-next-neighbour
      "<left>"  #'treemacs-left-action
      "<right>" #'treemacs-RET-action)
    (:map treemacs-mode-map
@@ -128,6 +135,51 @@
    :n "b" #'what-cursor-position)
 
  (:map LaTeX-mode-map
+   ;; Greek lower case letters
+   :i "ξ" (λ! (insert "\\xi"))
+   :i "λ" (λ! (insert "\\lambda"))
+   :i "χ" (λ! (insert "\\chi"))
+   :i "ω" (λ! (insert "\\omega"))
+   :i "κ" (λ! (insert "\\kappa"))
+   :i "ψ" (λ! (insert "\\psi"))
+   :i "γ" (λ! (insert "\\gamma"))
+   :i "φ" (λ! (insert "\\varphi"))
+   :i "ϕ" (λ! (insert "\\phi"))
+   :i "ς" (λ! (insert "\\varsigma"))
+   :i "ι" (λ! (insert "\\iota"))
+   :i "α" (λ! (insert "\\alpha"))
+   :i "ε" (λ! (insert "\\varepsilon"))
+   :i "σ" (λ! (insert "\\sigma"))
+   :i "ν" (λ! (insert "\\nu"))
+   :i "ρ" (λ! (insert "\\rho"))
+   :i "τ" (λ! (insert "\\tau"))
+   :i "δ" (λ! (insert "\\delta"))
+   :i "υ" (λ! (insert "\\upsilon"))
+   :i "ϵ" (λ! (insert "\\epsilon"))
+   :i "η" (λ! (insert "\\eta"))
+   :i "π" (λ! (insert "\\pi"))
+   :i "ζ" (λ! (insert "\\zeta"))
+   :i "β" (λ! (insert "\\beta"))
+   :i "μ" (λ! (insert "\\mu"))
+   :i "ϱ" (λ! (insert "\\varrho"))
+   :i "ϑ" (λ! (insert "\\vartheta"))
+   :i "θ" (λ! (insert "\\theta"))
+   ;; Greek upper case letters
+   :i "Ξ" (λ! (insert "\\Xi"))
+   :i "Λ" (λ! (insert "\\Lambda"))
+   :i "Ω" (λ! (insert "\\Omega"))
+   :i "Ψ" (λ! (insert "\\Psi"))
+   :i "Γ" (λ! (insert "\\Gamma"))
+   :i "Φ" (λ! (insert "\\Phi"))
+   :i "Σ" (λ! (insert "\\Sigma"))
+   :i "Δ" (λ! (insert "\\Delta"))
+   :i "Π" (λ! (insert "\\Pi"))
+   :i "Θ" (λ! (insert "\\Theta"))
+   ;; Mathematical symbols
+   :i "¬" (λ! (insert "\neg"))
+   )
+
+ (:map latex-mode-map
    :localleader
    "c" #'TeX-command-run-all)
 
@@ -182,9 +234,7 @@
    :n "C-l"     #'pdf-view-previous-page-command))
 
 (evil-define-key 'treemacs treemacs-mode-map "l" nil)
-
-;; (global-set-key (kbd "C-x") nil)
-;; (global-set-key (kbd "C-x")  #'evil-scroll-line-up)
+(evil-define-key 'insert LaTeX-mode-map (kbd "λ") (lambda () (interactive) (insert "\\lambda")))
 
 (defun split-switch-right ()
   (interactive)
