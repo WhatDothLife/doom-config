@@ -49,6 +49,7 @@
         ("~/org/org-drill/german.org" :maxlevel . 1)
         ("~/org/org-drill/english.org" :maxlevel . 1)
         ("~/org/org-drill/spanisch.org" :maxlevel . 1)
+        ("~/org/books.org" :maxlevel . 1)
         ))
                                         ; Exclude DONE state tasks from refile targets
 (defun +org/verify-refile-target ()

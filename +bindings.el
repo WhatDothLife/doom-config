@@ -82,6 +82,7 @@
 ;;; Module keybinds
 
 
+
 (map!
  (:map dired-mode-map
    :n "-"     (lambda () (interactive) (find-alternate-file "..")))
@@ -113,19 +114,6 @@
      ">" #'evil-numbers/inc-at-pt-incremental)
    "g a" nil
    "g b" #'what-cursor-position)
- (:after treemacs-evil
-   (:map evil-treemacs-state-map
-     "j"       nil
-     "l"       nil
-     "p"       #'treemacs-peek
-     "l"       #'treemacs-root-up
-     "a"       #'treemacs-root-down
-     "M-l"     #'treemacs-previous-neighbour
-     "M-a"     #'treemacs-next-neighbour
-     "<left>"  #'treemacs-left-action
-     "<right>" #'treemacs-RET-action)
-   (:map treemacs-mode-map
-     "l" nil))
 
  (:map Info-mode-map
    "C-a"  #'Info-next-preorder
@@ -176,8 +164,37 @@
    :i "Π" (λ! (insert "\\Pi"))
    :i "Θ" (λ! (insert "\\Theta"))
    ;; Mathematical symbols
-   :i "¬" (λ! (insert "\neg"))
-   )
+   :i "¬" (λ! (insert "\\neg"))
+   :i "∨" (λ! (insert "\\lor"))
+   :i "∧" (λ! (insert "\\land"))
+   :i "⊥" (λ! (insert "\\bot"))
+   :i "∡" (λ! (insert "\\measuredangle"))
+   :i "∥" (λ! (insert "\\|"))
+   :i "→" (λ! (insert "\\rightarrow"))
+   :i "∞" (λ! (insert "\\infty"))
+   :i "∝" (λ! (insert "\\propto"))
+   :i "∅" (λ! (insert "\\emptyse"))
+   :i "√" (λ! (insert "\\sqrt"))
+   :i "ℂ" (λ! (insert "\\C"))
+   :i "ℚ" (λ! (insert "\\Q"))
+   :i "∘" (λ! (insert "\\"))            ;TODO
+   :i "⊂" (λ! (insert "\\subset"))
+   :i "∫" (λ! (insert "\\"))            ;TODO
+   :i "∀" (λ! (insert "\\forall"))
+   :i "∃" (λ! (insert "\\exists"))
+   :i "∈" (λ! (insert "\\in"))
+   :i "ℕ" (λ! (insert "\\N"))
+   :i "ℝ" (λ! (insert "\\R"))
+   :i "∂" (λ! (insert "\\partial"))
+   :i "∇" (λ! (insert "\\nabla"))
+   :i "∪" (λ! (insert "\\cup"))
+   :i "∩" (λ! (insert "\\cap"))
+   :i "ℵ" (λ! (insert "\\aleph"))
+   :i "ℤ" (λ! (insert "\\Z"))
+   :i "⇐" (λ! (insert "\\Leftarrow"))
+   :i "⇔" (λ! (insert "\\Leftrightarrow"))
+   :i "⇒" (λ! (insert "\\Rightarrow"))
+   :i "↦" (λ! (insert "\\mapsto")))
 
  (:map latex-mode-map
    :localleader
@@ -233,8 +250,24 @@
    :n "C-a"     #'pdf-view-next-page-command
    :n "C-l"     #'pdf-view-previous-page-command))
 
-(evil-define-key 'treemacs treemacs-mode-map "l" nil)
-(evil-define-key 'insert LaTeX-mode-map (kbd "λ") (lambda () (interactive) (insert "\\lambda")))
+(after! treemacs-evil
+  (evil-define-key 'treemacs treemacs-mode-map "l" nil)
+  (map!
+   (:map treemacs-mode-map
+     "l" nil)
+   (:map evil-treemacs-state-map
+     "j"       nil
+     "l"       nil
+     "^"       #'treemacs-resort
+     "p"       #'treemacs-peek
+     "l"       #'treemacs-root-up
+     "a"       #'treemacs-root-down
+     "M-i"     #'treemacs-previous-line-other-window
+     "M-e"     #'treemacs-next-line-other-window
+     "M-l"     #'treemacs-previous-neighbour
+     "M-a"     #'treemacs-next-neighbour
+     "<left>"  #'treemacs-left-action
+     "<right>" #'treemacs-RET-action)))
 
 (defun split-switch-right ()
   (interactive)
