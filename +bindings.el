@@ -262,12 +262,14 @@
      "p"       #'treemacs-peek
      "l"       #'treemacs-root-up
      "a"       #'treemacs-root-down
+     "i"       #'treemacs-i-action
+     "e"       #'treemacs-e-action
      "M-i"     #'treemacs-previous-line-other-window
      "M-e"     #'treemacs-next-line-other-window
      "M-l"     #'treemacs-previous-neighbour
      "M-a"     #'treemacs-next-neighbour
      "<left>"  #'treemacs-left-action
-     "<right>" #'treemacs-RET-action)))
+     "<right>" #'treemacs-right-action)))
 
 (defun split-switch-right ()
   (interactive)
@@ -293,6 +295,16 @@
       (treemacs-pulse-on-failure "No <left> action defined for node of type %s."
         (propertize (format "%s" state) 'face 'font-lock-type-face)))))
 
+(defun treemacs-right-action (&optional arg)
+  (interactive "P")
+  (-when-let (state (treemacs--prop-at-point :state))
+    (--if-let (cdr (assq state treemacs-right-actions-config))
+        (progn
+          (funcall it arg)
+          (treemacs--evade-image))
+      (treemacs-pulse-on-failure "No <left> action defined for node of type %s."
+        (propertize (format "%s" state) 'face 'font-lock-type-face)))))
+
 (defvar treemacs-left-actions-config
   '((root-node-open   . treemacs-toggle-node)
     (root-node-closed . treemacs-root-up)
@@ -303,5 +315,19 @@
     (tag-node-open    . treemacs-collapse-parent-node)
     (tag-node-closed  . treemacs-collapse-parent-node)
     (tag-node         . treemacs-collapse-parent-node)))
+
+(defvar treemacs-right-actions-config
+  '((root-node-closed . treemacs-toggle-node)
+    (dir-node-closed  . treemacs-toggle-node)
+    (tag-node-closed  . treemacs-collapse-parent-node)
+    (tag-node         . treemacs-visit-node-default)))
+
+(defun treemacs-i-action (&optional arg)
+  (interactive "P")
+  (treemacs-left-action '(4)))
+
+(defun treemacs-e-action (&optional arg)
+  (interactive "P")
+  (treemacs-right-action '(4)))
 
 (provide '+bindings)
