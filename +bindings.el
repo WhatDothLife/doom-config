@@ -2,12 +2,12 @@
 
 (require 'mu4e)
 
-(after! evil-org
-  (setq evil-org-movement-bindings
-        '((up .    "l")
-          (down .  "a")
-          (left .  "i")
-          (right . "e"))))
+;; (after! evil-org
+(setq evil-org-movement-bindings
+      '((up .    "l")
+        (down .  "a")
+        (left .  "i")
+        (right . "e")))
 
 (after! avy
   (setq avy-keys '(?u ?i ?a ?e ?n ?r ?t ?d)))
@@ -18,6 +18,8 @@
 (map!
  :nimv "C-u"  #'evil-scroll-line-up
  :nimv "C-ü"  #'evil-scroll-line-down
+
+ :i "C-ö"   (λ! (insert-char #x200b))
 
  :n "."    #'repeat
  :n "•"    #'evil-repeat
@@ -37,7 +39,8 @@
         :desc "Switch to buffer in window"  "o" #'+ivy/switch-workspace-buffer-other-window
         :desc "Kill buffer and window"      "w" #'kill-buffer-and-window
         :desc "Kill some buffers"           "k" #'kill-some-buffers
-        :desc "Open buffer as popup"        "*" #'+popup-buffer
+        :desc "Open buffer as popup"        "*" #'+popup/buffer
+        :desc "Yank current line position"  "y" #'copy-current-line-position-to-clipboard
         (:prefix "f"
           :desc "Increase font size"  "="   #'doom/increase-font-size
           :desc "Decrease font size"  "-"   #'doom/decrease-font-size
@@ -74,6 +77,7 @@
 
       :desc "Select Treemacs Window"             "-"    #'treemacs-select-window
       :desc "Switch to last buffer"              "("    #'evil-switch-to-windows-last-buffer
+      :desc "Switch to last window"              "["    #'evil-window-mru
       :desc "Open agenda"                        "a"    #'org-agenda
       :desc "Toggle last popup"                  "~"    #'+popup/toggle)
 
@@ -81,11 +85,13 @@
 ;;
 ;;; Module keybinds
 
-
-
 (map!
- (:map dired-mode-map
-   :n "-"     (lambda () (interactive) (find-alternate-file "..")))
+ (:after company
+   (:map company-active-map
+     "C-l"   #'company-show-location))
+
+ ;; (:map dired-mode-map
+ ;;   :n "-"     (lambda () (interactive) (find-alternate-file "..")))
 
  (:after evil-easymotion
    (:map evilem-map
@@ -108,6 +114,7 @@
 
  (:map evil-emacs-state-map
    "SPC" doom-leader-map)
+
  (:map evil-normal-state-map
    (:prefix "g"
      "<" #'evil-numbers/dec-at-pt-incremental
@@ -121,6 +128,17 @@
 
    :n "gs" #'+evil/easymotion
    :n "b" #'what-cursor-position)
+
+ (:map ivy-switch-buffer-map
+   "C-k" #'ivy-switch-buffer-kill)
+
+ (:map ivy-minibuffer-map
+   "C-k"   #'ivy-kill-whole-line
+   "C-a"   #'ivy-avy
+   "C-RET" #'ivy-immediate-done
+   "M-s"   #'ivy-kill-ring-save
+   "M-m"   #'ivy-mark
+   "C-d"   (λ! (ivy--cd "/")))
 
  (:map LaTeX-mode-map
    ;; Greek lower case letters
@@ -169,11 +187,11 @@
    :i "∧" (λ! (insert "\\land"))
    :i "⊥" (λ! (insert "\\bot"))
    :i "∡" (λ! (insert "\\measuredangle"))
-   :i "∥" (λ! (insert "\\|"))
+   :i "∥" (λ! (insert "\\|"))           ;FIXME
    :i "→" (λ! (insert "\\rightarrow"))
    :i "∞" (λ! (insert "\\infty"))
    :i "∝" (λ! (insert "\\propto"))
-   :i "∅" (λ! (insert "\\emptyse"))
+   :i "∅" (λ! (insert "\\emptyse"))     ;TODO
    :i "√" (λ! (insert "\\sqrt"))
    :i "ℂ" (λ! (insert "\\C"))
    :i "ℚ" (λ! (insert "\\Q"))
@@ -198,7 +216,7 @@
 
  (:map latex-mode-map
    :localleader
-   "c" #'TeX-command-run-all)
+   "c" #'TeX-command-run-all)           ;TODO
 
  (:map (mu4e-headers-mode-map mu4e-main-mode-map mu4e-view-mode-map)
    :localleader
@@ -236,6 +254,17 @@
    "RET"           #'org-table-hline-and-move
    "|"             #'org-table-insert-column)
 
+ (:after evil-org :map evil-org-mode-map
+   :niv "M-l"           #'org-metaup
+   :niv "M-i"           #'org-metaleft
+   :niv "M-a"           #'org-metadown
+   :niv "M-e"           #'org-metaright
+   :niv "M-l"           #'org-metaup
+   :niv "M-I"           #'org-shiftmetaleft
+   :niv "M-A"           #'org-shiftmetadown
+   :niv "M-E"           #'org-shiftmetaright
+   :niv "M-L"           #'org-shiftmetaup)
+
  (:after pass :map pass-mode-map
    "a" #'pass-next-entry
    "l" #'pass-prev-entry
@@ -258,7 +287,7 @@
    (:map evil-treemacs-state-map
      "j"       nil
      "l"       nil
-     "^"       #'treemacs-resort
+     "^"       #'treemacs-
      "p"       #'treemacs-peek
      "l"       #'treemacs-root-up
      "a"       #'treemacs-root-down
@@ -302,7 +331,7 @@
         (progn
           (funcall it arg)
           (treemacs--evade-image))
-      (treemacs-pulse-on-failure "No <left> action defined for node of type %s."
+      (treemacs-pulse-on-failure "No <right> action defined for node of type %s."
         (propertize (format "%s" state) 'face 'font-lock-type-face)))))
 
 (defvar treemacs-left-actions-config
@@ -319,6 +348,8 @@
 (defvar treemacs-right-actions-config
   '((root-node-closed . treemacs-toggle-node)
     (dir-node-closed  . treemacs-toggle-node)
+    (file-node-open   . treemacs-visit-node-default)
+    (file-node-closed . treemacs-visit-node-default)
     (tag-node-closed  . treemacs-collapse-parent-node)
     (tag-node         . treemacs-visit-node-default)))
 

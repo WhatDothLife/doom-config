@@ -27,7 +27,7 @@
          "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
         ("n" "Note" entry (file "~/org/agenda/refile.org")
          "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-        ("i" "Issue" entry (file "~/org/agenda/issues.org")
+        ("i" "Issue" entry (file "~/org/issues.org")
          "* [ ] %? :ONLINE:\n%U\n%a\n" :clock-in t :clock-resume t)
         ("j" "Journal" entry (file+datetree "~/org/diary.org")
          "* %?\n%U\n" :clock-in t :clock-resume t)
