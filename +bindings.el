@@ -18,6 +18,8 @@
 (map!
  :nimv "C-u"  #'evil-scroll-line-up
  :nimv "C-ü"  #'evil-scroll-line-down
+ :m    "C-b"  #'better-jumper-jump-backward
+ :m    "C-f"  #'better-jumper-jump-forward
 
  :i "C-ö"   (λ! (insert-char #x200b))
 
@@ -121,6 +123,12 @@
      ">" #'evil-numbers/inc-at-pt-incremental)
    "g a" nil
    "g b" #'what-cursor-position)
+
+ (:map git-rebase-mode-map
+   "gl"  #'git-rebase-move-line-up
+   "ga"  #'git-rebase-move-line-down
+   "M-l" #'git-rebase-move-line-up
+   "M-a" #'git-rebase-move-line-down)
 
  (:map Info-mode-map
    "C-a"  #'Info-next-preorder
@@ -231,10 +239,12 @@
    :n "C-e" #'mu4e-headers-query-next)
 
  (:after org :map org-mode-map
+   :n "M-<return>" nil
+   "M-<return>"    #'+org-ctrl-c-ret
    "M-<up>"        #'org-previous-visible-heading
    "M-<down>"      #'org-next-visible-heading
-   "s-g"           #'org-priority-up    ;;Has to be rebound at some point
-   "s-r"           #'org-priority-down  ;;Same here
+   ;; "s-g"           #'org-priority-up
+   ;; "s-r"           #'org-priority-down
    :localleader
    "^"             #'org-sort
    "D"             #'org-cut-special
@@ -277,7 +287,10 @@
    :n "<left>"  #'image-backward-hscroll
    :n "<right>" #'image-forward-hscroll
    :n "C-a"     #'pdf-view-next-page-command
-   :n "C-l"     #'pdf-view-previous-page-command))
+   :n "C-l"     #'pdf-view-previous-page-command)
+
+ (:map shell-mode-map
+   "C-s" #'counsel-shell-history))
 
 (after! treemacs-evil
   (evil-define-key 'treemacs treemacs-mode-map "l" nil)

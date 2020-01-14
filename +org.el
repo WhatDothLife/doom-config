@@ -4,6 +4,7 @@
 
 ;; Org
 (setq org-agenda-include-diary t)
+(setq diary-file "~/org/diary.org")
 ;; Recording work time with org-mode
 (setq org-clock-persist 'history)
 (setq org-agenda-files '("~/org/agenda"))

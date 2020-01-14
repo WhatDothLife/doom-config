@@ -21,7 +21,7 @@
 (setq doom-font (font-spec :family "Source Code Pro" :size 15))
 (setq window-combination-resize t)
 (setq doom-font-increment 1)
-(setq ssh-deploy-async-with-threads 1)
+(setq ssh-deploy-async 0)
 
 ;; Latex
 (setq +latex-viewers '(pdf-tools))
@@ -41,15 +41,19 @@
     (add-to-list 'aw-ignored-buffers 'treemacs-mode)))
 
 (defun copy-current-line-position-to-clipboard ()
-    "Copy current line in file to clipboard as '</path/to/file>:<line-number>'."
-    (interactive)
-    (let ((path-with-line-number
-           (concat (dired-replace-in-string (getenv "HOME") "~" (buffer-file-name)) ":" (number-to-string (line-number-at-pos)))))
-      (kill-new path-with-line-number)
-      (message (concat path-with-line-number " copied to clipboard"))))
+  "Copy current line in file to clipboard as '</path/to/file>:<line-number>'."
+  (interactive)
+  (let ((path-with-line-number
+         (concat buffer-file-truename ":"
+                 (if (use-region-p) "test" (number-to-string (line-number-at-pos)))))) ;TODO implement true case
+    (kill-new path-with-line-number)
+    (message (concat path-with-line-number " copied to clipboard"))))
 
-;; (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
-;; (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++17")))
+(defun +org-ctrl-c-ret ()
+  (interactive)
+  (org-ctrl-c-ret)
+  (evil-insert-state))
+
 
 (setq auto-save-interval 100)
 (auto-save-mode)
