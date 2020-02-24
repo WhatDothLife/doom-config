@@ -1,11 +1,12 @@
 ;;; ~/.doom.d/config.el -*- lexical-binding: t; -*-
 
-(require 'org-drill)
+;;(require 'org-drill)
 
 (load! "+irc")
 (load! "+mu4e")
 (load! "+org")
 (load! "+popup")
+(load! "+custom")
 (load! "+bindings")
 
 (load-theme 'doom-one)
@@ -13,12 +14,13 @@
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e/")
 (add-to-list 'default-frame-alist '(fullscreen . fullboth))
 (add-to-list '+lookup-provider-url-alist
-             '("Wiktionary DE" . "https://de.wiktionary.org/w/index.php?search=%s"))
+             '("Wiktionary DE" . "https://de.wiktionary.org/w/index.php?search=%s")) ;FIXME
 
 (add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
+(add-hook 'pdf-view-mode-hook 'hide-mode-line-mode)
 
 (setq +doom-dashboard-banner-file (concat doom-private-dir "logo.png"))
-(setq doom-font (font-spec :family "Source Code Pro" :size 15))
+;; (setq doom-font (font-spec :family "Source Code Pro" :size 15))
 (setq window-combination-resize t)
 (setq doom-font-increment 1)
 (setq ssh-deploy-async 0)
@@ -30,6 +32,11 @@
       '("~/code/Latex/bib.bib"
         ;; "/path/to/bibtex-file-2.bib"))
         ))
+(setq ivy-posframe-display-functions-alist
+      '((swiper          . ivy-posframe-display-at-point)
+        (complete-symbol . ivy-posframe-display-at-point)
+        (counsel-M-x     . ivy-posframe-display-at-window-bottom-left)
+        (t               . ivy-posframe-display)))
 
 (after! pdf
   (set-evil-initial-state! 'pdf-view-mode 'emacs))
@@ -39,21 +46,6 @@
 (after! treemacs
   (after! ace-window
     (add-to-list 'aw-ignored-buffers 'treemacs-mode)))
-
-(defun copy-current-line-position-to-clipboard ()
-  "Copy current line in file to clipboard as '</path/to/file>:<line-number>'."
-  (interactive)
-  (let ((path-with-line-number
-         (concat buffer-file-truename ":"
-                 (if (use-region-p) "test" (number-to-string (line-number-at-pos)))))) ;TODO implement true case
-    (kill-new path-with-line-number)
-    (message (concat path-with-line-number " copied to clipboard"))))
-
-(defun +org-ctrl-c-ret ()
-  (interactive)
-  (org-ctrl-c-ret)
-  (evil-insert-state))
-
 
 (setq auto-save-interval 100)
 (auto-save-mode)

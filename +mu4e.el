@@ -106,3 +106,4 @@
 ;; compose with the current context is no context matches;
 ;; default is to ask
 (setq mu4e-compose-context-policy nil)
+

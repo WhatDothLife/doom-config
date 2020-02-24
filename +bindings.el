@@ -2,7 +2,6 @@
 
 (require 'mu4e)
 
-;; (after! evil-org
 (setq evil-org-movement-bindings
       '((up .    "l")
         (down .  "a")
@@ -22,6 +21,9 @@
  :m    "C-f"  #'better-jumper-jump-forward
 
  :i "C-ö"   (λ! (insert-char #x200b))
+
+ :n "gt"   nil                          ;overwritten by some minor modes
+ :n "gT"   nil                          ;so it has been rebound to SPC-TAB-n/t
 
  :n "."    #'repeat
  :n "•"    #'evil-repeat
@@ -50,6 +52,7 @@
       (:prefix "o"
         :desc "Snippet Table"         "t"   #'yas-describe-tables
         :desc "Toggle Shell Popup"    "s"   #'+shell/toggle
+        :desc "Toggle Shell Popup"    "S"   #'+shell/here
         :desc "Mail"                  "m"   #'=mu4e
         :desc "Eww"                   "b"   #'eww
         :desc "PassWord"              "w"   #'pass)
@@ -57,6 +60,10 @@
         :desc "Frame maximized"       "M"   #'toggle-frame-maximized
         :desc "Modeline"              "m"   #'hide-mode-line-mode
         :desc "Treemacs"              "t"   #'+treemacs/toggle)
+      (:prefix "TAB"
+        :desc "Create new workspace"         "c" #'+workspace/new
+        :desc "Switch to previous workspace" "n" #'+workspace:switch-previous
+        :desc "Switch to next workspace"     "t" #'+workspace:switch-next)
       (:prefix "w"
         "d"    #'ace-delete-window
         "D"    #'ace-delete-other-windows
@@ -80,6 +87,7 @@
       :desc "Select Treemacs Window"             "-"    #'treemacs-select-window
       :desc "Switch to last buffer"              "("    #'evil-switch-to-windows-last-buffer
       :desc "Switch to last window"              "["    #'evil-window-mru
+      :desc "Switch to last workspace"           "{"    #'+workspace/other
       :desc "Open agenda"                        "a"    #'org-agenda
       :desc "Toggle last popup"                  "~"    #'+popup/toggle)
 
@@ -92,8 +100,12 @@
    (:map company-active-map
      "C-l"   #'company-show-location))
 
- ;; (:map dired-mode-map
- ;;   :n "-"     (lambda () (interactive) (find-alternate-file "..")))
+ (:map comint-mode-map
+   "C-l" #'comint-previous-prompt
+   "C-a" #'comint-next-prompt)
+
+ (:map dired-mode-map
+   :n "-"     (lambda () (interactive) (find-alternate-file "..")))
 
  (:after evil-easymotion
    (:map evilem-map
@@ -246,6 +258,7 @@
    ;; "s-g"           #'org-priority-up
    ;; "s-r"           #'org-priority-down
    :localleader
+   "n"             #'org-add-note
    "^"             #'org-sort
    "D"             #'org-cut-special
    "P"             #'org-paste-special
@@ -258,6 +271,7 @@
    :prefix "b"
    "y"             #'org-table-copy-region
    "d"             #'org-table-cut-region
+   "D"             #'org-table-delete-column
    "p"             #'org-table-paste-rectangle
    "+"             #'org-table-sum
    "^"             #'org-table-sort-lines
@@ -284,13 +298,18 @@
    "j" #'pass-goto-entry)
 
  (:map pdf-view-mode-map
+   :n ">"       #'image-eob
+   :n "<"       #'image-bob
    :n "<left>"  #'image-backward-hscroll
    :n "<right>" #'image-forward-hscroll
    :n "C-a"     #'pdf-view-next-page-command
    :n "C-l"     #'pdf-view-previous-page-command)
 
  (:map shell-mode-map
-   "C-s" #'counsel-shell-history))
+   :n "C-RET"   #'+shell/goto-end-of-prompt
+   "C-o"   #'comint-clear-buffer
+   "C-s"   #'prompt-for-cwd
+   "C-h"   #'counsel-shell-history))
 
 (after! treemacs-evil
   (evil-define-key 'treemacs treemacs-mode-map "l" nil)
@@ -300,7 +319,6 @@
    (:map evil-treemacs-state-map
      "j"       nil
      "l"       nil
-     "^"       #'treemacs-
      "p"       #'treemacs-peek
      "l"       #'treemacs-root-up
      "a"       #'treemacs-root-down
@@ -312,66 +330,5 @@
      "M-a"     #'treemacs-next-neighbour
      "<left>"  #'treemacs-left-action
      "<right>" #'treemacs-right-action)))
-
-(defun split-switch-right ()
-  (interactive)
-  (split-window-right)
-  (windmove-right))
-
-(defun split-switch-below ()
-  (interactive)
-  (split-window-below)
-  (windmove-down))
-
-(defun +org-toggle-checkbox ()
-  (interactive)
-  (org-toggle-checkbox '(4)))
-
-(defun treemacs-left-action (&optional arg)
-  (interactive "P")
-  (-when-let (state (treemacs--prop-at-point :state))
-    (--if-let (cdr (assq state treemacs-left-actions-config))
-        (progn
-          (funcall it arg)
-          (treemacs--evade-image))
-      (treemacs-pulse-on-failure "No <left> action defined for node of type %s."
-        (propertize (format "%s" state) 'face 'font-lock-type-face)))))
-
-(defun treemacs-right-action (&optional arg)
-  (interactive "P")
-  (-when-let (state (treemacs--prop-at-point :state))
-    (--if-let (cdr (assq state treemacs-right-actions-config))
-        (progn
-          (funcall it arg)
-          (treemacs--evade-image))
-      (treemacs-pulse-on-failure "No <right> action defined for node of type %s."
-        (propertize (format "%s" state) 'face 'font-lock-type-face)))))
-
-(defvar treemacs-left-actions-config
-  '((root-node-open   . treemacs-toggle-node)
-    (root-node-closed . treemacs-root-up)
-    (dir-node-open    . treemacs-toggle-node)
-    (dir-node-closed  . treemacs-collapse-parent-node)
-    (file-node-open   . treemacs-collapse-parent-node)
-    (file-node-closed . treemacs-collapse-parent-node)
-    (tag-node-open    . treemacs-collapse-parent-node)
-    (tag-node-closed  . treemacs-collapse-parent-node)
-    (tag-node         . treemacs-collapse-parent-node)))
-
-(defvar treemacs-right-actions-config
-  '((root-node-closed . treemacs-toggle-node)
-    (dir-node-closed  . treemacs-toggle-node)
-    (file-node-open   . treemacs-visit-node-default)
-    (file-node-closed . treemacs-visit-node-default)
-    (tag-node-closed  . treemacs-collapse-parent-node)
-    (tag-node         . treemacs-visit-node-default)))
-
-(defun treemacs-i-action (&optional arg)
-  (interactive "P")
-  (treemacs-left-action '(4)))
-
-(defun treemacs-e-action (&optional arg)
-  (interactive "P")
-  (treemacs-right-action '(4)))
 
 (provide '+bindings)
