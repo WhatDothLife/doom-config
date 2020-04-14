@@ -1,7 +1,9 @@
 ;;; ~/.doom.d/config.el -*- lexical-binding: t; -*-
 
 ;;(require 'org-drill)
+(require 'org-msg)
 
+(load! "calfw-cal")
 (load! "+irc")
 (load! "+mu4e")
 (load! "+org")
@@ -19,8 +21,10 @@
 (add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
 (add-hook 'pdf-view-mode-hook 'hide-mode-line-mode)
 
+(setq doom-font (font-spec :family "Source Code Pro" :size 15))
+;; (setq doom-font (font-spec :family "Fira Mono" :size 15))
+
 (setq +doom-dashboard-banner-file (concat doom-private-dir "logo.png"))
-;; (setq doom-font (font-spec :family "Source Code Pro" :size 15))
 (setq window-combination-resize t)
 (setq doom-font-increment 1)
 (setq ssh-deploy-async 0)
@@ -32,14 +36,10 @@
       '("~/code/Latex/bib.bib"
         ;; "/path/to/bibtex-file-2.bib"))
         ))
-(setq ivy-posframe-display-functions-alist
-      '((swiper          . ivy-posframe-display-at-point)
-        (complete-symbol . ivy-posframe-display-at-point)
-        (counsel-M-x     . ivy-posframe-display-at-window-bottom-left)
-        (t               . ivy-posframe-display)))
 
 (after! pdf
   (set-evil-initial-state! 'pdf-view-mode 'emacs))
+
 (set-evil-initial-state! 'rcirc-mode 'normal)
 
 ;; I use treemacs-select-window for this
@@ -50,6 +50,6 @@
 (setq auto-save-interval 100)
 (auto-save-mode)
 
-(provide 'config)
+      (provide 'config)
 
 ;;; config.el ends here

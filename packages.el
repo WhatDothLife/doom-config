@@ -18,12 +18,10 @@
 
 ;; (package! org-drill)
 
-(package! org-fancy-priorities
-  :recipe (:host github
-           :repo "harrybournis/org-fancy-priorities"))
-
 (package! org-super-agenda)
 
-;; (package! org-msg
-;;   :recipe (:host github
-;;            :repo "jeremy-compostella/org-msg"))
+(package! org-msg
+  :recipe (:host github
+           :repo "jeremy-compostella/org-msg"))
+
+;; (package! lsp-python-ms)

@@ -109,12 +109,63 @@ headers in the region. Optionally, provide TARGET (for moves)."
   (unless target
     (setq target (mu4e~mark-ask-target mark)))
   (if (not (use-region-p))
-    ;; single message
-    (mu4e-mark-at-point mark target)
+      ;; single message
+      (mu4e-mark-at-point mark target)
     ;; mark all messages in the region.
     (save-excursion
       (let ((cant-go-further) (eor (region-end)))
-	(goto-char (region-beginning))
-	(while (and (< (point) eor) (not cant-go-further))
-	  (mu4e-mark-at-point mark target)
-	  (setq cant-go-further (not (mu4e-headers-next))))))))
+        (goto-char (region-beginning))
+        (while (and (< (point) eor) (not cant-go-further))
+          (mu4e-mark-at-point mark target)
+          (setq cant-go-further (not (mu4e-headers-next))))))))
+
+(defvar +pass-workspace-name "*pass*")
+
+(defvar +pass--old-wconf nil)
+
+(defun =pass ()
+  "Create pass workspace."
+  (interactive)
+  (require 'pass)
+  (if (featurep! :ui workspaces)
+      (+workspace-switch +pass-workspace-name t)
+    (setq +pass--old-wconf (current-window-configuration))
+    (delete-other-windows)
+    (switch-to-buffer (doom-fallback-buffer)))
+  (pass)
+  )
+
+
+(defun +shell/window-enlargen ()
+  "Enlargen the current window to focus on this one. Does not close other
+windows (unlike `doom/window-maximize-buffer'). Activate again to undo."
+  (interactive)
+  (setq doom--enlargen-last-wconf
+        (if doom--enlargen-last-wconf
+            (ignore (set-window-configuration doom--enlargen-last-wconf))
+          (prog1 (current-window-configuration)
+            (let* ((window (selected-window))
+                   (dedicated-p (window-dedicated-p window))
+                   (preserved-p (window-parameter window 'window-preserved-size))
+                   (ignore-window-parameters t))
+              (unwind-protect
+                  (progn
+                    (when dedicated-p
+                      (set-window-dedicated-p window nil))
+                    (when preserved-p
+                      (set-window-parameter window 'window-preserved-size nil))
+                    (maximize-window window))
+                (set-window-dedicated-p window dedicated-p)
+                (when preserved-p
+                  (set-window-parameter window 'window-preserved-size preserved-p)))))))
+  (evil-scroll-line-to-bottom nil))
+
+(defun yas/insert-by-name (name)
+  (flet ((dummy-prompt
+          (prompt choices &optional display-fn)
+          (declare (ignore prompt))
+          (or (find name choices :key display-fn :test #'string=)
+              (throw 'notfound nil))))
+    (let ((yas/prompt-functions '(dummy-prompt)))
+      (catch 'notfound
+        (yas/insert-snippet t)))))
