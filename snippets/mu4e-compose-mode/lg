@@ -1,12 +1,8 @@
 # -*- mode: snippet -*-
 # name: hallo
-# key: h
+# key: lg
 # condition: t
 # --
-Hallo${1:XY$2},
-
-$0
-
 --
 Liebe Grüße
 

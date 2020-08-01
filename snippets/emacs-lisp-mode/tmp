@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: tmp
+# key: ins
+# --
+:i \"$1\" (λ! (insert \"$2\"))$0

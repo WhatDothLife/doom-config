@@ -1,0 +1,30 @@
+# -*- mode: snippet -*-
+# name: Kündigung
+# uuid: 1654
+# key: cancel
+# condition: t
+# --
+
+Sehr geehrte Damen und Herren,
+
+Hiermit kündige ich meinen Mitgliedsvertrag $1 zum nächstmöglichen Zeitpunkt. Ich bitte Sie, mir zeitnah
+eine Bestätigung meiner Kündigung und den Termin des Austritts aus
+dem Vertrag mitzuteilen.
+
+Gleichzeitig widerrufe ich die Einzugsermächtigung über folgendes
+Konto:
+
+DE71 8505 0300 1226 9136 08
+Ostsächsische Sparkasse Dresden
+
+Meine Adresse lautet:
+Nürnberger Straße 31
+01187 Dresden
+
+Meine Geburtsdatum lautet:
+04.12.1998
+
+--
+Mit freundlichen Grüßen
+
+Michael Wernthaler

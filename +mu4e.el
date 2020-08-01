@@ -53,12 +53,12 @@
 (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
 (add-hook 'mu4e-main-mode-hook (lambda () (setq flyspell-dash-local-dictionary "deutsch8")))
 
-(setq mu4e-attachment-dir "~/tmp/Mail")
+(setq mu4e-attachment-dir "~/tmp/Mail"
 
-;; Setting directory for queued mails
-(setq smtpmail-queue-dir "~/.mail/queue/cur")
+      mu4e-use-fancy-chars nil
+      smtpmail-queue-dir "~/.mail/queue/cur"
 
-(setq mu4e-headers-date-format "%d/%m/%y")
+      mu4e-headers-date-format "%d/%m/%y")
 
 (setq mu4e-contexts
       `( ,(make-mu4e-context
@@ -106,4 +106,6 @@
 ;; compose with the current context is no context matches;
 ;; default is to ask
 (setq mu4e-compose-context-policy nil)
+(add-hook 'mu4e-view-mode-hook 'mixed-pitch-mode)
 
+(remove-hook 'mu4e-compose-mode-hook #'org-mu4e-compose-org-mode)

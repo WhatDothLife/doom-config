@@ -97,10 +97,20 @@ already there)."
   (goto-char (point-max))
   (evil-append 1))
 
-(defun prompt-for-cwd (dir)
+(defun +shell/prompt-for-cwd (dir)
   "Prompt for directory and cd to it."
   (interactive "Dcd ")
   (insert (concat "cd " dir))
+  (comint-send-input))
+
+(defun +shell/up-directory ()
+  (interactive)
+  (insert "cd ..")
+  (comint-send-input))
+
+(defun +shell/last-directory ()
+  (interactive)
+  (insert "cd -")
   (comint-send-input))
 
 (defun mu4e-mark-set (mark &optional target)
@@ -118,23 +128,6 @@ headers in the region. Optionally, provide TARGET (for moves)."
         (while (and (< (point) eor) (not cant-go-further))
           (mu4e-mark-at-point mark target)
           (setq cant-go-further (not (mu4e-headers-next))))))))
-
-(defvar +pass-workspace-name "*pass*")
-
-(defvar +pass--old-wconf nil)
-
-(defun =pass ()
-  "Create pass workspace."
-  (interactive)
-  (require 'pass)
-  (if (featurep! :ui workspaces)
-      (+workspace-switch +pass-workspace-name t)
-    (setq +pass--old-wconf (current-window-configuration))
-    (delete-other-windows)
-    (switch-to-buffer (doom-fallback-buffer)))
-  (pass)
-  )
-
 
 (defun +shell/window-enlargen ()
   "Enlargen the current window to focus on this one. Does not close other
@@ -169,3 +162,59 @@ windows (unlike `doom/window-maximize-buffer'). Activate again to undo."
     (let ((yas/prompt-functions '(dummy-prompt)))
       (catch 'notfound
         (yas/insert-snippet t)))))
+
+(defun evil-comment-dwim (&rest test)
+  "Same behavior as comment-dwim but switches to insert state
+   when adding a comment."
+  (interactive)
+  (call-interactively 'comment-dwim)
+  (unless (region-active-p)
+    (evil-insert-state)))
+
+(defun load-doom-one ()
+  (load-theme 'doom-one)
+  (after! org-agenda
+    (custom-set-faces!
+      `(org-agenda-date-today :foreground ,(doom-color 'blue))
+      `(org-agenda-date :foreground ,(doom-color 'magenta))))
+  (after! tex
+    (custom-set-faces!
+      `(org-agenda-date :foreground ,(doom-color 'blue))
+      `(TeX-fold-unfolded-face :background "#282c34")))
+  (setq +doom-dashboard-banner-file (concat doom-private-dir "splash.png")))
+
+
+(defun +mu4e/spook ()
+  (interactive)
+  (save-mark-and-excursion
+    (progn
+      (goto-char (point-max))
+           (spook))))
+
+(defun +org-time-stamp (ARG)
+  (interactive "P")
+  (+evil/insert-newline-below 1)
+  (forward-line)
+  (org-time-stamp ARG))
+
+(defun +LaTeX/new-item ()
+  (interactive)
+  (evil-open-below 1)
+  (insert "\\item "))
+
+ (defun display-prefix (arg)
+       "Display the value of the raw prefix arg."
+       (interactive "P")
+       (message "%s" arg))
+
+(defun org-remove-latex-buffer ()
+  (interactive)
+  (org-toggle-latex-fragment '(64)))
+
+(defun org-preview-latex-buffer ()
+  (interactive)
+  (org-toggle-latex-fragment '(16)))
+
+(defun org-remove-latex-fragment ()
+  (interactive)
+  (org-toggle-latex-fragment '(4)))

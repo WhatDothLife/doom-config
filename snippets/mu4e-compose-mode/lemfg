@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: Liebe mit freundlichen Grüßen
+# key: lemfg
+# condition: t
+# --
+
+Liebe $1,
+
+$0
+
+--
+Mit freundlichen Grüßen
+
+Michael
+

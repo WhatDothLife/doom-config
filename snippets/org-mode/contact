@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: contact
+# uuid: 12
+# key: co
+# condition: t
+# --
+
+$0
+:PROPERTIES:
+${1::TELE1:  $2}
+${3::EMAIL:  $4}
+${5::BDAY:  $6}
+:END:
