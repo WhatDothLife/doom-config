@@ -15,34 +15,39 @@
   (setq aw-keys '(?n ?r ?t ?d)))
 
 (map!
- :nimv "C-u" #'evil-scroll-line-up
+ :nimv "C-ö" #'evil-scroll-line-up
  :nimv "C-ü" #'evil-scroll-line-down
  :m    "C-b" #'better-jumper-jump-backward
  :m    "C-f" #'better-jumper-jump-forward
 
- :i "C-ö"   (λ! (insert-char #x200b))
+ :i "C-ä"   (λ! (insert-char #x200b))
 
- :n "."  #'repeat
- :n "•"  #'evil-repeat
+ :n "•"  #'repeat
 
  :n "gC" #'+nav-flash/blink-cursor
-
- "M-]"   #'sp-unwrap-sexp
- "M-["   #'sp-backward-unwrap-sexp
 
  "M-t"   #'split-switch-right
  "M-r"   #'split-switch-below
 
- "s-i"      #'windmove-left
- "s-l"      #'windmove-up
- "s-a"      #'windmove-down
- "s-e"      #'windmove-right
+ "s-I"   #'windmove-left
+ "s-L"   #'windmove-up
+ "s-A"   #'windmove-down
+ "s-E"   #'windmove-right
 
+ "M-<up>"     #'drag-stuff-up
+ "M-<down>"   #'drag-stuff-down
 
- "M-w"   #'fixup-whitespace
- "M-;"   #'evil-comment-dwim
+ "M-w"      #'fixup-whitespace
+ "M-;"      #'evil-comment-dwim
 
- "C-w"   #'+workspace/delete
+ "<M-tab>"           #'+workspace:switch-next
+ "<M-S-iso-lefttab>" #'+workspace:switch-previous
+ "C-w"               #'+workspace/delete
+ :i "<C-tab>"             #'expand-abbrev
+ "S-SPC"             #'dabbrev-expand
+
+ "M-(" #'centaur-tabs-backward-tab
+ "M-)" #'centaur-tabs-forward-tab
 
  :e "SPC" #'doom/leader)
 
@@ -60,7 +65,7 @@
         :desc "Decrease font size" "-" #'doom/decrease-font-size
         :desc "Reset font size"    "r" #'doom/reset-font-size))
       (:prefix "c"
-       :desc "Comment dwim" ";" #'comment-line)
+       :desc "Copy and comment line(s)" ";" #'evilnc-copy-and-comment-lines)
       (:prefix "f"
        :desc "Treemacs"      "t" #'+treemacs/find-file)
       (:prefix "o"
@@ -76,9 +81,10 @@
       (:prefix "p"
        :desc "Treemacs" "t" #'treemacs)
       (:prefix "t"
-       :desc "Open Treemacs"   "t" #'+treemacs/toggle
-       :desc "Frame maximized" "M" #'toggle-frame-maximized
-       :desc "Modeline"        "m" #'hide-mode-line-mode)
+       :desc "Toggle Tabs"     "TAB" #'centaur-tabs-mode
+       :desc "Open Treemacs"   "t"   #'+treemacs/toggle
+       :desc "Frame maximized" "M"   #'toggle-frame-maximized
+       :desc "Modeline"        "m"   #'hide-mode-line-mode)
       (:prefix "TAB"
        :desc "Create new workspace"         "c" #'+workspace/new
        :desc "Switch to previous workspace" "n" #'+workspace:switch-previous
@@ -153,14 +159,18 @@
    :n "C-q" #'wdired-abort-changes)
   (:map dired-mode-map
    :n "TAB" nil
-   :n "TAB" #'dired-subtree-toggle
+   :n "TAB" #'+dired-subtree-toggle
    "za" nil                             ;FIXME
-   "za"  #'dired-subtree-toggle
-   :n "DEL"  #'dired-subtree-remove
+   "za"  #'+dired-subtree-toggle
+   :n "DEL"  #'+dired-subtree-remove
    "C-l"  #'dired-subtree-up
    "C-a"  #'dired-subtree-up
-   "C-q" #'dired-kill-subdir
-   :n "-"     (lambda () (interactive) (find-alternate-file ".."))))
+   "C-k" #'+dired-kill-subdir
+   "C-q" #'+dired-kill-all-subdir
+   :n "-"     (lambda () (interactive) (find-alternate-file ".."))
+   :localleader
+   "f" #'find-lisp-find-dired
+   "/" #'dired-narrow))
 
  (:after evil-easymotion
   (:map evilem-map
@@ -178,11 +188,20 @@
    :localleader
    "p" #'org-agenda-priority))
 
+ (:after org
+  (:map org-cdlatex-mode-map
+   "`" nil
+   ;; "C-l" #'cdlatex
+   ))
+
  (:after evil-snipe
   (:map evil-snipe-parent-transient-map
-   "," nil
-   "," #'evil-snipe-repeat
-   "–" #'evil-snipe-repeat-reverse))
+   "–" #'evil-snipe-repeat-reverse
+   "," #'evil-snipe-repeat)
+  (:map (evil-snipe-override-local-mode-map
+         evil-snipe-override-mode-map)
+   :m "–" #'evil-snipe-repeat-reverse
+   :m "," #'evil-snipe-repeat))
 
  (:map evil-motion-state-map
   "C-w" #'+workspace/delete)
@@ -195,8 +214,11 @@
   "g a" nil
   "g b" #'what-cursor-position)
 
+
+
  (:map evil-visual-state-map
   "S" nil
+  "." #'evil-repeat
   "M-s" #'evil-surround-region)
 
  (:map evil-surround-mode-map
@@ -460,11 +482,10 @@
   "C-q" #'mu4e-message-kill-buffer)
 
  (:after org :map org-mode-map
-  "C-q"           #'mu4e-message-kill-buffer
   :n "M-<return>" nil
   "M-<return>"    #'+org-ctrl-c-ret
-  "M-<up>"        #'org-previous-visible-heading
-  "M-<down>"      #'org-next-visible-heading
+  "M-<up>"        #'org-timestamp-up
+  "M-<down>"      #'org-timestamp-down
   :localleader
   "dt"   #'+org-time-stamp
   "dT"   #'org-time-stamp
@@ -478,7 +499,7 @@
   "v"    #'org-mark-element
   "V"    #'org-mark-subtree
   "Y"    #'org-copy-special
-  ;; "y" #'org-yank
+  "y"    #'org-rich-yank
   "z"    #'org-insert-drawer
   :prefix "L"
   "f"   #'org-toggle-latex-fragment
@@ -497,18 +518,14 @@
   "|"   #'org-table-insert-column)
 
  (:after evil-org :map evil-org-mode-map
-  ;; "<up>"   nil
-  ;; "<down>" nil
-  ;; "<up>"   #'evil-previous-visual-line
-  ;; "<down>" #'evil-next-visual-line
   :niv "M-l"           #'org-metaup
-  :niv "M-i"           #'org-metaleft
+  :niv "M-i"           #'org-shiftmetaleft
   :niv "M-a"           #'org-metadown
-  :niv "M-e"           #'org-metaright
+  :niv "M-e"           #'org-shiftmetaright
   :niv "M-l"           #'org-metaup
-  :niv "M-I"           #'org-shiftmetaleft
+  :niv "M-I"           #'org-metaleft
   :niv "M-A"           #'org-shiftmetadown
-  :niv "M-E"           #'org-shiftmetaright
+  :niv "M-E"           #'org-metaright
   :niv "M-L"           #'org-shiftmetaup)
 
  (:after pass :map pass-mode-map
@@ -516,6 +533,8 @@
   "j" #'pass-goto-entry)
 
  (:map pdf-view-mode-map
+  :n "("       #'+pdf-bottom-last-page
+  :n ")"       #'+pdf-top-next-page
   :n ">"       #'image-eob
   :n "<"       #'image-bob
   :n "<left>"  #'image-backward-hscroll
@@ -537,6 +556,21 @@
 
  (:map shr-map             ;Otherwise visual-mode wouldn't be available
   "v" nil))
+
+(add-hook! 'eshell-first-time-mode-hook
+  (defun +eshell-keymap-h ()
+    ;; Keys must be bound in a hook because eshell resets its keymap every
+    ;; time `eshell-mode' is enabled. Why? It is not for us mere mortals to
+    ;; grasp such wisdom.
+    (map! :map eshell-mode-map
+          :n "q" #'+eshell/kill-and-close
+          "C-q"  #'+eshell/kill-and-close
+          :localleader
+          "f" #'+eshell/prompt-for-cwd
+          "u" #'+eshell/up-directory
+          "l" #'+eshell/last-directory
+          "d" #'+eshell-open-cwd-dired
+          "r" #'+eshell-complete-recent-dir)))
 
 
 (after! treemacs-evil

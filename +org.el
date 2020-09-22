@@ -11,6 +11,9 @@
   (mixed-pitch-mode))
 
 (add-hook! org-mode (display-line-numbers-mode -1))
+(after! evil-surround
+ (add-hook 'org-mode-hook (lambda ()
+                            (push '(?$ . ("$" . "$")) evil-surround-pairs-alist))))
 
 (after! org
   (use-package org-pretty-tags
@@ -42,9 +45,9 @@
           (?B . 'all-the-icons-orange)
           (?C . 'all-the-icons-yellow))))
 
-(plist-put +pretty-code-symbols :up "◆")
-(plist-put +pretty-code-symbols :down "◆")
-(plist-put +pretty-code-symbols :almost "◆")
+;; (plist-put +pretty-code-symbols :up "◆")
+;; (plist-put +pretty-code-symbols :down "◆")
+;; (plist-put +pretty-code-symbols :almost "◆")
 
 (set-pretty-symbols! 'org-mode 'org-agenda-mode
   :up "[#A]"
@@ -246,13 +249,20 @@
                               "Send an email %^{urgancy|soon|ASAP|anon|at some point|eventually} to %^{recipiant}"
                               "about %^{topic}"
                               "%U %i %a"))
+                  (,(format "%s\tVocabulary" (all-the-icons-octicon "calendar" :face 'all-the-icons-orange :v-adjust 0.01))
+                   :keys "v"
+                   :file "~/org/notes.org"
+                   :prepend t
+                   :headline "Vocabulary"
+                   :type entry
+                   :template ("* %? :voc:\n%U"))
                   (,(format "%s\tEvent" (all-the-icons-octicon "calendar" :face 'all-the-icons-orange :v-adjust 0.01))
                    :keys "e"
                    :file "~/org/agenda/todo.org"
                    :prepend t
                    :headline "Events"
                    :type entry
-                   :template ("* %? :EVENT:\n%U"))
+                   :template ("* %? :event:\n%U"))
                   (,(format "%s\tInteresting" (all-the-icons-faicon "eye" :face 'all-the-icons-lcyan :v-adjust 0.01))
                    :keys "i"
                    :file +org-capture-todo-file

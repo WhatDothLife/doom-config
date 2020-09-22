@@ -106,6 +106,19 @@
 ;; compose with the current context is no context matches;
 ;; default is to ask
 (setq mu4e-compose-context-policy nil)
+(setq mu4e-view-show-images nil)
 (add-hook 'mu4e-view-mode-hook 'mixed-pitch-mode)
+(add-hook 'mu4e-main-mode-hook 'hide-mode-line-mode)
+(add-hook 'mu4e-loading-mode-hook 'hide-mode-line-mode)
+(add-hook 'mu4e~update-mail-mode-hook 'hide-mode-line-mode)
+(add-hook 'mu4e-compose-mode-hook 'hide-mode-line-mode)
+(add-hook 'mu4e-headers-mode-hook 'hide-mode-line-mode)
+(add-hook 'mu4e-view-mode-hook 'hide-mode-line-mode)
+
+(after! mu4e
+    (defun my/mu4e-buffer-p (buf)
+    (with-current-buffer buf
+      (derived-mode-p 'mu4e-main-mode 'mu4e-headers-mode 'gnus-article-mode 'mu4e-compose-mode)))
+  (add-to-list 'doom-real-buffer-functions #'my/mu4e-buffer-p))
 
 (remove-hook 'mu4e-compose-mode-hook #'org-mu4e-compose-org-mode)

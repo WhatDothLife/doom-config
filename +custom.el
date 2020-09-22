@@ -3,16 +3,6 @@
 ;; A file that contains several function- and variable definitions
 ;; to make live easier.
 
-(defun +counsel-insert-dir-path (&optional initial-input)
-  "Inserts the path of a selected directory."
-  (interactive)
-  (let ((counsel--find-file-predicate #'file-directory-p))
-    (counsel--find-file-1
-     "Insert (directory): " initial-input
-     (lambda (d) (progn (insert (concat "cd "(expand-file-name d)))
-                        (comint-send-input)))
-     '+counsel-cd)))
-
 (defun split-switch-right ()
   (interactive)
   (split-window-right)
@@ -129,36 +119,12 @@ headers in the region. Optionally, provide TARGET (for moves)."
           (mu4e-mark-at-point mark target)
           (setq cant-go-further (not (mu4e-headers-next))))))))
 
-(defun +shell/window-enlargen ()
-  "Enlargen the current window to focus on this one. Does not close other
-windows (unlike `doom/window-maximize-buffer'). Activate again to undo."
-  (interactive)
-  (setq doom--enlargen-last-wconf
-        (if doom--enlargen-last-wconf
-            (ignore (set-window-configuration doom--enlargen-last-wconf))
-          (prog1 (current-window-configuration)
-            (let* ((window (selected-window))
-                   (dedicated-p (window-dedicated-p window))
-                   (preserved-p (window-parameter window 'window-preserved-size))
-                   (ignore-window-parameters t))
-              (unwind-protect
-                  (progn
-                    (when dedicated-p
-                      (set-window-dedicated-p window nil))
-                    (when preserved-p
-                      (set-window-parameter window 'window-preserved-size nil))
-                    (maximize-window window))
-                (set-window-dedicated-p window dedicated-p)
-                (when preserved-p
-                  (set-window-parameter window 'window-preserved-size preserved-p)))))))
-  (evil-scroll-line-to-bottom nil))
-
 (defun yas/insert-by-name (name)
-  (flet ((dummy-prompt
-          (prompt choices &optional display-fn)
-          (declare (ignore prompt))
-          (or (find name choices :key display-fn :test #'string=)
-              (throw 'notfound nil))))
+  (cl-flet ((dummy-prompt
+             (prompt choices &optional display-fn)
+             (declare (ignore prompt))
+             (or (find name choices :key display-fn :test #'string=)
+                 (throw 'notfound nil))))
     (let ((yas/prompt-functions '(dummy-prompt)))
       (catch 'notfound
         (yas/insert-snippet t)))))
@@ -171,26 +137,6 @@ windows (unlike `doom/window-maximize-buffer'). Activate again to undo."
   (unless (region-active-p)
     (evil-insert-state)))
 
-(defun load-doom-one ()
-  (load-theme 'doom-one)
-  (after! org-agenda
-    (custom-set-faces!
-      `(org-agenda-date-today :foreground ,(doom-color 'blue))
-      `(org-agenda-date :foreground ,(doom-color 'magenta))))
-  (after! tex
-    (custom-set-faces!
-      `(org-agenda-date :foreground ,(doom-color 'blue))
-      `(TeX-fold-unfolded-face :background "#282c34")))
-  (setq +doom-dashboard-banner-file (concat doom-private-dir "splash.png")))
-
-
-(defun +mu4e/spook ()
-  (interactive)
-  (save-mark-and-excursion
-    (progn
-      (goto-char (point-max))
-           (spook))))
-
 (defun +org-time-stamp (ARG)
   (interactive "P")
   (+evil/insert-newline-below 1)
@@ -202,10 +148,10 @@ windows (unlike `doom/window-maximize-buffer'). Activate again to undo."
   (evil-open-below 1)
   (insert "\\item "))
 
- (defun display-prefix (arg)
-       "Display the value of the raw prefix arg."
-       (interactive "P")
-       (message "%s" arg))
+(defun display-prefix (arg)
+  "Display the value of the raw prefix arg."
+  (interactive "P")
+  (message "%s" arg))
 
 (defun org-remove-latex-buffer ()
   (interactive)
@@ -218,3 +164,77 @@ windows (unlike `doom/window-maximize-buffer'). Activate again to undo."
 (defun org-remove-latex-fragment ()
   (interactive)
   (org-toggle-latex-fragment '(4)))
+
+(defun +dired-subtree-remove ()
+  (interactive)
+  (dired-subtree-remove)
+  (revert-buffer))
+
+(defun +dired-kill-subdir ()
+  (interactive)
+  (dired-kill-subdir)
+  (revert-buffer))
+
+(defun +dired-kill-all-subdir ()
+  (interactive)
+  (while t (+dired-kill-subdir)))
+
+
+(defun +dired-subtree-toggle ()
+  "Insert subtree at point or remove it if it was not present."
+  (interactive)
+  (if (dired-subtree--is-expanded-p)
+      (progn
+        (dired-next-line 1)
+        (dired-subtree-remove)
+        (revert-buffer))
+    (save-excursion (dired-subtree-insert))))
+
+(defun +pdf-top-next-page ()
+  (interactive)
+  (pdf-view-next-page-command)
+  (image-bob))
+
+(defun +pdf-bottom-last-page ()
+  (interactive)
+  (pdf-view-previous-page-command)
+  (image-eob))
+
+(defun +eshell-complete-recent-dir (&optional arg)
+  "Switch to a recent `eshell' directory using completion.
+With \\[universal-argument] also open the directory in a `dired'
+buffer."
+  (interactive "P")
+  (evil-insert-state)
+  (let ((dir (ring-elements eshell-last-dir-ring)))
+    (ivy-read "Switch to recent dir: " dir :action 'insert)
+    (eshell-send-input)               ; Should cd directly…
+    (when arg
+      (dired dir))))
+
+(defun +eshell-open-cwd-dired ()
+  (interactive)
+  (dired default-directory))
+
+(defun +eshell/prompt-for-cwd (dir)
+  "Prompt for directory and cd to it."
+  (interactive "Dcd ")
+  (+evil/insert (format "\"%s\"" dir))
+  (eshell-send-input))
+
+(defun +eshell/up-directory ()
+  (interactive)
+  (+evil/insert "cd ..")
+  (eshell-send-input))
+
+(defun +eshell/last-directory ()
+  (interactive)
+  (+evil/insert "cd -")
+  (eshell-send-input))
+
+(defun +evil/insert (arg)
+  (if evil-insert-state-minor-mode
+      (insert arg)
+    (evil-insert-state)
+    (insert arg)
+    (evil-normal-state)))

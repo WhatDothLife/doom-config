@@ -1,8 +1,9 @@
 ;;; ~/.doom.d/config.el -*- lexical-binding: t; -*-
 
-(require 'org-msg)
+;; (require 'org-msg)
 (require 'warnings)
 (require 'lilypond-mode)
+(require 'jabber-autoloads)
 
 (setq doom-variable-pitch-font (font-spec :family "Overpass" :size 16))
 (setq mixed-pitch-set-height t)
@@ -12,6 +13,7 @@
 (load! "+irc")
 (load! "+mu4e")
 (load! "+org")
+(load! "+org-pretty-table")
 (load! "+latex")
 (load! "+popup")
 (load! "+bindings")
@@ -35,15 +37,30 @@
       +evil-want-o/O-to-continue-comments nil
       projectile-project-search-path '("~/projects")
       truncate-lines nil
-      company-show-numbers t
+      company-idle-delay nil
+      +ivy-buffer-preview t
+      rainbow-delimiters-max-face-count 4
+      evil-snipe-scope 'visible
+      abbrev-file-name (concat doom-private-dir "abbrevs.el")
 
       ;; Dired
       dired-recursive-deletes 'always
       dired-recursive-copies 'always)
 
-;; (setq ivy-read-action-function #'ivy-hydra-read-action)
+(setq auth-sources '("~/.authinfo.gpg")
+      auth-source-cache-expiry nil)
 
-(add-to-list 'default-frame-alist '(fullscreen . fullboth))
+(setq ispell-dictionary "de_DE")
+
+(setq dimmer-fraction 0.4)
+(dimmer-configure-which-key)
+(dimmer-configure-company-box)
+(dimmer-mode 1)
+
+;; (custom-set-variables
+;;  '(zoom-size '(0.618 . 0.618)))
+;; (zoom-mode 1)
+
 (add-to-list '+lookup-provider-url-alist
              '("Wiktionary DE" "https://de.wiktionary.org/w/index.php?search=%s"))
 (add-to-list 'warning-suppress-types '(yasnippet backquote-change))
@@ -51,37 +68,57 @@
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
 (add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
+(add-hook 'org-mode-hook 'org-pretty-table-mode)
 (add-hook 'mu4e-compose-mode-hook 'auto-fill-mode)
 (add-hook 'pdf-view-mode-hook 'hide-mode-line-mode)
+(add-hook 'reb-mode-hook 'hide-mode-line-mode)
 (add-hook 'dired-mode-hook (λ! (dired-hide-details-mode)))
 (add-hook 'Info-mode-hook #'mixed-pitch-mode)
 (add-hook 'LaTeX-mode-hook #'latex-extra-mode)
+(add-hook '+doom-dashboard-mode-hook #'hide-mode-line-mode)
 
-(display-battery-mode 1)
+;; (focus-mode 1)
 (auto-save-mode)
-
+(global-subword-mode 1)
 (global-prettify-symbols-mode -1)
-
-(setq evil-split-window-below t
-      evil-vsplit-window-right t)
 
 (after! pdf
   (set-evil-initial-state! 'pdf-view-mode 'emacs))
 
 (set-evil-initial-state! 'rcirc-mode 'normal)
 
+(use-package! info-colors
+  :commands (info-colors-fontify-node))
+
+(use-package! authinfo-mode
+  :mode ("authinfo\\.gpg\\'" . authinfo-mode))
+
+(use-package! lilypond-mode
+  :mode ("\\.ly\\'" . LilyPond-mode))
+
+(add-hook 'Info-selection-hook 'info-colors-fontify-node)
+
 ;; I use treemacs-select-window for this
 (after! treemacs
   (after! ace-window
     (add-to-list 'aw-ignored-buffers 'treemacs-mode)))
 
-(custom-set-faces!
-  '(preview-reference-face :background "white"))
-
+;; (custom-set-faces!
+;;   '(preview-reference-face :background "white"))
 
 (use-package flycheck-rust
   :ensure t
   :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+
+(after! centaur-tabs
+  (centaur-tabs-mode -1)
+  (setq centaur-tabs-height 26
+        centaur-tabs-set-icons t
+        centaur-tabs-modified-marker "o"
+        centaur-tabs-close-button "×"
+        centaur-tabs-set-bar 'under)
+  centaur-tabs-gray-out-icons 'buffer)
+(setq x-underline-at-descent-line t)
 
 ;; (load-theme 'doom-gruvbox t)
 
@@ -95,8 +132,6 @@
   '(solaire-mode-line-face :background "#202020")
   '(mode-line :background "#202020")
   '(solaire-mode-line-inactive-face :background "#242424")
-  ;; '(solaire-default-face :background "#282c34" )
-  ;; '(default-face :background "#21242b" )
   `(font-lock-builtin-face :foreground ,(doom-color 'violet))
   `(mu4e-replied-face :foreground ,(doom-color 'green))
   `(mu4e-header-key-face :foreground ,(doom-color 'red) :weight bold)
@@ -118,12 +153,12 @@
   `(org-tag :foreground "#7c6f64")
   `(org-todo :foreground ,(doom-color 'green))
   `(org-verbatim :foreground ,(doom-color 'yellow)))
-  '(outline-1 :weight extra-bold :height 1.25)
-  '(outline-2 :weight bold :height 1.15)
-  '(outline-3 :weight bold :height 1.12)
-  '(outline-4 :weight semi-bold :height 1.09)
-  '(outline-5 :weight semi-bold :height 1.06)
-  '(outline-6 :weight semi-bold :height 1.03)
+'(outline-1 :weight extra-bold :height 1.25)
+'(outline-2 :weight bold :height 1.15)
+'(outline-3 :weight bold :height 1.12)
+'(outline-4 :weight semi-bold :height 1.09)
+'(outline-5 :weight semi-bold :height 1.06)
+'(outline-6 :weight semi-bold :height 1.03)
 
 
 (provide 'config)
@@ -177,3 +212,4 @@
 
 (load-theme 'doom-gruvbox t)
 
+(theme-magic-export-theme-mode)
