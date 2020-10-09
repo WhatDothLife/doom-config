@@ -42,8 +42,8 @@
 
  "<M-tab>"           #'+workspace:switch-next
  "<M-S-iso-lefttab>" #'+workspace:switch-previous
- "C-w"               #'+workspace/delete
- :i "<C-tab>"             #'expand-abbrev
+ "C-q"               #'+workspace/close-window-or-workspace
+ :i "<C-tab>"        #'expand-abbrev
  "S-SPC"             #'dabbrev-expand
 
  "M-(" #'centaur-tabs-backward-tab
@@ -87,9 +87,10 @@
        :desc "Modeline"        "m"   #'hide-mode-line-mode)
       (:prefix "TAB"
        :desc "Create new workspace"         "c" #'+workspace/new
-       :desc "Switch to previous workspace" "n" #'+workspace:switch-previous
        :desc "Clear workspace"              "q" #'doom/kill-all-buffers
-       :desc "Switch to next workspace"     "t" #'+workspace:switch-next)
+       ;; :desc "Switch to previous workspace" "n" #'+workspace:switch-previous
+       ;; :desc "Switch to next workspace"     "t" #'+workspace:switch-next
+       )
       (:prefix "w"
        "d"   #'ace-delete-window
        "D"   #'ace-delete-other-windows

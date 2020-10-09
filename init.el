@@ -78,19 +78,18 @@
        :term
        eshell            ; a consistent, cross-platform shell (WIP)
        shell             ; a terminal REPL for Emacs
-       ;; term              ; terminals in Emacs
-       ;;vterm             ; another terminals in Emacs
+       term              ; terminals in Emacs
+       vterm             ; another terminals in Emacs
 
        :checkers
        (syntax +childframe)              ; tasing you for every semicolon you forget
        (spell             ; tasing you for misspelling mispelling
-        +flyspell
         +aspell)
        ;;grammar           ; tasing grammar mistake every you make
 
        :tools
        ;;ansible
-       biblio
+       ;; biblio
        ;;debugger          ; FIXME stepping through code, to help you add bugs
        ;;direnv
        ;;docker
@@ -117,7 +116,7 @@
        :lang
        ;;agda              ; types of types of types of types...
        ;;assembly          ; assembly for fun or debugging
-       (cc +lsp)           ; C/C++/Obj-C madness
+       cc           ; C/C++/Obj-C madness
        ;;clojure           ; java with a lisp
        ;;common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs

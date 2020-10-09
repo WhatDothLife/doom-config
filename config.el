@@ -54,6 +54,7 @@
 
 (setq dimmer-fraction 0.4)
 (dimmer-configure-which-key)
+(dimmer-configure-magit)
 (dimmer-configure-company-box)
 (dimmer-mode 1)
 
@@ -76,6 +77,7 @@
 (add-hook 'Info-mode-hook #'mixed-pitch-mode)
 (add-hook 'LaTeX-mode-hook #'latex-extra-mode)
 (add-hook '+doom-dashboard-mode-hook #'hide-mode-line-mode)
+(add-hook 'rustic-mode-hook #'rainbow-delimiters-mode-enable)
 
 ;; (focus-mode 1)
 (auto-save-mode)
@@ -84,6 +86,9 @@
 
 (after! pdf
   (set-evil-initial-state! 'pdf-view-mode 'emacs))
+
+(after! vterm
+  (set-evil-initial-state! 'vterm-mode 'normal))
 
 (set-evil-initial-state! 'rcirc-mode 'normal)
 

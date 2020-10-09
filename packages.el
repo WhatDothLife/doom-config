@@ -45,6 +45,8 @@
 
 (package! centaur-tabs)
 
+(package! ivy-avy)
+
 (package! zoom)
 
 (package! theme-magic :pin "844c4311bd...")
