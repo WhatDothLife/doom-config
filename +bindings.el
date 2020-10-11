@@ -568,15 +568,15 @@
           :nmi "C-q"  #'+eshell/kill-and-close
           :nmi "C-f" #'+eshell/prompt-for-cwd
           :nmi "C-l" #'+eshell/last-directory
-          :nmi "C-o" #'+eshell-open-cwd-dired
+          :nmi "C-d" #'+eshell-open-cwd-dired
           :nmi "C-r" #'+eshell-complete-recent-dir
-          :nmi "C-d" #'+eshell/up-directory
-          :nmi "C-u" #'+eshell/up-directory
+          :nmi "C-p" #'+eshell/up-directory
+          :nmi "<home>" #'eshell-bol
           :localleader
           "f" #'+eshell/prompt-for-cwd
-          "d" #'+eshell/up-directory
+          "p" #'+eshell/up-directory
           "l" #'+eshell/last-directory
-          "o" #'+eshell-open-cwd-dired
+          "d" #'+eshell-open-cwd-dired
           "r" #'+eshell-complete-recent-dir)))
 
 

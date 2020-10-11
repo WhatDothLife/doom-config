@@ -83,7 +83,7 @@
 (auto-save-mode)
 ;; (global-subword-mode 1)
 (global-prettify-symbols-mode -1)
-;; (eshell-syntax-highlighting-global-mode)
+(eshell-syntax-highlighting-global-mode)
 
 (after! pdf
   (set-evil-initial-state! 'pdf-view-mode 'emacs))
@@ -177,7 +177,7 @@
   :group 'eshell-faces)
 
 (custom-set-faces!
-  `(+eshell-prompt-pwd :foreground ,(doom-color 'violet))
+  `(+eshell-prompt-pwd :foreground "#d3869b")
   `(eshell-syntax-highlighting-string-face :foreground ,(doom-color 'yellow))
   `(+eshell-git-clean-face :foreground ,(doom-color 'dark-cyan))
   `(+eshell-git-not-clean-face :foreground ,(doom-color 'orange)))

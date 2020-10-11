@@ -260,20 +260,16 @@ buffer."
             '+eshell-git-not-clean-face
           '+eshell-git-clean-face))
   (concat (if (bobp) "" "\n")
-          ;; "["
           (with-face "[" :foreground (doom-color 'magenta) 0.2)
           (with-face (concat user-login-name) :foreground (doom-color 'orange) 0.2)
           (with-face "@" :foreground (doom-color 'yellow) 0.2)
           (with-face (system-name) :foreground (doom-color 'green) 0.2)
-          (with-face "]" :foreground (doom-color 'blue) 0.2)
-          " "
-          ;; (with-face "localhost" :foreground (doom-color 'dark-cyan))
+          (with-face "] " :foreground (doom-color 'dark-cyan) 0.2)
           (let ((pwd (eshell/pwd)))
             (propertize (if (equal pwd "~")
                             pwd
                           (abbreviate-file-name (shrink-path-file pwd)))
                         'face '+eshell-prompt-pwd))
-          ;; "]"
           (propertize (+eshell--current-git-branch)
                       'face git-face)
           (propertize " λ" 'face (if (zerop eshell-last-command-status) 'success 'error))
