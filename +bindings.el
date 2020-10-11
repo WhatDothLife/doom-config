@@ -564,13 +564,19 @@
     ;; time `eshell-mode' is enabled. Why? It is not for us mere mortals to
     ;; grasp such wisdom.
     (map! :map eshell-mode-map
-          :n "q" #'+eshell/kill-and-close
-          "C-q"  #'+eshell/kill-and-close
+          :nmi "q" #'+eshell/kill-and-close
+          :nmi "C-q"  #'+eshell/kill-and-close
+          :nmi "C-f" #'+eshell/prompt-for-cwd
+          :nmi "C-l" #'+eshell/last-directory
+          :nmi "C-o" #'+eshell-open-cwd-dired
+          :nmi "C-r" #'+eshell-complete-recent-dir
+          :nmi "C-d" #'+eshell/up-directory
+          :nmi "C-u" #'+eshell/up-directory
           :localleader
           "f" #'+eshell/prompt-for-cwd
-          "u" #'+eshell/up-directory
+          "d" #'+eshell/up-directory
           "l" #'+eshell/last-directory
-          "d" #'+eshell-open-cwd-dired
+          "o" #'+eshell-open-cwd-dired
           "r" #'+eshell-complete-recent-dir)))
 
 

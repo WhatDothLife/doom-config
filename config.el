@@ -81,8 +81,9 @@
 
 ;; (focus-mode 1)
 (auto-save-mode)
-(global-subword-mode 1)
+;; (global-subword-mode 1)
 (global-prettify-symbols-mode -1)
+;; (eshell-syntax-highlighting-global-mode)
 
 (after! pdf
   (set-evil-initial-state! 'pdf-view-mode 'emacs))
@@ -165,8 +166,21 @@
 '(outline-5 :weight semi-bold :height 1.06)
 '(outline-6 :weight semi-bold :height 1.03)
 
+(defface +eshell-git-clean-face
+  '((t :foreground "#8ec07c"))
+  "Face for git branch (clean) in eshell prompt"
+  :group 'eshell-faces)
 
-(provide 'config)
+(defface +eshell-git-not-clean-face
+  '((t :foreground "#cc241d"))
+  "Face for git branch (clean) in eshell prompt"
+  :group 'eshell-faces)
+
+(custom-set-faces!
+  `(+eshell-prompt-pwd :foreground ,(doom-color 'violet))
+  `(eshell-syntax-highlighting-string-face :foreground ,(doom-color 'yellow))
+  `(+eshell-git-clean-face :foreground ,(doom-color 'dark-cyan))
+  `(+eshell-git-not-clean-face :foreground ,(doom-color 'orange)))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -177,44 +191,9 @@
  '(custom-safe-themes
    (quote
     ("e2acbf379aa541e07373395b977a99c878c30f20c3761aac23e9223345526bcc" default))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(diredfl-dir-heading ((t (:foreground nil))))
- '(diredfl-dir-name ((t (:foreground "#689d6a"))))
- '(diredfl-dir-priv ((t (:foreground "#689d6a"))))
- '(doom-modeline-buffer-modified ((t (:foreground "#fb4934"))))
- '(font-lock-builtin-face ((t (:foreground "#d3869b"))))
- '(font-lock-type-face ((t (:foreground "#d3869b"))))
- '(mode-line ((t (:background "#202020"))))
- '(mu4e-header-key-face ((t (:foreground "#fb4934" :weight bold))))
- '(mu4e-replied-face ((t (:foreground "#b8bb26"))))
- '(org-code ((t (:foreground "#fe8019"))))
- '(org-date ((t (:foreground "#fabd2f"))))
- '(org-document-info ((t (:foreground "#fb4934"))))
- '(org-document-title ((t (:foreground "#fb4934"))))
- '(org-drawer ((t (:foreground "#bbd9b0"))))
- '(org-formula ((t (:foreground "#b8bb26"))))
- '(org-list-dt ((t (:foreground "#8ec07c"))))
- '(org-table ((t (:foreground "#8ec07c"))))
- '(org-tag ((t (:foreground "#7c6f64"))))
- '(org-todo ((t (:foreground "#b8bb26"))))
- '(org-verbatim ((t (:foreground "#fabd2f"))))
- '(outline-1 ((t (:weight bold :height 1.2))))
- '(outline-2 ((t (:weight bold :height 1.15))))
- '(outline-3 ((t (:weight bold :height 1.12))))
- '(outline-4 ((t (:weight semi-bold :height 1.09))))
- '(outline-5 ((t (:weight semi-bold :height 1.06))))
- '(outline-6 ((t (:weight semi-bold :height 1.03))))
- '(outline-7 ((t (:foreground "#b3ceb4"))))
- '(outline-8 ((t (:weight semi-bold))))
- '(outline-9 ((t (:weight semi-bold))))
- '(preview-reference-face ((t (:background "white"))))
- '(solaire-mode-line-face ((t (:background "#202020"))))
- '(solaire-mode-line-inactive-face ((t (:background "#242424")))))
 
 (load-theme 'doom-gruvbox t)
 
 (theme-magic-export-theme-mode)
+
+(provide 'config)

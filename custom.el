@@ -5,11 +5,9 @@
  ;; If there is more than one, they won't work right.
  '(auth-source-save-behavior nil)
  '(custom-safe-themes
-   (quote
-    ("e2acbf379aa541e07373395b977a99c878c30f20c3761aac23e9223345526bcc" default)))
+   '("2f1518e906a8b60fac943d02ad415f1d8b3933a5a7f75e307e6e9a26ef5bf570" "e2acbf379aa541e07373395b977a99c878c30f20c3761aac23e9223345526bcc" default))
  '(safe-local-variable-values
-   (quote
-    ((ssh-deploy-on-explicit-save . 1)
+   '((ssh-deploy-on-explicit-save . 1)
      (ssh-deploy-root-remote . "/ssh:s8179597@taurus.hrsk.tu-dresden.de:/home/h6/s8179597/projects/DeepHPM/")
      (ssh-deploy-root-local . "/home/michael/projects/DeepHPM")
      (eval progn
@@ -24,42 +22,41 @@
             (string-match-p "^[^.]"
                             (buffer-file-name)))
            (unless
-               (featurep
-                (quote package-build))
+               (featurep 'package-build)
              (let
                  ((load-path
                    (cons "../package-build" load-path)))
-               (require
-                (quote package-build))))
+               (require 'package-build)))
            (unless
-               (derived-mode-p
-                (quote emacs-lisp-mode))
+               (derived-mode-p 'emacs-lisp-mode)
              (emacs-lisp-mode))
            (package-build-minor-mode)
            (setq-local flycheck-checkers nil)
            (set
-            (make-local-variable
-             (quote package-build-working-dir))
+            (make-local-variable 'package-build-working-dir)
             (expand-file-name "../working/"))
            (set
-            (make-local-variable
-             (quote package-build-archive-dir))
+            (make-local-variable 'package-build-archive-dir)
             (expand-file-name "../packages/"))
            (set
-            (make-local-variable
-             (quote package-build-recipes-dir))
+            (make-local-variable 'package-build-recipes-dir)
             default-directory))
      (baz . "ham")
-     (foo . "bar")))))
+     (foo . "bar"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(+eshell-git-clean-face ((t (:foreground "#689d6a"))))
+ '(+eshell-git-not-clean-face ((t (:foreground "#fe8019"))))
+ '(+eshell-prompt-pwd ((t (:foreground "#83a598"))))
  '(diredfl-dir-heading ((t (:foreground nil))))
  '(diredfl-dir-name ((t (:foreground "#689d6a"))))
  '(diredfl-dir-priv ((t (:foreground "#689d6a"))))
  '(doom-modeline-buffer-modified ((t (:foreground "#fb4934"))))
+ '(eshell-git-prompt-powerline-dir-face ((t (:background "#935d6c"))))
+ '(eshell-syntax-highlighting-string-face ((t (:foreground "#fabd2f"))))
  '(font-lock-builtin-face ((t (:foreground "#d3869b"))))
  '(font-lock-type-face ((t (:foreground "#d3869b"))))
  '(mode-line ((t (:background "#202020"))))
@@ -72,17 +69,17 @@
  '(org-drawer ((t (:foreground "#bbd9b0"))))
  '(org-formula ((t (:foreground "#b8bb26"))))
  '(org-list-dt ((t (:foreground "#8ec07c"))))
- '(org-table ((t (:foreground "#83a598"))))
+ '(org-table ((t (:foreground "#8ec07c"))))
  '(org-tag ((t (:foreground "#7c6f64"))))
  '(org-todo ((t (:foreground "#b8bb26"))))
  '(org-verbatim ((t (:foreground "#fabd2f"))))
- '(outline-1 ((t (:foreground "#d3869b" :height 1.25))))
- '(outline-2 ((t (:foreground "#8ec07c" :height 1.15))))
- '(outline-3 ((t (:foreground "#db9eaf" :height 1.12))))
- '(outline-4 ((t (:foreground "#8db58f" :height 1.09))))
- '(outline-5 ((t (:foreground "#e4b6c3" :height 1.06))))
- '(outline-6 ((t (:foreground "#b3ceb4" :height 1.03))))
- '(outline-7 ((t (:foreground "#edced7"))))
+ '(outline-1 ((t (:weight bold :height 1.2))))
+ '(outline-2 ((t (:weight bold :height 1.15))))
+ '(outline-3 ((t (:weight bold :height 1.12))))
+ '(outline-4 ((t (:weight semi-bold :height 1.09))))
+ '(outline-5 ((t (:weight semi-bold :height 1.06))))
+ '(outline-6 ((t (:weight semi-bold :height 1.03))))
+ '(outline-7 ((t (:foreground "#b3ceb4"))))
  '(outline-8 ((t (:weight semi-bold))))
  '(outline-9 ((t (:weight semi-bold))))
  '(preview-reference-face ((t (:background "white"))))

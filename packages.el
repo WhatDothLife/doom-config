@@ -52,3 +52,7 @@
 (package! theme-magic :pin "844c4311bd...")
 
 ;; (package! auto-latex-snippets)
+
+(package! eshell-git-prompt)
+
+(package! eshell-syntax-highlighting)

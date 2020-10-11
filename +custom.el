@@ -214,7 +214,7 @@ buffer."
 
 (defun +eshell-open-cwd-dired ()
   (interactive)
-  (dired default-directory))
+  (find-file-other-window default-directory))
 
 (defun +eshell/prompt-for-cwd (dir)
   "Prompt for directory and cd to it."
@@ -238,3 +238,43 @@ buffer."
     (evil-insert-state)
     (insert arg)
     (evil-normal-state)))
+
+(defun +eshell--current-git-branch ()
+  ;; TODO Refactor me
+  (cl-destructuring-bind (status . output)
+      (doom-call-process "git" "symbolic-ref" "-q" "--short" "HEAD")
+    (if (equal status 0)
+        (format " [%s]" output)
+      (cl-destructuring-bind (status . output)
+          (doom-call-process "git" "describe" "--all" "--always" "HEAD")
+        (if (equal status 0)
+            (format " [%s]" output)
+          "")))))
+
+(defun +eshell-default-prompt-fn ()
+  "Generate the prompt string for eshell. Use for `eshell-prompt-function'."
+  (require 'shrink-path)
+  (require 'eshell-git-prompt)
+  (setq git-face
+        (if (eshell-git-prompt--collect-status)
+            '+eshell-git-not-clean-face
+          '+eshell-git-clean-face))
+  (concat (if (bobp) "" "\n")
+          ;; "["
+          (with-face "[" :foreground (doom-color 'magenta) 0.2)
+          (with-face (concat user-login-name) :foreground (doom-color 'orange) 0.2)
+          (with-face "@" :foreground (doom-color 'yellow) 0.2)
+          (with-face (system-name) :foreground (doom-color 'green) 0.2)
+          (with-face "]" :foreground (doom-color 'blue) 0.2)
+          " "
+          ;; (with-face "localhost" :foreground (doom-color 'dark-cyan))
+          (let ((pwd (eshell/pwd)))
+            (propertize (if (equal pwd "~")
+                            pwd
+                          (abbreviate-file-name (shrink-path-file pwd)))
+                        'face '+eshell-prompt-pwd))
+          ;; "]"
+          (propertize (+eshell--current-git-branch)
+                      'face git-face)
+          (propertize " λ" 'face (if (zerop eshell-last-command-status) 'success 'error))
+          " "))
