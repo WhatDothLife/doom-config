@@ -53,6 +53,3 @@
 
 ;; (package! auto-latex-snippets)
 
-(package! eshell-git-prompt)
-
-(package! eshell-syntax-highlighting)

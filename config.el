@@ -8,7 +8,7 @@
 (setq doom-variable-pitch-font (font-spec :family "Overpass" :size 16))
 (setq mixed-pitch-set-height t)
 
-(load! "+custom")
+(load! "+functions")
 (load! "calfw-cal")
 (load! "+irc")
 (load! "+mu4e")
@@ -33,7 +33,6 @@
       doom-modeline-buffer-encoding nil
       yas-triggers-in-field t
       avy-single-candidate-jump t
-      treemacs-width 30
       +evil-want-o/O-to-continue-comments nil
       projectile-project-search-path '("~/projects")
       truncate-lines nil
@@ -52,7 +51,7 @@
 
 (setq ispell-dictionary "de_DE")
 
-(setq dimmer-fraction 0.4)
+(setq dimmer-fraction 0.3)
 (dimmer-configure-which-key)
 (dimmer-configure-magit)
 (dimmer-configure-company-box)
@@ -83,13 +82,9 @@
 (auto-save-mode)
 ;; (global-subword-mode 1)
 (global-prettify-symbols-mode -1)
-(eshell-syntax-highlighting-global-mode)
 
 (after! pdf
   (set-evil-initial-state! 'pdf-view-mode 'emacs))
-
-(after! vterm
-  (set-evil-initial-state! 'vterm-mode 'normal))
 
 (set-evil-initial-state! 'rcirc-mode 'normal)
 
@@ -103,11 +98,6 @@
   :mode ("\\.ly\\'" . LilyPond-mode))
 
 (add-hook 'Info-selection-hook 'info-colors-fontify-node)
-
-;; I use treemacs-select-window for this
-(after! treemacs
-  (after! ace-window
-    (add-to-list 'aw-ignored-buffers 'treemacs-mode)))
 
 ;; (custom-set-faces!
 ;;   '(preview-reference-face :background "white"))
@@ -165,22 +155,6 @@
 '(outline-4 :weight semi-bold :height 1.09)
 '(outline-5 :weight semi-bold :height 1.06)
 '(outline-6 :weight semi-bold :height 1.03)
-
-(defface +eshell-git-clean-face
-  '((t :foreground "#8ec07c"))
-  "Face for git branch (clean) in eshell prompt"
-  :group 'eshell-faces)
-
-(defface +eshell-git-not-clean-face
-  '((t :foreground "#cc241d"))
-  "Face for git branch (clean) in eshell prompt"
-  :group 'eshell-faces)
-
-(custom-set-faces!
-  `(+eshell-prompt-pwd :foreground "#d3869b")
-  `(eshell-syntax-highlighting-string-face :foreground ,(doom-color 'yellow))
-  `(+eshell-git-clean-face :foreground ,(doom-color 'dark-cyan))
-  `(+eshell-git-not-clean-face :foreground ,(doom-color 'orange)))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

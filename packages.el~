@@ -1,0 +1,32 @@
+;; -*- no-byte-compile: t; -*-
+;;; ~/.doom.d/packages.el
+
+;;; Examples:
+;; (package! some-package)
+;; (package! another-package :recipe (:fetcher github :repo "username/repo"))
+;; (package! builtin-package :disable t)
+
+;;; Code:
+(package! undo-tree :recipe (:fetcher git :url "http://www.dr-qubit.org/git/undo-tree.git"))
+(package! csv-mode :disable t)
+(package! auctex :disable t)
+(package! xclip :disable t)
+(package! gnu-elpa-keyring-update :disable t)
+(package! rustic :disable t)
+(package! adaptive-wrap :disable t)
+(package! company-auctex :disable t)
+
+;; * OS
+(package! exwm :recipe (:fetcher github :repo "ch11ng/exwm"))
+(package! xelb :recipe (:fetcher github :repo "ch11ng/xelb"))
+(package! buffer-timer :recipe (:fetcher github :repo "hardaker/elisp-buffer-timer"))
+;; * Lang
+;;(package! eglot)
+;;(package! company-lsp)
+
+;; * Writing
+(package! academic-phrases)
+(package! ess)
+;; * UI
+(package! buffer-move)
+(package! symon)

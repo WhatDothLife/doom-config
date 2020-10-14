@@ -83,6 +83,7 @@
       (:prefix "t"
        :desc "Toggle Tabs"     "TAB" #'centaur-tabs-mode
        :desc "Open Treemacs"   "t"   #'+treemacs/toggle
+       :desc "Open Treemacs"   "d"   #'dimmer-mode
        :desc "Frame maximized" "M"   #'toggle-frame-maximized
        :desc "Modeline"        "m"   #'hide-mode-line-mode)
       (:prefix "TAB"
@@ -557,48 +558,5 @@
 
  (:map shr-map             ;Otherwise visual-mode wouldn't be available
   "v" nil))
-
-(add-hook! 'eshell-first-time-mode-hook
-  (defun +eshell-keymap-h ()
-    ;; Keys must be bound in a hook because eshell resets its keymap every
-    ;; time `eshell-mode' is enabled. Why? It is not for us mere mortals to
-    ;; grasp such wisdom.
-    (map! :map eshell-mode-map
-          :nmi "q" #'+eshell/kill-and-close
-          :nmi "C-q"  #'+eshell/kill-and-close
-          :nmi "C-f" #'+eshell/prompt-for-cwd
-          :nmi "C-l" #'+eshell/last-directory
-          :nmi "C-d" #'+eshell-open-cwd-dired
-          :nmi "C-r" #'+eshell-complete-recent-dir
-          :nmi "C-p" #'+eshell/up-directory
-          :nmi "<home>" #'eshell-bol
-          :localleader
-          "f" #'+eshell/prompt-for-cwd
-          "p" #'+eshell/up-directory
-          "l" #'+eshell/last-directory
-          "d" #'+eshell-open-cwd-dired
-          "r" #'+eshell-complete-recent-dir)))
-
-
-(after! treemacs-evil
-  (evil-define-key 'treemacs treemacs-mode-map "l" nil)
-  (map!
-   (:map treemacs-mode-map
-    "l" nil)
-   (:map evil-treemacs-state-map
-    "j"       nil
-    "l"       nil
-    "-"       #'treemacs-root-up
-    "p"       #'treemacs-peek
-    "l"       #'treemacs-root-up
-    "a"       #'treemacs-root-down
-    "i"       #'treemacs-i-action
-    "e"       #'treemacs-e-action
-    "M-i"     #'treemacs-previous-line-other-window
-    "M-e"     #'treemacs-next-line-other-window
-    "M-l"     #'treemacs-previous-neighbour
-    "M-a"     #'treemacs-next-neighbour
-    "<left>"  #'treemacs-left-action
-    "<right>" #'treemacs-right-action)))
 
 (provide '+bindings)
