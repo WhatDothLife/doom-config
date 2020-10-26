@@ -99,13 +99,16 @@ buffer."
     ;; time `eshell-mode' is enabled. Why? It is not for us mere mortals to
     ;; grasp such wisdom.
     (map! :map eshell-mode-map
+          :nmi "C-e" #'+eshell-open-cwd-dired
           :nmi "q" #'+eshell/kill-and-close
           :nmi "C-q"  #'+eshell/kill-and-close
           :nmi "C-f" #'+eshell/prompt-for-cwd
-          :nmi "C-l" #'+eshell/last-directory
-          :nmi "C-d" #'+eshell-open-cwd-dired
+          :nmi "C-b" #'+eshell/last-directory
           :nmi "C-r" #'+eshell-complete-recent-dir
           :nmi "C-p" #'+eshell/up-directory
+          :nmi "C-l" #'eshell-previous-prompt
+          :nmi "C-a" #'eshell-next-prompt
+          :nmi "C-x" #'eshell/clear
           :nmi "<home>" #'eshell-bol
           :localleader
           "f" #'+eshell/prompt-for-cwd

@@ -5,7 +5,8 @@
  ;; If there is more than one, they won't work right.
  '(auth-source-save-behavior nil)
  '(custom-safe-themes
-   '("2f1518e906a8b60fac943d02ad415f1d8b3933a5a7f75e307e6e9a26ef5bf570" "e2acbf379aa541e07373395b977a99c878c30f20c3761aac23e9223345526bcc" default))
+   '("4f01c1df1d203787560a67c1b295423174fd49934deb5e6789abd1e61dba9552" "7d708f0168f54b90fc91692811263c995bebb9f68b8b7525d0e2200da9bc903c" "d5a878172795c45441efcd84b20a14f553e7e96366a163f742b95d65a3f55d71" "8d7684de9abb5a770fbfd72a14506d6b4add9a7d30942c6285f020d41d76e0fa" "cae81b048b8bccb7308cdcb4a91e085b3c959401e74a0f125e7c5b173b916bf9" "2f1518e906a8b60fac943d02ad415f1d8b3933a5a7f75e307e6e9a26ef5bf570" "e2acbf379aa541e07373395b977a99c878c30f20c3761aac23e9223345526bcc" default))
+ '(evil-undo-system 'undo-redo)
  '(safe-local-variable-values
    '((ssh-deploy-on-explicit-save . 1)
      (ssh-deploy-root-remote . "/ssh:s8179597@taurus.hrsk.tu-dresden.de:/home/h6/s8179597/projects/DeepHPM/")
@@ -58,7 +59,9 @@
  '(eshell-git-prompt-powerline-dir-face ((t (:background "#935d6c"))))
  '(eshell-syntax-highlighting-string-face ((t (:foreground "#fabd2f"))))
  '(font-lock-builtin-face ((t (:foreground "#d3869b"))))
+ '(font-lock-function-name-face ((t (:foreground "#fabd2f"))))
  '(font-lock-type-face ((t (:foreground "#d3869b"))))
+ '(font-lock-variable-name-face ((t (:foreground "#83a598"))))
  '(mode-line ((t (:background "#202020"))))
  '(mu4e-header-key-face ((t (:foreground "#fb4934" :weight bold))))
  '(mu4e-replied-face ((t (:foreground "#b8bb26"))))
@@ -83,5 +86,6 @@
  '(outline-8 ((t (:weight semi-bold))))
  '(outline-9 ((t (:weight semi-bold))))
  '(preview-reference-face ((t (:background "white"))))
+ '(rustic-builtin-formatting-macro ((t (:foreground "#fe8019"))))
  '(solaire-mode-line-face ((t (:background "#202020"))))
  '(solaire-mode-line-inactive-face ((t (:background "#242424")))))

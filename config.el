@@ -24,14 +24,13 @@
       user-mail-address "michael.wernthaler@posteo.de"
 
       doom-font-increment 1
-      doom-font (font-spec :family "Source Code Pro")
+      doom-font (font-spec :family "Source Code Pro" :size 16)
       window-combination-resize t
       fill-column 80
       message-fill-column 80
       fill-flowed-encode-column 80
       auto-save-interval 100
       doom-modeline-buffer-encoding nil
-      yas-triggers-in-field t
       avy-single-candidate-jump t
       +evil-want-o/O-to-continue-comments nil
       projectile-project-search-path '("~/projects")
@@ -48,6 +47,8 @@
 
 (setq auth-sources '("~/.authinfo.gpg")
       auth-source-cache-expiry nil)
+
+;; (setq doom-gruvbox-dark-variant "hard")
 
 (setq ispell-dictionary "de_DE")
 
@@ -107,20 +108,26 @@
   :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 (after! centaur-tabs
-  (centaur-tabs-mode -1)
+  (centaur-tabs-mode 1)
   (setq centaur-tabs-height 26
         centaur-tabs-set-icons t
-        centaur-tabs-modified-marker "o"
-        centaur-tabs-close-button "×"
-        centaur-tabs-set-bar 'under)
-  centaur-tabs-gray-out-icons 'buffer)
+        centaur-tabs-plain-icons t
+        centaur-tabs-icon-scale-factor 0.8
+        centaur-tabs-set-close-button nil
+        centaur-tabs-set-bar 'top
+        centaur-tabs-style "wave"
+        centaur-tabs-set-modified-marker nil
+        centaur-tabs-gray-out-icons 'buffer)
+  (centaur-tabs-change-fonts "P22 Underground Book" 120))
 (setq x-underline-at-descent-line t)
-
-;; (load-theme 'doom-gruvbox t)
 
 ;; Adjust the colors of doom-gruvbox
 (custom-set-faces!
   `(font-lock-type-face :foreground ,(doom-color 'violet))
+  `(font-lock-variable-name-face :foreground ,(doom-color 'blue)) ;rust
+  `(font-lock-function-name-face :foreground ,(doom-color 'yellow)) ;rust
+  `(rustic-builtin-formatting-macro :foreground ,(doom-color 'orange)) ;rust
+  ;; `(font-lock-preprocessor-face :foreground ,(doom-color 'orange))
   `(doom-modeline-buffer-modified :foreground ,(doom-color 'red))
   `(diredfl-dir-heading :foreground ,(doom-color 'olive))
   `(diredfl-dir-name :foreground ,(doom-color 'dark-cyan))
@@ -128,7 +135,7 @@
   '(solaire-mode-line-face :background "#202020")
   '(mode-line :background "#202020")
   '(solaire-mode-line-inactive-face :background "#242424")
-  `(font-lock-builtin-face :foreground ,(doom-color 'violet))
+  `(font-lock-builtin-face :foreground ,(doom-color 'violet)) ;;elisp
   `(mu4e-replied-face :foreground ,(doom-color 'green))
   `(mu4e-header-key-face :foreground ,(doom-color 'red) :weight bold)
   `(outline-1 :foreground ,(doom-color 'violet) :height 1.25)
@@ -168,6 +175,6 @@
 
 (load-theme 'doom-gruvbox t)
 
-(theme-magic-export-theme-mode)
+(theme-magic-from-emacs)
 
 (provide 'config)

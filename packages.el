@@ -24,9 +24,8 @@
 
 (package! org-rich-yank)
 
-(package! org-msg
-  :recipe (:host github
-           :repo "jeremy-compostella/org-msg"))
+(package! LaTeX-auto-activating-snippets
+  :recipe (:host github :repo "tecosaur/LaTeX-auto-activating-snippets"))
 
 (package! mixed-pitch
   :recipe (:host gitlab :repo "jabranham/mixed-pitch"))
@@ -35,7 +34,7 @@
   :recipe (:host gitlab :repo "marcowahl/org-pretty-tags"))
 
 (package! org-pretty-table
-  :recipe (:host github :repo "Fuco1/org-pretty-table")) ;Needs some more work
+  :recipe (:host github :repo "Fuco1/org-pretty-table"))
 
 (package! flycheck-rust)
 
@@ -46,6 +45,8 @@
 (package! centaur-tabs)
 
 (package! ivy-avy)
+
+(package! yaml-mode)
 
 (package! zoom)
 
