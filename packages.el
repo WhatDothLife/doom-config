@@ -7,8 +7,6 @@
 
 (package! doct)                         ;Declarative org capture templates
 
-(package! dimmer)
-
 (package! dired-subtree)
 (package! dired-narrow)
 (package! dired-collapse)
@@ -36,21 +34,21 @@
 (package! org-pretty-table
   :recipe (:host github :repo "Fuco1/org-pretty-table"))
 
+(package! org-fragtog)
+
+(package! org-graph-view :recipe (:host github :repo "alphapapa/org-graph-view") :pin "13314338d7...")
+
 (package! flycheck-rust)
 
 (package! latex-extra)
 
 (package! yasnippet-snippets)
 
-(package! centaur-tabs)
+;; (package! centaur-tabs)
+
 
 (package! ivy-avy)
-
-(package! yaml-mode)
 
 (package! zoom)
 
 (package! theme-magic :pin "844c4311bd...")
-
-;; (package! auto-latex-snippets)
-

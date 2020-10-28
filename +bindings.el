@@ -81,11 +81,11 @@
       (:prefix "p"
        :desc "Treemacs" "t" #'treemacs)
       (:prefix "t"
-       :desc "Toggle Tabs"     "TAB" #'centaur-tabs-mode
+       :desc "Toggle Tabs"     "TAB" #'centaur-tabs-local-mode
        :desc "Open Treemacs"   "t"   #'+treemacs/toggle
-       :desc "Open Treemacs"   "d"   #'dimmer-mode
        :desc "Frame maximized" "M"   #'toggle-frame-maximized
-       :desc "Modeline"        "m"   #'hide-mode-line-mode)
+       :desc "Modeline"        "m"   #'minimap-mode
+       :desc "Modeline"        "h"   #'hide-mode-line-mode)
       (:prefix "TAB"
        :desc "Create new workspace"         "c" #'+workspace/new
        :desc "Clear workspace"              "q" #'doom/kill-all-buffers

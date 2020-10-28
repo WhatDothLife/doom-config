@@ -1,15 +1,14 @@
 ;;; ~/.doom.d/config.el -*- lexical-binding: t; -*-
 
-;; (require 'org-msg)
 (require 'warnings)
 (require 'lilypond-mode)
-(require 'jabber-autoloads)
+;; (require 'jabber-autoloads)
 
 (setq doom-variable-pitch-font (font-spec :family "Overpass" :size 16))
 (setq mixed-pitch-set-height t)
 
 (load! "+functions")
-(load! "calfw-cal")
+;; (load! "calfw-cal")
 (load! "+irc")
 (load! "+mu4e")
 (load! "+org")
@@ -50,13 +49,11 @@
 
 ;; (setq doom-gruvbox-dark-variant "hard")
 
-(setq ispell-dictionary "de_DE")
+(setq-default major-mode 'org-mode)
 
-(setq dimmer-fraction 0.3)
-(dimmer-configure-which-key)
-(dimmer-configure-magit)
-(dimmer-configure-company-box)
-(dimmer-mode 1)
+(setq ispell-dictionary "de_DE")
+(setq lsp-ui-doc-position 'top)
+(setq which-key-allow-multiple-replacements t)
 
 ;; (custom-set-variables
 ;;  '(zoom-size '(0.618 . 0.618)))
@@ -81,7 +78,7 @@
 
 ;; (focus-mode 1)
 (auto-save-mode)
-;; (global-subword-mode 1)
+(global-subword-mode 1)
 (global-prettify-symbols-mode -1)
 
 (after! pdf
@@ -108,18 +105,13 @@
   :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 (after! centaur-tabs
-  (centaur-tabs-mode 1)
-  (setq centaur-tabs-height 26
-        centaur-tabs-set-icons t
-        centaur-tabs-plain-icons t
+  (setq centaur-tabs-height 28
+        ;;         centaur-tabs-plain-icons t
         centaur-tabs-icon-scale-factor 0.8
         centaur-tabs-set-close-button nil
-        centaur-tabs-set-bar 'top
-        centaur-tabs-style "wave"
-        centaur-tabs-set-modified-marker nil
-        centaur-tabs-gray-out-icons 'buffer)
+        centaur-tabs-set-bar nil
+        centaur-tabs-style "wave")
   (centaur-tabs-change-fonts "P22 Underground Book" 120))
-(setq x-underline-at-descent-line t)
 
 ;; Adjust the colors of doom-gruvbox
 (custom-set-faces!
@@ -174,7 +166,5 @@
     ("e2acbf379aa541e07373395b977a99c878c30f20c3761aac23e9223345526bcc" default))))
 
 (load-theme 'doom-gruvbox t)
-
-(theme-magic-from-emacs)
 
 (provide 'config)

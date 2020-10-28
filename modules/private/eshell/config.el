@@ -56,6 +56,12 @@ buffer."
   (interactive)
   (find-file-other-window default-directory))
 
+(defun +eshell/insert-directory (dir)
+  "Prompt for directory and cd to it."
+  (interactive "D")
+  ;; (+evil/insert (format "\"%s\"" dir))
+  (+evil/insert dir))
+
 (defun +eshell/prompt-for-cwd (dir)
   "Prompt for directory and cd to it."
   (interactive "Dcd ")
@@ -83,7 +89,7 @@ buffer."
   :group 'eshell-faces)
 
 (set-eshell-alias!
-    "sf"  "eshell/sudo-find-file $1")
+ "sf"  "eshell/sudo-find-file $1")
 
 (add-to-list 'exec-path "~/.emacs.d/bin/")
 
@@ -99,7 +105,7 @@ buffer."
     ;; time `eshell-mode' is enabled. Why? It is not for us mere mortals to
     ;; grasp such wisdom.
     (map! :map eshell-mode-map
-          :nmi "C-e" #'+eshell-open-cwd-dired
+          ;; :nmi "C-d" #'+eshell-open-cwd-dired
           :nmi "q" #'+eshell/kill-and-close
           :nmi "C-q"  #'+eshell/kill-and-close
           :nmi "C-f" #'+eshell/prompt-for-cwd
@@ -108,11 +114,19 @@ buffer."
           :nmi "C-p" #'+eshell/up-directory
           :nmi "C-l" #'eshell-previous-prompt
           :nmi "C-a" #'eshell-next-prompt
+          :nmi "C-i" #'+eshell/insert-directory
+          :nmi "C-e" #'+eshell-insert-envvar
           :nmi "C-x" #'eshell/clear
           :nmi "<home>" #'eshell-bol
           :localleader
           "f" #'+eshell/prompt-for-cwd
           "p" #'+eshell/up-directory
           "l" #'+eshell/last-directory
-          "d" #'+eshell-open-cwd-dired
+          ;; "d" #'+eshell-open-cwd-dired
           "r" #'+eshell-complete-recent-dir)))
+
+(defun +eshell-insert-envvar (envvar-name)
+  "Insert ENVVAR-NAME into the current buffer at point."
+  (interactive
+   (list (read-envvar-name "Name of environment variable: " t)))
+  (+evil/insert (concat "$" envvar-name)))
