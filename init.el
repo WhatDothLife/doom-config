@@ -2,8 +2,7 @@
 
 ;; Copy this file to ~/.doom.d/init.el or ~/.config/doom/init.el ('doom install'
 ;; will do this for you). The `doom!' block below controls what modules are
-;; enabled and in what order they will be loaded. Remember to run 'doom refresh'
-;; after modifying it.
+;; enabled and in what order they will be loaded.
 ;;
 ;; More information about these modules (and what flags they support) can be
 ;; found in modules/README.org.
@@ -16,13 +15,13 @@
        neo2
 
        :completion
-       company           ; the ultimate code completion backend
-        ;; +childframe)
+       (company           ; the ultimate code completion backend
+        +childframe)
        ;; helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
        (ivy               ; a search engine for love and life
         ;; +fuzzy
-        ;; +childframe
+        ;; +childframe   ;Ugly
         +prescient
         +icons
         )
@@ -36,8 +35,9 @@
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;hydra
        ;;indent-guides     ; highlighted indent columns
-       ligatures
-       minimap
+       (ligatures
+        +hasklig
+        +extra)
        modeline          ; snazzy, Atom-inspired modeline, plus API
        nav-flash         ; blink the current line after jumping
        ;; neotree           ; a project drawer, like NERDTree for vim
@@ -52,7 +52,7 @@
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        window-select     ; visually switch windows
        workspaces        ; tab emulation, persistence & separate workspaces
-       ;; zen
+       zen
 
        :editor
        (evil +everywhere); come to the dark side, we have cookies
@@ -73,25 +73,26 @@
        :emacs
        (dired +icons)             ; making dired pretty [functional]
        electric          ; smarter, keyword-based electric-indent
-       ibuffer           ; interactive buffer management
+       (ibuffer +icons)           ; interactive buffer management
+       undo
        vc                ; version-control and Emacs, sitting in a tree
 
        :term
        eshell            ; a consistent, cross-platform shell (WIP)
        shell             ; a terminal REPL for Emacs
-       term              ; terminals in Emacs
-       vterm             ; another terminals in Emacs
+       ;; term              ; terminals in Emacs
+       ;; vterm             ; another terminals in Emacs
 
        :checkers
        (syntax +childframe)              ; tasing you for every semicolon you forget
        (spell             ; tasing you for misspelling mispelling
-        +aspell)
-       ;;grammar           ; tasing grammar mistake every you make
+        +flyspell)
+       grammar           ; tasing grammar mistake every you make
 
        :tools
        ;;ansible
        ;; biblio
-       ;;debugger          ; FIXME stepping through code, to help you add bugs
+       debugger          ; FIXME stepping through code, to help you add bugs
        ;;direnv
        ;;docker
        ;; editorconfig      ; let someone else argue about tabs vs spaces
@@ -99,6 +100,7 @@
        (eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
        (lookup           ; helps you navigate your code and documentation
+        +offline
         +docsets
         +dictionary)        ; ...or in Dash docsets locally
        lsp
@@ -109,7 +111,7 @@
        pdf               ; pdf enhancements
        ;;prodigy           ; FIXME managing external services & code builders
        ;;rgb               ; creating color strings
-       taskrunner
+       ;; taskrunner
        ;;terraform         ; infrastructure as code
        ;;tmux              ; an API for interacting with tmux
        ;; upload            ; map local to remote projects via ssh/ftp
@@ -132,14 +134,15 @@
        ;;faust             ; dsp, but you get to keep your soul
        ;;fsharp           ; ML stands for Microsoft's Language
        ;;go                ; the hipster dialect
-       (haskell +dante) ; a language that's lazier than I am
+       ;; (haskell +dante) ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ;
        ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
-       (javascript +lsp)       ; all(hope(abandon(ye(who(enter(here))))))
+       ;; (javascript +lsp)       ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
        (latex              ; writing papers in Emacs has never been so fun
+        +latexmk
         +fold)
        ;;lean
        ;;ledger            ; an accounting system in Emacs
@@ -150,18 +153,20 @@
        ;;ocaml             ; an objective camel
        (org              ; organize your plain life in plain text
         +dragndrop       ; drag & drop files/images into org buffers
+        ;; +gnuplot
         ;+hugo             ; use Emacs for hugo blogging
         ;;+jupyter         ; ipython/jupyter support for babel
         +pandoc          ; export-with-pandoc support
         ;+pomodoro         ; be fruitful with the tomato technique
         +pretty
         +present           ; using org-mode for presentationS
-        +roam)
+        ;;+roam
+        )
        ;;perl              ; write code no one else can comprehend
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       python            ; beautiful is better than ugly
+       ;; python            ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;rest              ; Emacs as a REST client
@@ -179,10 +184,8 @@
        yaml
 
        :email
-       (mu4e
-        ;; +gmail
-        )
-       ;;notmuch
+       mu4e
+       notmuch
        ;;(wanderlust +gmail)
 
        :app
@@ -190,19 +193,16 @@
        irc               ; how neckbeards socialize
        ;;(rss +org)        ; emacs as an RSS reader
        ;;twitter           ; twitter client https://twitter.com/vnought
-       ;;(write            ; emacs for writers (fiction, notes, papers, etc.)
-       ;; +wordnut         ; wordnet (wn) search
-       ;; +langtool)       ; a proofreader (grammar/style check) for Emacs
 
        :private
-       eshell
-       org
-       treemacs
+       ;;eshell
+       ;;org
+       ;;treemacs
 
        :config
        ;; For literate config users. This will tangle+compile a config.org
        ;; literate config in your `doom-private-dir' whenever it changes.
-       ;; literate
+       literate
 
        ;; The default module sets reasonable defaults for Emacs. It also
        ;; provides a Spacemacs-inspired keybinding scheme and a smartparens

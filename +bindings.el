@@ -17,14 +17,15 @@
 (map!
  :nimv "C-ö" #'evil-scroll-line-up
  :nimv "C-ü" #'evil-scroll-line-down
- :m    "C-b" #'better-jumper-jump-backward
- :m    "C-f" #'better-jumper-jump-forward
+
+ :nimv    "C-q" #'+workspace/close-window-or-workspace
 
  :i "C-ä"   (λ! (insert-char #x200b))
 
  :n "•"  #'repeat
 
  :n "gC" #'+nav-flash/blink-cursor
+ :m "zq" #'posframe-delete-all
 
  "M-t"   #'split-switch-right
  "M-r"   #'split-switch-below
@@ -40,20 +41,28 @@
  "M-w"      #'fixup-whitespace
  "M-;"      #'evil-comment-dwim
 
+ "C-,"           #'evil-window-next
+ ;; "<M-S-iso-lefttab>" #'evil-window-prev
  "<M-tab>"           #'+workspace:switch-next
  "<M-S-iso-lefttab>" #'+workspace:switch-previous
+
  "C-q"               #'+workspace/close-window-or-workspace
  :i "<C-tab>"        #'expand-abbrev
- "S-SPC"             #'dabbrev-expand
+ "S-SPC"             #'+company/dabbrev
 
  "M-(" #'centaur-tabs-backward-tab
  "M-)" #'centaur-tabs-forward-tab
+
+ "M-<" #'centaur-tabs-move-current-tab-to-left
+ "M->" #'centaur-tabs-move-current-tab-to-right
 
  :e "SPC" #'doom/leader)
 
 (map! :leader
       (:prefix "b"
        :desc "Bury buffer"                "b" #'bury-buffer
+       :desc "Copy visible link"          "l" #'link-hint-copy-link
+       :desc "Copy link at point"         "L" #'link-hint-copy-link-at-point
        :desc "Unbury buffer"              "z" #'unbury-buffer
        :desc "Switch to buffer in window" "o" #'+ivy/switch-workspace-buffer-other-window
        :desc "Kill buffer and window"     "w" #'kill-buffer-and-window
@@ -65,6 +74,9 @@
         :desc "Decrease font size" "-" #'doom/decrease-font-size
         :desc "Reset font size"    "r" #'doom/reset-font-size))
       (:prefix "c"
+       :desc "Glance at documentation"  "g" #'lsp-ui-doc-glance
+       :desc "Show imenu"               "m" #'lsp-ui-imenu
+       :desc "Focus doc frame"          "F" #'+lsp-toggle-focus
        :desc "Copy and comment line(s)" ";" #'evilnc-copy-and-comment-lines)
       (:prefix "f"
        :desc "Treemacs"      "t" #'+treemacs/find-file)
@@ -75,23 +87,23 @@
        :desc "Calendar"           "c" #'=calendar
        :desc "Snippet Table"      "t" #'yas-describe-tables
        :desc "Toggle Shell Popup" "s" #'+shell/toggle
-       :desc "Toggle Shell Popup" "S" #'+shell/here
+       :desc "Open shell in current window" "S" #'+shell/here
+       :desc "Open shell in new frame" "F" #'+shell/other-frame
        :desc "Mail"               "m" #'=mu4e
        :desc "Eww"                "b" #'eww)
       (:prefix "p"
        :desc "Treemacs" "t" #'treemacs)
       (:prefix "t"
-       :desc "Toggle Tabs"     "TAB" #'centaur-tabs-local-mode
-       :desc "Open Treemacs"   "t"   #'+treemacs/toggle
-       :desc "Frame maximized" "M"   #'toggle-frame-maximized
-       :desc "Modeline"        "m"   #'minimap-mode
-       :desc "Modeline"        "h"   #'hide-mode-line-mode)
+       :desc "Toggle Tabs"      "TAB" #'centaur-tabs-local-mode
+       :desc "Open Treemacs"    "t"   #'+treemacs/toggle
+       :desc "Toggle writegood" "W"   #'writegood-mode
+       :desc "Toggle Opacity"   "o"   #'+toggle/opacity
+       :desc "Toggle zen-mode"  "z"   #'+writeroom-mode
+       :desc "Frame maximized"  "M"   #'toggle-frame-maximized
+       :desc "Modeline"         "m"   #'minimap-mode
+       :desc "Modeline"         "h"   #'hide-mode-line-mode)
       (:prefix "TAB"
-       :desc "Create new workspace"         "c" #'+workspace/new
-       :desc "Clear workspace"              "q" #'doom/kill-all-buffers
-       ;; :desc "Switch to previous workspace" "n" #'+workspace:switch-previous
-       ;; :desc "Switch to next workspace"     "t" #'+workspace:switch-next
-       )
+       :desc "Clear workspace"              "q" #'doom/kill-all-buffers)
       (:prefix "w"
        "d"   #'ace-delete-window
        "D"   #'ace-delete-other-windows
@@ -100,18 +112,12 @@
        "v"   #'split-switch-below
        "C-w" #'ace-swap-window
        "w"   #'ace-window
-       "."   #'treemacs-select-window
+       "t"   #'treemacs-select-window
        ","   #'switch-window
 
        "f"   #'doom/window-maximize-buffer
        "h"   #'doom/window-maximize-horizontally
-       "m"   #'doom/window-maximize-vertically
-
-       ;; "n"   #'windmove-left
-       ;; "g"   #'windmove-up
-       ;; "r"   #'windmove-down
-       ;; "t"   #'windmove-right
-       )
+       "m"   #'doom/window-maximize-vertically)
 
       "`" nil
 
@@ -216,8 +222,6 @@
   "g a" nil
   "g b" #'what-cursor-position)
 
-
-
  (:map evil-visual-state-map
   "S" nil
   "." #'evil-repeat
@@ -251,8 +255,7 @@
   "C-a"   #'ivy-avy
   "C-RET" #'ivy-immediate-done
   "M-s"   #'ivy-kill-ring-save
-  "M-m"   #'ivy-mark
-  "C-d"   (λ! (ivy--cd "/")))
+  "M-m"   #'ivy-mark)
 
  (:map (LaTeX-mode-map org-mode-map)
   ;; Greek lower case letters
@@ -419,6 +422,11 @@
   "⊙" (λ! (insert "\\odot"))
   "⊖" (λ! (insert "\\ominus")))
 
+ (:after lsp-ui
+  :map lsp-ui-doc-frame-mode-map
+  "C-q" #'posframe-delete-all
+  "C-ß" #'posframe-delete-all)
+
  (:after tex
   (:map LaTeX-mode-map
    "C-RET" nil
@@ -491,7 +499,6 @@
   :localleader
   "dt"   #'+org-time-stamp
   "dT"   #'org-time-stamp
-  "G"    #'+mu4e/spook
   "s"    #'message-send-and-exit
   "n"    #'org-add-note
   "^"    #'org-sort
@@ -503,12 +510,7 @@
   "Y"    #'org-copy-special
   "y"    #'org-rich-yank
   "z"    #'org-insert-drawer
-  :prefix "L"
-  "f"   #'org-toggle-latex-fragment
-  "F"   #'org-remove-latex-fragment
-  "B"   #'org-remove-latex-buffer
-  "b"   #'org-preview-latex-buffer
-  "e"   #'cdlatex-environment
+  "L"    #'org-latex-preview
   :prefix "b"
   "y"   #'org-table-copy-region
   "d"   #'org-table-cut-region
@@ -545,18 +547,27 @@
   :n "C-l"     #'pdf-view-previous-page-command)
 
  (:map shell-mode-map
-  :n "q"     #'kill-current-buffer
-  "C-o"      #'comint-clear-buffer
-  "C-f"      #'+shell/prompt-for-cwd
+  :nmi "C-d"    #'+shell-open-cwd-dired
+  :nmi "C-f"    #'+shell/prompt-for-cwd
+  :nmi "C-b"    #'+shell/last-directory
+  :nmi "C-r"    #'+shell/complete-recent-dir
+  :nmi "C-p"    #'+shell/up-directory
+  :nmi "C-i"    #'+shell/insert-directory
+  :nmi "C-e"    #'+shell-insert-envvar
+  :nmi "<home>" #'eshell-bol
+  :nmi "q"      #'+shell/toggle
+  :i   "TAB"    #'+company/complete
+
   :n "^" #'+shell/up-directory
   :n "-" #'+shell/last-directory
+
   :localleader
-  "w" #'+shell/window-enlargen)
+  "w" #'+shell/window-enlargen
 
- (:map yas-keymap
-  "M-RET" #'yas-expand)
-
- (:map shr-map             ;Otherwise visual-mode wouldn't be available
-  "v" nil))
+  "f" #'+shell/prompt-for-cwd
+  "p" #'+shell/up-directory
+  "l" #'+shell/last-directory
+  "d" #'+shell/open-cwd-dired
+  "r" #'+shell/complete-recent-dir))
 
 (provide '+bindings)

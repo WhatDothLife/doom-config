@@ -51,7 +51,7 @@
 
 
 (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
-(add-hook 'mu4e-main-mode-hook (lambda () (setq flyspell-dash-local-dictionary "deutsch8")))
+;; (add-hook 'mu4e-main-mode-hook (lambda () (setq flyspell-dash-local-dictionary "deutsch8")))
 
 (setq mu4e-attachment-dir "~/tmp/Mail"
 
@@ -107,7 +107,7 @@
 ;; default is to ask
 (setq mu4e-compose-context-policy nil)
 (setq mu4e-view-show-images nil)
-(add-hook 'mu4e-view-mode-hook 'mixed-pitch-mode)
+;; (add-hook 'mu4e-view-mode-hook 'mixed-pitch-mode)
 (add-hook 'mu4e-main-mode-hook 'hide-mode-line-mode)
 (add-hook 'mu4e-loading-mode-hook 'hide-mode-line-mode)
 (add-hook 'mu4e~update-mail-mode-hook 'hide-mode-line-mode)

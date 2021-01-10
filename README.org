@@ -34,6 +34,7 @@ Modules that have found support so far are:
 - pass
 - pdf
 - treemacs
+
 ** Latex support
 =LaTeX-mode-map= has been configured to insert a corresponding symbol for
 nearly every unicode character you type. A few exceptions are:

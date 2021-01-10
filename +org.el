@@ -56,17 +56,16 @@
 
 (org-super-agenda-mode t)
 
-(add-hook! 'org-mode-hook #'+org-pretty-mode)
+;; (add-hook! 'org-mode-hook #'+org-pretty-mode) This is awefully slow
 (add-hook! 'org-mode-hook #'auto-fill-mode)
 (add-hook! 'org-mode-hook #'org-cdlatex-mode)
-;; (add-hook! 'org-mode-hook #'org-pretty-table-mode) ;needs some work
 
 (setq org-agenda-include-diary t
       org-use-property-inheritance t
       org-log-done 'time
       org-list-allow-alphabetical t
       org-export-in-background t
-      org-catch-invisible-edits 'smart
+      org-catch-invisible-edits 'show-and-error
       diary-file "~/org/diary.org"
       org-clock-persist 'history
       org-agenda-files '("~/org/agenda")
@@ -80,7 +79,7 @@
       org-agenda-compact-blocks t)
 
 (after! org
-  (setq org-highlight-latex-and-related '(native)))
+  (setq org-highlight-latex-and-related nil))
 
 (use-package! doct
   :commands (doct))
@@ -469,12 +468,12 @@
   (setq org-superstar-headline-bullets-list '("◉" "○" "✸" "◆" "✤" "✜" "◆" "▶")
         org-superstar-prettify-item-bullets t
         org-superstar-item-bullet-alist
-        '((?* . ?•)
-          (?+ . ?→)
-          (?- . ?➤))
+        '((?* . ?⇝)
+          (?+ . ?➢)
+          (?- . ?→))
         ))
 
-(setq org-list-demote-modify-bullet '(("+" . "-") ("-" . "+") ("*" . "+")))
+(setq org-list-demote-modify-bullet '(("-" . "+") ("+" . "-")))
 
 (setq org-super-agenda-groups
       '(;; Each group has an implicit boolean OR operator between its selectors.
