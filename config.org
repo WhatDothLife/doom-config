@@ -1,3 +1,9 @@
+#+TITLE: Config
+
+* Rudimentary configuration
+** Doom configuration
+*** Theme and colors
+#+BEGIN_SRC emacs-lisp
 (custom-set-faces!
   `(font-lock-type-face :foreground ,(doom-color 'violet))
   `(font-lock-variable-name-face :foreground ,(doom-color 'blue)) ;rust
@@ -45,7 +51,10 @@
 (setq doom-gruvbox-dark-variant "hard")
 
 (load-theme 'doom-gruvbox t)
+#+END_SRC
 
+*** Font
+#+BEGIN_SRC emacs-lisp
 (setq doom-font-increment 1)
 (setq doom-font (font-spec :family "Hasklig" :size 17)
       doom-variable-pitch-font (font-spec :family "sans" :size 15))
@@ -53,23 +62,41 @@
 (doom/reload-font)
 
 (setq mixed-pitch-set-height t)
+#+END_SRC
 
+*** Dashboard
+#+BEGIN_SRC emacs-lisp
 ;; (setq +doom-dashboard-banner-file (concat doom-private-dir "splash_gruv.png"))
 
 (add-hook '+doom-dashboard-mode-hook 'hide-mode-line-mode)
+#+END_SRC
 
+*** Other
+#+BEGIN_SRC emacs-lisp
 (remove-hook 'org-mode-hook #'+literate-enable-recompile-h)
+#+END_SRC
 
+** Personal Information
+#+BEGIN_SRC emacs-lisp
 (setq user-full-name "Michael Wernthaler"
       user-mail-address "michael.wernthaler@posteo.de")
+#+END_SRC
 
+** Authentication
+#+BEGIN_SRC emacs-lisp
 (setq auth-sources '("~/.local/share/pass/.authinfo.gpg")
       auth-source-cache-expiry nil)
 
 (setq auth-source-pass-filename "~/.local/share/pass")
+#+END_SRC
 
+** Abbrevs
+#+BEGIN_SRC emacs-lisp
 (setq abbrev-file-name (concat doom-private-dir "abbrevs.el"))
+#+END_SRC
 
+** Popup
+#+BEGIN_SRC emacs-lisp
 (set-popup-rule! "^\\*Customize.*" :slot 2 :side 'right :modeline nil :select t :quit t)
 (set-popup-rule! " \\*undo-tree\\*" :slot 2 :side 'left :size 20 :modeline nil :select t :quit t)
 
@@ -91,12 +118,20 @@
 ;; * web
 (set-popup-rule! "^\\*eww.*" :size 82 :side 'right :ttl nil :select t)
 (set-popup-rule! "\\*xwidget" :side 'right :size 100 :select t)
+#+END_SRC
 
+** Better defaults
+*** dired
+#+BEGIN_SRC emacs-lisp
 (setq dired-recursive-deletes 'always
       dired-recursive-copies 'always)
-
+#+END_SRC
+*** modeline
+#+BEGIN_SRC emacs-lisp
 (setq doom-modeline-buffer-encoding nil)
-
+#+END_SRC
+*** simple settings
+#+BEGIN_SRC emacs-lisp
 (setq which-key-allow-multiple-replacements t
       delete-by-moving-to-trash t
       auto-save-interval 100
@@ -122,25 +157,41 @@
 
 ;; Prevents some cases of Emacs flickering
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
+#+END_SRC
 
+Avoid line automatic line breaks in emails at any cost
+#+BEGIN_SRC emacs-lisp
 (setq fill-column 70
       message-fill-column 70
       fill-flowed-encode-column 70)
+#+END_SRC
 
+Slicker names for fallbackbuffer
+#+BEGIN_SRC emacs-lisp
 (setq doom-fallback-buffer-name "► Doom"
       +doom-dashboard-name "► Doom")
+#+END_SRC
 
+** Windows
+#+BEGIN_SRC emacs-lisp
 (setq window-combination-resize t
       +ivy-buffer-preview t
       avy-single-candidate-jump t)
+#+END_SRC
 
+** Modes
+#+BEGIN_SRC emacs-lisp
 (auto-save-mode)
 (global-subword-mode)
 (global-prettify-symbols-mode -1)
-
+#+END_SRC
+** Modeline hiding
+#+BEGIN_SRC emacs-lisp
 (add-hook 'reb-mode-hook 'hide-mode-line-mode)
 (add-hook 'dired-mode-hook 'hide-mode-line-mode)
-
+#+END_SRC
+** Shell
+#+BEGIN_SRC emacs-lisp
 (add-hook 'shell-mode-hook
           (lambda ()
             (face-remap-set-base 'comint-highlight-prompt :inherit nil)))
@@ -168,7 +219,74 @@
       )
 
 (setq comint-process-echoes t)
+#+END_SRC
 
+* Package loading
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle "packages.el" :comments link
+:END:
+This file shouldn't be byte compiled.
+#+begin_src emacs-lisp :tangle "packages.el" :comments no
+;; -*- no-byte-compile: t; -*-
+#+end_src
+** General packages
+#+BEGIN_SRC emacs-lisp
+(package! academic-phrases)
+
+(package! smart-hungry-delete)
+
+(package! auto-dictionary-mode
+  :recipe (:host github :repo "nschum/auto-dictionary-mode"))
+
+(package! mixed-pitch
+  :recipe (:host gitlab :repo "jabranham/mixed-pitch"))
+
+(package! yasnippet-snippets)
+
+(package! ivy-avy)
+
+(package! frames-only-mode)
+#+END_SRC
+** Language packages
+*** Latex
+#+BEGIN_SRC emacs-lisp
+(package! latex-extra)
+#+END_SRC
+** Org packages
+#+BEGIN_SRC emacs-lisp
+;; (package! org-pandoc-import
+;;   :recipe (:host github :repo "tecosaur/org-pandoc-import"))
+
+(package! doct)                         ;Declarative org capture templates
+(package! org-super-agenda)
+(package! org-pretty-tags
+  :recipe (:host gitlab :repo "marcowahl/org-pretty-tags"))
+(package! org-pretty-table
+  :recipe (:host github :repo "Fuco1/org-pretty-table"))
+;; (package! org-graph-view :recipe (:host github :repo "alphapapa/org-graph-view") :pin "13314338d7...")
+(package! org-msg :disable t)
+#+END_SRC
+
+** Dired
+#+BEGIN_SRC emacs-lisp
+(package! dired-subtree)
+(package! dired-narrow)
+(package! dired-collapse)
+#+END_SRC
+
+** Authinfo
+#+BEGIN_SRC emacs-lisp
+;; (package! authinfo-mode)
+#+END_SRC
+
+** Shell
+#+BEGIN_SRC emacs-lisp
+(package! shx)
+#+END_SRC
+
+* Package configuration
+** spell
+#+BEGIN_SRC emacs-lisp
 (setq ispell-dictionary "en_US")
 (require 'auto-dictionary)
 (add-hook 'flyspell-mode-hook (lambda () (auto-dictionary-mode 1)))
@@ -182,7 +300,9 @@
                 message-mode-hook
                 git-commit-mode-hook)
   #'flyspell-mode)
-
+#+END_SRC
+** centaur-tabs
+#+BEGIN_SRC emacs-lisp
 (after! centaur-tabs
   (setq centaur-tabs-height 26
         centaur-tabs-bar-height 26
@@ -200,7 +320,9 @@
 (add-hook 'shell-mode-hook #'centaur-tabs-local-mode)
 
 (centaur-tabs-mode)
-
+#+END_SRC
+** LaTeX
+#+BEGIN_SRC emacs-lisp
 (setq TeX-save-query nil
       ;; TeX-show-compilation nil
       +latex-viewers '(pdf-tools)
@@ -216,7 +338,10 @@
   (add-hook 'LaTeX-mode-hook #'latex-extra-mode))
 (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
 ;; (add-hook 'LaTeX-mode-hook #'mixed-pitch-mode)
+#+END_SRC
+** mu4e
 
+#+BEGIN_SRC emacs-lisp
 (require 'mu4e)
 (require 'smtpmail)
 (require 'gnutls)
@@ -336,7 +461,9 @@
 
 (add-hook 'mu4e-compose-mode-hook 'auto-fill-mode)
 (add-hook 'org-msg-mode-hook 'flyspell-lazy-mode-disable)
+#+END_SRC
 
+#+BEGIN_SRC emacs-lisp
 ;; (defvar ambrevar/mu4e-compose-signed-p t)
 ;; (defvar ambrevar/mu4e-compose-signed-and-crypted-p nil)
 ;; (defun ambrevar/mu4e-compose-maybe-signed-and-crypted ()
@@ -356,7 +483,11 @@
 ;;           (and msg (member 'signed (mu4e-message-field msg :flags))))
 ;;       (mml-secure-message-sign-pgpmime)))))
 ;; (add-hook 'mu4e-compose-mode-hook 'ambrevar/mu4e-compose-maybe-signed-and-crypted)
+#+END_SRC
 
+*** Hacks
+We need to overwrite this function to mark the right candidates. Or do we?
+#+BEGIN_SRC emacs-lisp
 ;; (defun mu4e-mark-set (mark &optional target)
 ;;   "Mark the header at point, or, if region is active, mark all
 ;; headers in the region. Optionally, provide TARGET (for moves)."
@@ -372,12 +503,17 @@
 ;;         (while (and (< (point) eor) (not cant-go-further))
 ;;           (mu4e-mark-at-point mark target)
 ;;           (setq cant-go-further (not (mu4e-headers-next))))))))
+#+END_SRC
 
+** pdf-tools
+#+BEGIN_SRC emacs-lisp
 (after! pdf
   (set-evil-initial-state! 'pdf-view-mode 'emacs))
 
 (add-hook 'pdf-view-mode-hook 'hide-mode-line-mode)
-
+#+END_SRC
+*** Functions
+#+BEGIN_SRC emacs-lisp
 (defun +pdf-top-next-page ()
   (interactive)
   (pdf-view-next-page-command)
@@ -387,26 +523,41 @@
   (interactive)
   (pdf-view-previous-page-command)
   (image-eob))
+#+END_SRC
 
+** Lilypond
+#+BEGIN_SRC emacs-lisp
 ;; (require 'lilypond-mode)
 
 ;; (use-package! lilypond-mode
 ;;   :mode ("\\.ly\\'" . LilyPond-mode))
+#+END_SRC
 
+** authinfo
+#+BEGIN_SRC emacs-lisp
 ;; (use-package! authinfo-mode
 ;;   :mode ("authinfo\\.gpg\\'" . authinfo-mode))
+#+END_SRC
 
+** rust
+#+BEGIN_SRC emacs-lisp
 (add-hook 'rustic-mode-hook #'rainbow-delimiters-mode-enable)
-;;temporary workaround
-;; (setq-hook! 'rustic-mode-hook lsp-rust-analyzer-server-command '("~/tmp/build/rust-analyzer-linux"))
+#+END_SRC
 
+** projectile
+#+BEGIN_SRC emacs-lisp
 (setq projectile-project-search-path '("~/repos"))
+#+END_SRC
 
+** EVIL
+#+BEGIN_SRC emacs-lisp
 (setq +evil-want-o/O-to-continue-comments nil
       evil-snipe-scope 'visible)
 
 (after! evil (setq evil-ex-substitute-global t))
-
+#+END_SRC
+** LSP
+#+BEGIN_SRC emacs-lisp
 (after! lsp-ui
   (setq lsp-ui-doc-position 'top
         lsp-auto-execute-action nil
@@ -421,15 +572,24 @@
       lsp-headerline-breadcrumb-enable-diagnostics nil)
 (setq lsp-ui-doc-border (doom-color 'violet))
 (add-hook 'lsp-ui-imenu-mode-hook 'hide-mode-line-mode)
-
+#+END_SRC
+** Shell
+#+BEGIN_SRC emacs-lisp
 (shx-global-mode 1)
-
+#+END_SRC
+** Treemacs
+#+BEGIN_SRC emacs-lisp
 (setq treemacs-width 30)
+#+END_SRC
 
+I use treemacs-select-window for this
+#+BEGIN_SRC emacs-lisp
 (after! treemacs
   (after! ace-window
     (add-to-list 'aw-ignored-buffers 'treemacs-mode)))
-
+#+END_SRC
+*** Bindings
+#+BEGIN_SRC emacs-lisp
 (after! treemacs-evil
   (evil-define-key 'treemacs treemacs-mode-map "l" nil)
   (map!
@@ -451,7 +611,9 @@
     "M-a"     #'treemacs-next-neighbour
     "<left>"  #'treemacs-left-action
     "<right>" #'treemacs-right-action)))
-
+#+END_SRC
+*** Arrow-key navigation
+#+BEGIN_SRC emacs-lisp
 (defun treemacs-left-action (&optional arg)
   (interactive "P")
   (-when-let (state (treemacs--prop-at-point :state))
@@ -500,7 +662,10 @@
 (defun treemacs-e-action (&optional arg)
   (interactive "P")
   (treemacs-right-action '(4)))
+#+END_SRC
 
+** Org
+#+BEGIN_SRC emacs-lisp
 (global-org-pretty-table-mode)
 
 (setq org-fontify-quote-and-verse-blocks t)
@@ -982,7 +1147,10 @@
   (let ((dvipng--plist (alist-get 'dvipng org-preview-latex-process-alist)))
     (plist-put dvipng--plist :use-xcolor t)
     (plist-put dvipng--plist :image-converter '("dvipng -D %D -bg 'transparent' -T tight -o %O %f"))))
+#+END_SRC
 
+*** Prettify
+#+BEGIN_SRC emacs-lisp
 (after! org
   (appendq! +ligatures-extra-symbols
             `(:checkbox      "☐"
@@ -1048,11 +1216,20 @@
     :priority_b    "[#B]"
     :priority_c    "[#C]"))
 (plist-put +ligatures-extra-symbols :name "⁍")
+#+END_SRC
 
+** Zen
+#+BEGIN_SRC emacs-lisp
 (setq writeroom-fullscreen-effect 'fullboth)
+#+END_SRC
 
+** Dired
+#+BEGIN_SRC emacs-lisp
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
+#+END_SRC
 
+* Lisp
+#+BEGIN_SRC emacs-lisp
 (defun +toggle/opacity ()
   (interactive)
   (doom/set-frame-opacity 90))
@@ -1165,5 +1342,10 @@
   (if lsp-ui-doc-frame-mode
       (lsp-ui-doc-unfocus-frame)
     (lsp-ui-doc-focus-frame)))
+#+END_SRC
 
+* Bindings
+#+BEGIN_SRC emacs-lisp
 (load! "+bindings")
+#+END_SRC
+

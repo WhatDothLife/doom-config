@@ -45,10 +45,6 @@
           (?B . 'all-the-icons-orange)
           (?C . 'all-the-icons-yellow))))
 
-;; (plist-put +pretty-code-symbols :up "◆")
-;; (plist-put +pretty-code-symbols :down "◆")
-;; (plist-put +pretty-code-symbols :almost "◆")
-
 (set-pretty-symbols! 'org-mode 'org-agenda-mode
   :up "[#A]"
   :down "[#B]"
@@ -57,8 +53,9 @@
 (org-super-agenda-mode t)
 
 ;; (add-hook! 'org-mode-hook #'+org-pretty-mode) This is awefully slow
-(add-hook! 'org-mode-hook #'auto-fill-mode)
 (add-hook! 'org-mode-hook #'org-cdlatex-mode)
+(add-hook! 'org-mode-hook #'auto-fill-mode)
+(add-hook! 'org-mode-hook (cmd! () (auto-composition-mode -1)))
 
 (setq org-agenda-include-diary t
       org-use-property-inheritance t

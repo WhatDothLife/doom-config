@@ -98,7 +98,6 @@
        :desc "Open Treemacs"    "t"   #'+treemacs/toggle
        :desc "Toggle writegood" "W"   #'writegood-mode
        :desc "Toggle Opacity"   "o"   #'+toggle/opacity
-       :desc "Toggle zen-mode"  "z"   #'+writeroom-mode
        :desc "Frame maximized"  "M"   #'toggle-frame-maximized
        :desc "Modeline"         "m"   #'minimap-mode
        :desc "Modeline"         "h"   #'hide-mode-line-mode)
@@ -499,12 +498,11 @@
   :localleader
   "dt"   #'+org-time-stamp
   "dT"   #'org-time-stamp
-  "s"    #'message-send-and-exit
   "n"    #'org-add-note
   "^"    #'org-sort
   "D"    #'org-cut-special
   "P"    #'org-paste-special
-  "x"    #'+org-toggle-checkbox
+  ;; "x"    #'+org-toggle-checkbox
   "v"    #'org-mark-element
   "V"    #'org-mark-subtree
   "Y"    #'org-copy-special
@@ -526,7 +524,6 @@
   :niv "M-i"           #'org-shiftmetaleft
   :niv "M-a"           #'org-metadown
   :niv "M-e"           #'org-shiftmetaright
-  :niv "M-l"           #'org-metaup
   :niv "M-I"           #'org-metaleft
   :niv "M-A"           #'org-shiftmetadown
   :niv "M-E"           #'org-metaright
@@ -554,8 +551,7 @@
   :nmi "C-p"    #'+shell/up-directory
   :nmi "C-i"    #'+shell/insert-directory
   :nmi "C-e"    #'+shell-insert-envvar
-  :nmi "<home>" #'eshell-bol
-  :nmi "q"      #'+shell/toggle
+  :nm  "q"      #'+shell/toggle
   :i   "TAB"    #'+company/complete
 
   :n "^" #'+shell/up-directory
